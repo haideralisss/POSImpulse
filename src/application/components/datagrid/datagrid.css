@@ -1,0 +1,25 @@
+.addButton:hover {
+	-fx-background-color: #ff0000;
+}
+
+.dataGrid {
+	-fx-background-radius: 10 10 10 10;
+}
+
+.columnHeader {
+	-fx-background-color: #D7263d;
+	-fx-pref-height: 35px;
+}
+
+.columnHeader .label {
+	-fx-text-fill: #fff;
+	-fx-font-size: 13px;
+}
+
+.startCorner {
+	-fx-background-radius:  10 0 0 0;
+}
+
+.endCorner {
+	-fx-background-radius:  0 10 0 0;
+}

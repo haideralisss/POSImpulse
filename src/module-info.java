@@ -12,4 +12,5 @@ module POSImpulse {
 	exports application.screens.login;
 	exports application.screens.signup;
 	exports application.screens.sidebar;
+	exports application.components.datagrid;
 }
