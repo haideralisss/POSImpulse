@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+   <children>
+      <Label layoutX="452.0" layoutY="333.0" text="Products">
+         <font>
+            <Font name="Calibri Italic" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

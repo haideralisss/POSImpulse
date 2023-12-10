@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.4" prefWidth="990.4" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.dashboard.DashboardController">
+   <children>
+      <ScrollPane fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.4" prefWidth="990.4" stylesheets="@dashboard.css">
+         <content>
+            <AnchorPane prefHeight="694.4" prefWidth="990.4">
+               <children>
+                  <FlowPane hgap="10.0" prefHeight="160.0" prefWidth="974.0">
+                     <children>
+                        <AnchorPane prefHeight="125.0" prefWidth="231.0" style="-fx-background-color: d7263dcc; -fx-background-radius: 10px; -fx-border-radius: 10px;">
+                           <FlowPane.margin>
+                              <Insets left="10.0" />
+                           </FlowPane.margin>
+                           <children>
+                              <ImageView fitHeight="89.0" fitWidth="124.0" layoutX="133.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/sell.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="14.0" layoutY="32.0" style="-fx-text-fill: #ffff;" text="Rs. 256" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="63.0" prefHeight="20.0" prefWidth="101.0" style="-fx-text-fill: #ffff;" text="Today's Sales" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutY="105.0" prefHeight="20.0" prefWidth="231.0" style="-fx-background-color: #8080809e; -fx-background-radius: 0px 0px 10px 10px;">
+                                 <children>
+                                    <Label layoutX="89.0" layoutY="2.0" text="More Info" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="125.0" prefWidth="231.0" style="-fx-background-color: d7263dcc; -fx-background-radius: 10px;">
+                           <children>
+                              <ImageView fitHeight="89.0" fitWidth="124.0" layoutX="134.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/coin.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="14.0" layoutY="35.0" style="-fx-text-fill: #ffff;" text="Rs. 3560" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="66.0" prefHeight="20.0" prefWidth="101.0" style="-fx-text-fill: #ffff;" text="Month's Sales" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutY="105.0" prefHeight="20.0" prefWidth="231.0" style="-fx-background-color: #8080809e; -fx-background-radius: 0px 0px 10px 10px;">
+                                 <children>
+                                    <Label layoutX="91.0" layoutY="3.0" text="More Info" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="125.0" prefWidth="231.0" style="-fx-background-color: #68c5db; -fx-background-radius: 10px;">
+                           <children>
+                              <ImageView fitHeight="89.0" fitWidth="124.0" layoutX="133.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/stock.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" text="Rs. 50000" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="12.0" layoutY="65.0" prefHeight="20.0" prefWidth="101.0" style="-fx-text-fill: #ffff;" text="Stock Worth" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutY="105.0" prefHeight="20.0" prefWidth="231.0" style="-fx-background-color: #8080809e; -fx-background-radius: 0px 0px 10px 10px;">
+                                 <children>
+                                    <Label layoutX="91.0" layoutY="3.0" text="More Info" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="125.0" prefWidth="231.0" style="-fx-background-color: #68c5db; -fx-background-radius: 10px;">
+                           <children>
+                              <ImageView fitHeight="89.0" fitWidth="124.0" layoutX="133.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/expenses.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" text="Rs. 6987" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="12.0" layoutY="65.0" prefHeight="20.0" prefWidth="114.0" style="-fx-text-fill: #ffff;" text="Month's Expenses" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutY="105.0" prefHeight="20.0" prefWidth="231.0" style="-fx-background-color: #8080809e; -fx-background-radius: 0px 0px 10px 10px;">
+                                 <children>
+                                    <Label layoutX="91.0" layoutY="3.0" text="More Info" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                     <padding>
+                        <Insets top="34.0" />
+                     </padding>
+                  </FlowPane>
+                  <TableView editable="true" layoutX="14.0" layoutY="243.0" prefHeight="322.0" prefWidth="955.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-background-radius: 10;" stylesheets="@dashboard.css">
+                     <columns>
+                        <TableColumn prefWidth="308.8000297546387" style="-fx-alignment: center; -fx-background-color: #0197f6; -fx-background-radius: 10px 0px 0px 0px; -fx-border-color: transparent; -fx-font-size: 15px;" text="Proudct Name" />
+                        <TableColumn minWidth="0.0" prefWidth="346.39996337890625" style="-fx-alignment: center; -fx-background-color: #d7263d; -fx-font-size: 15px;" text="Total Quantity" />
+                        <TableColumn prefWidth="294.40008544921875" style="-fx-alignment: center; -fx-background-color: #0197f6; -fx-background-radius: 0px 10px 0px 0px; -fx-border-color: transparent; -fx-font-size: 15px;" styleClass="." text="Expiry Date" />
+                     </columns>
+                  </TableView>
+                  <Label layoutX="14.0" layoutY="195.0" text="Near">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="67.0" layoutY="195.0" text="Expiry" textFill="#448fa3">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <BarChart fx:id="barChart" layoutX="8.0" layoutY="666.0" prefHeight="310.0" prefWidth="476.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+                  <Label layoutX="25.0" layoutY="601.0" text="Monthly Sales">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="172.0" layoutY="601.0" text="Report" textFill="#d7263d">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="653.0" layoutY="601.0" text="Sales">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="726.0" layoutY="601.0" text="vs" textFill="#d7263d">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <PieChart fx:id="pieChart" layoutX="545.0" layoutY="642.0" onMouseClicked="#setSalesAndExpenses" prefHeight="357.0" prefWidth="423.0" />
+                  <ComboBox fx:id="comboBox" layoutX="750.0" layoutY="191.0" prefHeight="35.0" prefWidth="210.0" promptText="Near Expiry" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="dashboard-combobox" stylesheets="@dashboard.css" visibleRowCount="4" />
+                  <Label layoutX="768.0" layoutY="601.0" text="Expenses">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="653.0" layoutY="642.0" text="Sales:">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="sales" layoutX="689.0" layoutY="642.0" text="0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="768.0" layoutY="642.0" text="Expenses:">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="expenses" layoutX="828.0" layoutY="642.0" text="0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
