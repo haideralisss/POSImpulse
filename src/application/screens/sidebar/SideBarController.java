@@ -56,7 +56,7 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Purchases");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "Date", "date", "Date", true, false, true),
+                new Attribute("Date", "date", "date", "Date", true, false, true),
                 new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
                 new Attribute("Supplier Name", "text", "supplierName", "Number", true, false, true),
                 new Attribute("Gross Total", "text", "grossTotal", "Number", false, false, true),
@@ -116,7 +116,7 @@ public class SideBarController implements Initializable {
                 new Attribute("Quantity", "text", "totalQuantity", "Number", false, false, true),
                 new Attribute("Unit Cost", "text", "unitCost", "Number", false, false, true),
                 new Attribute("Total Price", "text", "totalPrice", "Number", false, false, false),
-                new Attribute("Expiry Date", "Date", "expiryDate", "Date", true, false, true)
+                new Attribute("Expiry Date", "date", "expiryDate", "Date", true, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -125,7 +125,7 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Expenses");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "Date", "date", "Date", true, false, true),
+                new Attribute("Date", "date", "date", "Date", true, false, true),
                 new Attribute("Name", "text", "name", "String", true, false, true),
                 new Attribute("Description", "text", "description", "String", false, false, true),
                 new Attribute("Amount", "text", "amount", "Number", false, false, true)
@@ -152,6 +152,12 @@ public class SideBarController implements Initializable {
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
 	
+	public void profilePage() throws IOException
+	{
+		topBarLabel.setText("Profile");
+		changePage("screens/profile/Profile.fxml", null);
+	}
+	
 	public void closeProgram()
 	{
 		Platform.exit();
@@ -168,10 +174,10 @@ public class SideBarController implements Initializable {
 		
 		DataGridController dgController;
 		
-		if(!path.contains("reports") && !path.contains("dashboard"))
+		if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
 		{
 			dgController = loader.getController();
-			dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list);
+			dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
 		}
 	}
 

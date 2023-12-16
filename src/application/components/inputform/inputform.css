@@ -1,0 +1,23 @@
+.inputField {
+	-fx-pref-height: 30px;
+	-fx-pref-width: 233px;
+	-fx-font-size: 14px;
+}
+
+.fPaneSpacing {
+	-fx-pref-width: 233px;
+	-fx-hgap: 160px; 
+	-fx-padding: 0, 0, 0, 35;
+	-fx-alignment: BOTTOM_CENTER;
+	-fx-pref-height: 17px;
+	-fx-row-valignment: bottom;
+}
+
+.inputLabel {
+	-fx-padding: 5 0 5 0;
+	-fx-font-weight: bold;
+}
+
+.checkLabel {
+	-fx-font-weight: bold;
+}

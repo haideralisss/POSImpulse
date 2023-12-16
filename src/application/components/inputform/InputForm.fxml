@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1002.0" stylesheets="@inputform.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.components.inputform.InputFormController">
+   <children>
+      <Label fx:id="title" layoutX="85.0" layoutY="39.0" text="Title">
+         <font>
+            <Font name="Calibri Bold" size="36.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="titleIcon" fitHeight="32.0" fitWidth="28.0" layoutX="42.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox fx:id="anchorVBox" layoutX="42.0" layoutY="114.0" prefWidth="930.0">
+         <children>
+            <AnchorPane fx:id="inputAnchorPane" prefWidth="930.0" style="-fx-background-color: white; -fx-background-radius: 5;">
+               <children>
+                  <VBox fx:id="flowVBox" layoutX="41.0" layoutY="23.0" minHeight="30.0" prefWidth="826.0" AnchorPane.bottomAnchor="70.0" AnchorPane.topAnchor="50.0">
+                     <children>
+                        <FlowPane fx:id="inputFlowPane" alignment="CENTER_LEFT" hgap="50.0" minHeight="30.0" prefWidth="804.0" stylesheets="@inputform.css" vgap="40.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+                  <JFXButton id="addButton" fx:id="submitButton" layoutX="648.0" layoutY="171.0" prefHeight="32.0" prefWidth="123.0" styleClass="blueButton" stylesheets="@../datagrid/datagrid.css" text="Submit" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="10.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton id="addButton" fx:id="cancelButton" layoutX="781.0" layoutY="171.0" prefHeight="32.0" prefWidth="123.0" styleClass="redButton" stylesheets="@../datagrid/datagrid.css" text="Cancel" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="10.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
+                  <Label layoutX="41.0" layoutY="19.0" text="Insertion Form">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,7 +1,10 @@
 package application.components.datagrid;
+import java.io.IOException;
 import java.util.List;
 
+import application.components.inputform.InputFormController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -9,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class DataGridController 
 {
@@ -25,9 +29,11 @@ public class DataGridController
 	public ImageView titleIcon;
 	
 	List<Attribute> attributes;
+	public AnchorPane anchorPane;
 	
-	public void SetupDataGrid(String title, List<Attribute> attributes)
+	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
+		this.anchorPane = anchorPane;
 		int i = 0;
 		
 		this.title.setText(title);
@@ -42,6 +48,7 @@ public class DataGridController
 		
 		if(attributes != null)
 		{
+			this.attributes = attributes;
 			for (Attribute attribute : attributes) 
 			{
 	            if(!attribute.isHide())
