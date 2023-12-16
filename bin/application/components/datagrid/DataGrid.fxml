@@ -25,7 +25,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXButton id="addButton" fx:id="addButton" layoutX="852.0" layoutY="180.0" prefHeight="25.0" prefWidth="123.0" styleClass="blueButton" stylesheets="@datagrid.css" text="Add" textAlignment="CENTER" textFill="WHITE">
+      <JFXButton id="addButton" fx:id="addButton" layoutX="852.0" layoutY="180.0" onAction="#OpenInputForm" prefHeight="25.0" prefWidth="123.0" styleClass="blueButton" stylesheets="@datagrid.css" text="Add" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

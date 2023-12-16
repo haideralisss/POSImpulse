@@ -74,4 +74,23 @@ public class DataGridController
 		
 		category.setValue(category.getItems().get(0));
 	}
+	
+	public void OpenInputForm()
+	{
+		try {
+			anchorPane.getChildren().clear();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/components/inputform/InputForm.fxml"));
+			AnchorPane nextAnchorPane;
+			nextAnchorPane = (AnchorPane) loader.load();
+			anchorPane.getChildren().add(nextAnchorPane);
+			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+		    nextAnchorPane.toFront();
+			
+			InputFormController ifController;
+			ifController = loader.getController();
+			ifController.SetupInputForm(title.getText(), attributes, anchorPane);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
