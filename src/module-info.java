@@ -9,6 +9,7 @@ module POSImpulse {
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.components.inputform to javafx.fxml;
+	opens application.screens.profile to javafx.fxml;
 	
 	exports application;
 	exports application.screens.login;
@@ -16,4 +17,5 @@ module POSImpulse {
 	exports application.screens.sidebar;
 	exports application.components.datagrid;
 	exports application.components.inputform;
+	exports application.screens.profile;
 }
