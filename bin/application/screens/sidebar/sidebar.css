@@ -11,3 +11,11 @@
 	-fx-border-radius: 30px;
 	-fx-background-radius: 30px;
 }
+
+.usernameLabel {
+	-fx-text-fill: white;
+}
+
+.usernameLabel:hover {
+	-fx-text-fill: #D7263d;
+}

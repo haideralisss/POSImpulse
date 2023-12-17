@@ -5,6 +5,7 @@
     -fx-border-color: #385cfc;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
 
 .blueButton:hover {
@@ -14,6 +15,7 @@
     -fx-border-color: #385cfc;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
 
 .redButton {
@@ -23,6 +25,7 @@
     -fx-border-color: #D7263d;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
 
 .redButton:hover {
@@ -32,6 +35,7 @@
     -fx-border-color: #D7263d;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
 
 .dataGrid {
