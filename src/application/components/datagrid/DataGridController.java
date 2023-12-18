@@ -5,6 +5,8 @@ import java.util.List;
 import com.jfoenix.controls.JFXButton;
 
 import application.components.inputform.InputFormController;
+import application.screens.billing.BillingController;
+import application.screens.purchases.PurchasesController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -146,6 +148,19 @@ public class DataGridController
 			anchorPane.getChildren().add(nextAnchorPane);
 			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
 		    nextAnchorPane.toFront();
+		    
+		    if(title.getText() == "Billing")
+		    {
+		    	BillingController bController;
+				bController = loader.getController();
+				bController.SetRoute(anchorPane, attributes);
+		    }
+		    else if(title.getText() == "Purchases")
+		    {
+		    	PurchasesController pController;
+				pController = loader.getController();
+				pController.SetRoute(anchorPane, attributes);
+		    }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

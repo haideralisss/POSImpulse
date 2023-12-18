@@ -12,7 +12,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
    <children>
       <AnchorPane layoutX="17.0" layoutY="9.0" prefHeight="62.0" prefWidth="678.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 3;">
@@ -32,7 +31,7 @@
                   </JFXButton>
                </children>
             </Pane>
-            <JFXButton layoutX="522.0" layoutY="13.0" prefHeight="37.0" prefWidth="140.0" styleClass="redButton" stylesheets="@../../components/datagrid/datagrid.css" text="Cancel Purchase">
+            <JFXButton layoutX="522.0" layoutY="13.0" onAction="#CancelPurchase" prefHeight="37.0" prefWidth="140.0" styleClass="redButton" stylesheets="@../../components/datagrid/datagrid.css" text="Cancel Purchase">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
