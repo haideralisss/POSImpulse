@@ -105,17 +105,17 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="208.0" layoutY="292.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField layoutX="205.0" layoutY="292.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXTextField layoutX="208.0" layoutY="329.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField layoutX="205.0" layoutY="329.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXTextField layoutX="208.0" layoutY="366.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField layoutX="205.0" layoutY="366.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
@@ -147,17 +147,17 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="209.0" layoutY="499.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField layoutX="206.0" layoutY="499.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXButton layoutX="25.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" style="-fx-background-color: green;" styleClass="greenButton" stylesheets="@../../components/datagrid/datagrid.css" text="Save">
+            <JFXButton layoutX="25.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="147.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" style="-fx-background-color: green;" styleClass="greenButton" stylesheets="@../../components/datagrid/datagrid.css" text="Save &amp; Print">
+            <JFXButton layoutX="147.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save &amp; Print">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

@@ -19,4 +19,5 @@ module POSImpulse {
 	exports application.components.inputform;
 	exports application.screens.profile;
 	exports application.screens.purchases;
+	exports application.screens.billing;
 }
