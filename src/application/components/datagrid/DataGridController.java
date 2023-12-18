@@ -2,6 +2,8 @@ package application.components.datagrid;
 import java.io.IOException;
 import java.util.List;
 
+import com.jfoenix.controls.JFXButton;
+
 import application.components.inputform.InputFormController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +15,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 
 public class DataGridController 
 {
 	@FXML
 	public Label title;
+	
+	@FXML
+	public FlowPane buttonsFlowPane;
 	
 	@FXML
 	public TableView dataGridTable;
@@ -34,9 +40,10 @@ public class DataGridController
 	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
 		this.anchorPane = anchorPane;
-		int i = 0;
 		
 		this.title.setText(title);
+		SetUpButtons();
+		
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
 		titleIcon.setFitWidth(30);
 		titleIcon.setFitHeight(30);
@@ -62,7 +69,6 @@ public class DataGridController
 		            	category.getItems().add(attribute.getAttribute());
 		            }
 		            
-		            i++;
 	            }
 	        }
 		}
@@ -73,6 +79,42 @@ public class DataGridController
         dataGridTable.getColumns().add(endCol);
 		
 		category.setValue(category.getItems().get(0));
+	}
+	
+	public void SetUpButtons()
+	{
+		JFXButton addBtn = new JFXButton();
+		addBtn.getStyleClass().add("blueButton");
+		addBtn.getStyleClass().add("smallButton");
+		
+		if(title.getText() == "Purchases")
+		{
+			addBtn.setText("New Purchase");
+			addBtn.setOnAction(null);
+		}
+		else if(title.getText() == "Billing")
+		{
+			addBtn.setText("New Bill");
+			addBtn.setOnAction(null);
+		}
+		else
+		{
+			if(title.getText() == "Accounts")
+			{
+				addBtn.setText("New Account");
+				JFXButton backupBtn = new JFXButton();
+				backupBtn.setText("Backup Data");
+				backupBtn.getStyleClass().add("blueButton");
+				backupBtn.getStyleClass().add("smallButton");
+				buttonsFlowPane.getChildren().add(backupBtn);
+			}
+			else
+			{
+				addBtn.setText("Add");
+			}
+			addBtn.setOnAction(event -> OpenInputForm());
+		}
+		buttonsFlowPane.getChildren().add(addBtn);
 	}
 	
 	public void OpenInputForm()
