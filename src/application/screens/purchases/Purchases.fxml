@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
    <children>
-      <Label layoutX="452.0" layoutY="333.0" text="Purchases">
-         <font>
-            <Font name="Calibri Italic" size="24.0" />
-         </font>
-      </Label>
+      <AnchorPane layoutX="17.0" layoutY="6.0" prefHeight="62.0" prefWidth="688.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 3;">
+         <children>
+            <Pane layoutX="16.0" layoutY="13.0" prefHeight="37.0" prefWidth="476.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 20;">
+               <children>
+                  <ImageView fitHeight="17.0" fitWidth="18.0" layoutX="17.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/greySearchIcon.png" />
+                     </image>
+                  </ImageView>
+                  <JFXTextField focusColor="#405aa800" layoutX="50.0" layoutY="6.0" prefHeight="25.0" prefWidth="327.0" promptText="Search a product..." unFocusColor="#4d4d4d00" />
+                  <JFXButton layoutX="386.0" layoutY="5.0" prefHeight="4.0" prefWidth="81.0" style="-fx-background-radius: 30; -fx-border-radius: 30;" styleClass="blueButton" stylesheets="@../../components/datagrid/datagrid.css" text="Search">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
+            <JFXButton layoutX="531.0" layoutY="13.0" prefHeight="37.0" prefWidth="140.0" styleClass="redButton" stylesheets="@../../components/datagrid/datagrid.css" text="Cancel Purchase">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -90,12 +90,12 @@ public class DataGridController
 		if(title.getText() == "Purchases")
 		{
 			addBtn.setText("New Purchase");
-			addBtn.setOnAction(null);
+			addBtn.setOnAction(event -> OpenCart("Purchases"));
 		}
 		else if(title.getText() == "Billing")
 		{
 			addBtn.setText("New Bill");
-			addBtn.setOnAction(null);
+			addBtn.setOnAction(event -> OpenCart("Billing"));
 		}
 		else
 		{
@@ -131,6 +131,21 @@ public class DataGridController
 			InputFormController ifController;
 			ifController = loader.getController();
 			ifController.SetupInputForm(title.getText(), attributes, anchorPane);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void OpenCart(String file)
+	{
+		try {
+			anchorPane.getChildren().clear();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/" + file.toLowerCase() + "/" + file + ".fxml"));
+			AnchorPane nextAnchorPane;
+			nextAnchorPane = (AnchorPane) loader.load();
+			anchorPane.getChildren().add(nextAnchorPane);
+			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+		    nextAnchorPane.toFront();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

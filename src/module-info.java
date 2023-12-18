@@ -18,4 +18,5 @@ module POSImpulse {
 	exports application.components.datagrid;
 	exports application.components.inputform;
 	exports application.screens.profile;
+	exports application.screens.purchases;
 }
