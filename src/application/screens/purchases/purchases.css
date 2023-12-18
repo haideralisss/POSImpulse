@@ -1,0 +1,19 @@
+.greenButton {
+	-fx-background-color: #209c0c;
+	-fx-text-fill: #fff;
+	-fx-border-width: 2px;
+    -fx-border-color: #209c0c;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.greenButton:hover {
+	-fx-background-color: #fff;
+	-fx-text-fill: #209c0c;
+	-fx-border-width: 2px;
+    -fx-border-color: #209c0c;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
