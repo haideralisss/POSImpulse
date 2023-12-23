@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<AnchorPane prefHeight="694.0" prefWidth="1002.0" style="-fx-background-color: white;" stylesheets="@reports.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.reports.ReportsController">
    <children>
-      <Label layoutX="452.0" layoutY="333.0" text="Reports">
+      <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="400.0" layoutX="23.0" layoutY="121.0" />
+      <DatePicker fx:id="fromDate" layoutX="508.0" layoutY="295.0" prefHeight="26.0" prefWidth="208.0" style="-fx-border-color: transparent; -fx-border-width: 0;" />
+      <DatePicker fx:id="toDate" layoutX="770.0" layoutY="295.0" prefHeight="26.0" prefWidth="208.0" />
+      <Label fx:id="reportText" layoutX="460.0" layoutY="247.0" prefHeight="18.0" prefWidth="359.0" text="Label">
          <font>
-            <Font name="Calibri Italic" size="24.0" />
+            <Font name="Calibri" size="14.0" />
          </font>
       </Label>
+      <Label layoutX="455.0" layoutY="185.0" text="Generate Report">
+         <font>
+            <Font name="Calibri Bold" size="49.0" />
+         </font>
+      </Label>
+      <Label layoutX="458.0" layoutY="300.0" text="From">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="740.0" layoutY="299.0" text="To">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboBox" layoutX="455.0" layoutY="356.0" prefHeight="35.0" prefWidth="210.0" promptText="Choose Report Type" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="dashboard-combobox" stylesheets="@../dashboard/dashboard.css" visibleRowCount="4" />
    </children>
 </AnchorPane>

@@ -1,0 +1,26 @@
+.date-picker {
+	-fx-background-color: transparent;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5);
+}
+
+.date-picker .arrow-button {
+	-fx-background-color: transparent;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5);
+}
+
+.dashboard-combobox .list-view .scroll-bar .increment-button {
+    visibility: hidden;
+    -fx-opacity: 0;
+}
+
+.dashboard-combobox .list-view .scroll-bar .decrement-button {
+	visibility: hidden;
+    -fx-opacity: 0;
+}
+
+.dashboard-combobox .list-view .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    visibility: hidden;
+}
