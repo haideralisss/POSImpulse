@@ -47,8 +47,8 @@ public class DataGridController
 		SetUpButtons();
 		
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
-		titleIcon.setFitWidth(30);
-		titleIcon.setFitHeight(30);
+//		titleIcon.setFitWidth(30);
+//		titleIcon.setFitHeight(30);
 		
 		TableColumn<String, String> firstCol = new TableColumn<>("#");
         firstCol.getStyleClass().add("columnHeader");

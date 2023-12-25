@@ -1,0 +1,49 @@
+.cartTableHeader {
+	-fx-background-color: #02182B;
+	-fx-pref-height: 35px;
+}
+
+.cartTableHeader .label {
+	-fx-text-fill: #fff;
+	-fx-font-size: 13px;
+}
+
+.itemHeader .label {
+	-fx-alignment: CENTER-LEFT;
+	-fx-padding: 0 25 0 25;
+}
+
+.evenCartRow {
+	-fx-background-color: white;
+	-fx-pref-height: 70px;
+}
+
+.oddCartRow {
+	-fx-background-color: #f1f3f6;
+	-fx-pref-height: 70px;
+}
+
+.nameStockBox {
+	-fx-padding: 0 187 0 28;
+}
+
+.cartRowInput {
+	-fx-pref-width: 50px;
+}
+
+.qtyInput {
+	-fx-translate-x: 40px;	
+}
+
+.discInput {
+	-fx-translate-x: 85px;	
+}
+
+.netTotalLabel {
+	-fx-translate-x: 145px;	
+	-fx-font-size: 14px;
+}
+
+.delButtonIcon {
+	-fx-translate-x: 195px;
+}
