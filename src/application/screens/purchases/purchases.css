@@ -17,3 +17,89 @@
     -fx-background-radius: 5;
     -fx-cursor: hand;
 }
+
+.evenCartRow {
+	-fx-background-color: white;
+	-fx-pref-height: 70px;
+}
+
+.oddCartRow {
+	-fx-background-color: #f1f3f6;
+	-fx-pref-height: 70px;
+}
+
+.nameStockBox {
+	-fx-padding: 0 32 0 16;
+}
+
+.cartRowInput {
+	-fx-pref-width: 38px;
+}
+
+.qtyInput {
+	-fx-translate-x: 20px;	
+}
+
+.discInput {
+	-fx-translate-x: 37px;	
+}
+
+.salesTaxInput {
+	-fx-translate-x: 66px;	
+}
+
+.bonusInput {
+	-fx-translate-x: 97px;	
+}
+
+.batchNumInput {
+	-fx-translate-x: 126px;	
+}
+
+.expiryDateInput {
+	-fx-translate-x: 194px;
+	-fx-pref-width: 90px;	
+}
+
+.netTotalLabel {
+	-fx-translate-x: 170px;	
+	-fx-font-size: 14px;
+}
+
+.delButtonIcon {
+	-fx-translate-x: 205px;
+}
+
+.cartRowFooter {
+	-fx-background-color: #488ca4;
+	-fx-pref-height: 34px;
+}
+
+.priceLabels {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+
+.priceFields {
+	-fx-text-fill: white;
+}
+
+.purchasePriceLabel {
+	-fx-translate-x: -50px;
+}
+
+.purchasePriceInput {
+	-fx-translate-x: -40px;
+	-fx-padding: 0 10 0 0;
+	-fx-pref-width: 50px;
+}
+
+.retailPriceLabel {
+	-fx-translate-x: -20px;
+}
+
+.retailPriceInput {
+	-fx-translate-x: -10px;
+	-fx-pref-width: 50px;
+	-fx-padding: 0 10 0 0;
+}

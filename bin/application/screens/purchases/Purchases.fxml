@@ -9,10 +9,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
+<AnchorPane prefHeight="694.0" prefWidth="1002.0" stylesheets="@purchases.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
    <children>
       <AnchorPane layoutX="17.0" layoutY="9.0" prefHeight="62.0" prefWidth="678.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 3;">
          <children>
@@ -163,5 +164,58 @@
             </JFXButton>
          </children>
       </AnchorPane>
+      <VBox fx:id="CartVBox" layoutX="17.0" layoutY="85.0" minHeight="37.0" prefWidth="678.0">
+         <children>
+            <Pane prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
+               <children>
+                  <Label layoutX="15.0" layoutY="9.0" text="Item" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="102.0" layoutY="9.0" text="Price" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="163.0" layoutY="9.0" text="Qty." textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="216.0" layoutY="9.0" text="Disc." textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="483.0" layoutY="9.0" text="Net Total" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="270.0" layoutY="9.0" text="Sales Tax" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="348.0" layoutY="9.0" text="Bonus" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="407.0" layoutY="9.0" text="Batch No." textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="556.0" layoutY="9.0" text="Expiry Date" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
