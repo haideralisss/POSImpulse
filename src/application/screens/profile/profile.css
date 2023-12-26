@@ -1,3 +1,4 @@
 .goBackLabel:hover {
 	-fx-text-fill: blue;
+	-fx-underline: true;
 }

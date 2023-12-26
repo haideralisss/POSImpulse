@@ -6,6 +6,7 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
 }
 
 .blueButton:hover {
@@ -16,6 +17,13 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.smallButton {
+	-fx-pref-height: 15;
+    -fx-pref-width: 123;
+    -fx-font-size: 11px;
 }
 
 .redButton {
@@ -58,4 +66,8 @@
 
 .endCorner {
 	-fx-background-radius:  0 10 0 0;
+}
+
+.categoryComboBox .list-cell {
+    -fx-cursor: hand;
 }
