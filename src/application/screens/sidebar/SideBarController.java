@@ -163,8 +163,10 @@ public class SideBarController implements Initializable {
 		Platform.exit();
 	}
 	
-	public void changePage(String path, List<Attribute> list) throws IOException
+	public void changePage(String path, List<Attribute> list)
 	{
+		try
+		{
 		anchorPane.getChildren().clear();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/" + path));
 		nextAnchorPane = (AnchorPane) loader.load();
@@ -179,15 +181,16 @@ public class SideBarController implements Initializable {
 			dgController = loader.getController();
 			dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
 		}
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.getCause());
+		}
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
-		try {
-			changePage("screens/dashboard/Dashboard.fxml", null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		changePage("screens/dashboard/Dashboard.fxml", null);
 	}
 }
