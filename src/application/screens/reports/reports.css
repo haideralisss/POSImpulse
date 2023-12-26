@@ -9,12 +9,10 @@
 }
 
 .dashboard-combobox .list-view .scroll-bar .increment-button {
-    visibility: hidden;
     -fx-opacity: 0;
 }
 
 .dashboard-combobox .list-view .scroll-bar .decrement-button {
-	visibility: hidden;
     -fx-opacity: 0;
 }
 
@@ -22,5 +20,19 @@
     -fx-background-color: transparent;
     -fx-pref-width: 0;
     -fx-max-width: 0;
-    visibility: hidden;
+}
+
+.search-barPane {
+	-fx-background-color: white;
+	-fx-background-radius: 25;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5);
+}
+
+.report-search-bar {
+	-fx-background-color: transparent;
+}
+
+.search-icon {
+	-fx-background-radius: 25;
+	-fx-background-color: red;
 }
