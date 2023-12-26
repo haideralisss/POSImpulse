@@ -44,7 +44,7 @@
       <Pane fx:id="searchbarPane" layoutX="460.0" layoutY="290.0" prefHeight="38.0" prefWidth="498.0" styleClass="search-barPane" stylesheets="@reports.css">
          <children>
             <TextField layoutX="14.0" layoutY="6.0" prefHeight="26.0" prefWidth="378.0" promptText="Search here..." styleClass="report-search-bar" />
-            <Pane layoutX="392.0" prefHeight="38.0" prefWidth="108.0" styleClass="search-icon">
+            <Pane layoutX="392.0" prefHeight="39.0" prefWidth="108.0" style="-fx-background-color: d7263d;" styleClass="search-icon">
                <children>
                   <ImageView fitHeight="28.0" fitWidth="19.0" layoutX="47.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                      <image>

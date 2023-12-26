@@ -4,6 +4,7 @@ module POSImpulse {
 	requires javafx.graphics;
 	requires javafx.fxml;
 	requires java.desktop;
+	requires javafx.base;
 	requires com.jfoenix;
 	requires javafx.media;
 	
