@@ -1,0 +1,57 @@
+.blueButton {
+	-fx-background-color: #385cfc;
+	-fx-text-fill: #fff;
+	-fx-border-width: 2px;
+    -fx-border-color: #385cfc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.blueButton:hover {
+	-fx-background-color: #fff;
+	-fx-text-fill: #385cfc;
+	-fx-border-width: 2px;
+    -fx-border-color: #385cfc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.redButton {
+	-fx-background-color: #D7263d;
+	-fx-text-fill: #fff;
+	-fx-border-width: 2px;
+    -fx-border-color: #D7263d;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.redButton:hover {
+	-fx-background-color: #fff;
+	-fx-text-fill: #D7263d;
+	-fx-border-width: 2px;
+    -fx-border-color: #D7263d;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.dataGrid {
+	-fx-background-radius: 5;
+}
+
+.columnHeader {
+	-fx-background-color: #D7263d;
+	-fx-pref-height: 35px;
+}
+
+.columnHeader .label {
+	-fx-text-fill: #fff;
+	-fx-font-size: 13px;
+}
+
+.startCorner {
+	-fx-background-radius:  10 0 0 0;
+}
+
+.endCorner {
+	-fx-background-radius:  0 10 0 0;
+}

@@ -29,7 +29,6 @@ public class SignupController implements Initializable {
 	
 	private Stage stage;
 	private Scene scene;
-	private Parent root;
 	
 	Image myImage = new Image(getClass().getResourceAsStream("/application/assets/closeicon.png"));
 	
