@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="694.0" prefWidth="1002.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<AnchorPane prefHeight="694.0" prefWidth="1002.0" style="-fx-background-color: white;" stylesheets="@reports.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.reports.ReportsController">
    <children>
-      <Label layoutX="452.0" layoutY="333.0" text="Reports">
+      <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="400.0" layoutX="23.0" layoutY="121.0" />
+      <Label fx:id="reportText" layoutX="460.0" layoutY="247.0" prefHeight="18.0" prefWidth="359.0" text="Label">
          <font>
-            <Font name="Calibri Italic" size="24.0" />
+            <Font name="Calibri" size="14.0" />
          </font>
       </Label>
+      <Label layoutX="455.0" layoutY="185.0" text="Generate Report">
+         <font>
+            <Font name="Calibri Bold" size="49.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="reportControls" layoutX="462.0" layoutY="365.0" prefHeight="325.0" prefWidth="539.0">
+         <children>
+            <Label layoutY="5.0" text="From">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="fromDate" layoutX="48.0" layoutY="-1.0" prefHeight="26.0" prefWidth="208.0" style="-fx-border-color: transparent; -fx-border-width: 0;" />
+            <Label layoutX="275.0" layoutY="4.0" text="To">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="toDate" layoutX="304.0" layoutY="-1.0" prefHeight="26.0" prefWidth="208.0" />
+            <ComboBox fx:id="comboBox" layoutY="55.0" onAction="#changeComboBoxOption" prefHeight="35.0" prefWidth="210.0" promptText="Choose Report Type" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="dashboard-combobox" stylesheets="@../dashboard/dashboard.css" visibleRowCount="5" />
+         </children>
+      </AnchorPane>
+      <Pane fx:id="searchbarPane" layoutX="460.0" layoutY="290.0" prefHeight="38.0" prefWidth="498.0" styleClass="search-barPane" stylesheets="@reports.css">
+         <children>
+            <TextField layoutX="14.0" layoutY="6.0" prefHeight="26.0" prefWidth="378.0" promptText="Search here..." styleClass="report-search-bar" />
+            <Pane layoutX="392.0" prefHeight="39.0" prefWidth="108.0" style="-fx-background-color: d7263d;" styleClass="search-icon">
+               <children>
+                  <ImageView fitHeight="28.0" fitWidth="19.0" layoutX="47.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/searchIcon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -4,8 +4,8 @@ module POSImpulse {
 	requires javafx.graphics;
 	requires javafx.fxml;
 	requires java.desktop;
-	requires javafx.base;
 	requires com.jfoenix;
+	requires javafx.media;
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.components.inputform to javafx.fxml;
@@ -23,4 +23,5 @@ module POSImpulse {
 	exports application.screens.profile;
 	exports application.screens.purchases;
 	exports application.screens.billing;
+	exports application.screens.reports;
 }
