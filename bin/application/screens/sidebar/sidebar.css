@@ -1,0 +1,13 @@
+.sideBarButtons {
+	-fx-background-color: transparent;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-font-size: 17px;
+}
+
+.sideBarButtons:hover {
+	-fx-background-color: white;
+	-fx-text-fill: black;
+	-fx-border-radius: 30px;
+	-fx-background-radius: 30px;
+}

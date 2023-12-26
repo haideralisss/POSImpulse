@@ -1,4 +1,4 @@
-package application.screens.login;
+package application.screens.signup;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,14 +14,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-public class LoginController implements Initializable {
+public class SignupController implements Initializable {
 	
 	@SuppressWarnings("exports")
 	@FXML
-	public TextField username, password;
+	public TextField fullName, username, phoneNumber, password;
 	
 	@SuppressWarnings("exports")
 	@FXML
@@ -29,26 +29,24 @@ public class LoginController implements Initializable {
 	
 	private Stage stage;
 	private Scene scene;
-	@SuppressWarnings("unused")
 	private Parent root;
 	
 	Image myImage = new Image(getClass().getResourceAsStream("/application/assets/closeicon.png"));
+	
+	public void registerUser()
+	{
+		System.out.println("Registered User!"); // will move to the login screen/dashboard in future
+	}
 	
 	public void closeProgram()
 	{
 		Platform.exit();
 	}
 	
-	public void loginUser()
-	{
-		if(username.getText().trim().equals("haider") && password.getText().trim().equals("haider"))
-			System.out.println("Haider"); // will move to dashboard in future
-	}
-	
 	@SuppressWarnings("exports")
-	public void moveToRegisterUserScreen(MouseEvent e) throws IOException
+	public void moveToLoginScreen(MouseEvent e) throws IOException
 	{
-		Parent root = FXMLLoader.load(getClass().getResource("/application/screens/signup/Signup.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/screens/login/Login.fxml"));
 		stage = (Stage)((Node)e.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -56,12 +54,8 @@ public class LoginController implements Initializable {
 	}
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) 
-	{
-		imageView.setImage(myImage);
-		
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		imageView.setImage(myImage);	
 	}
-	
-	
 
 }
