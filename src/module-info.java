@@ -7,6 +7,7 @@ module POSImpulse {
 	requires javafx.base;
 	requires com.jfoenix;
 	requires javafx.media;
+	requires java.sql;
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.components.inputform to javafx.fxml;
