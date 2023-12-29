@@ -14,6 +14,7 @@ module POSImpulse {
 	opens application.screens.profile to javafx.fxml;
 	opens application.screens.billing to javafx.fxml;
 	opens application.screens.purchases to javafx.fxml;
+	opens application.models.entities to javafx.base;
 	
 	exports application;
 	exports application.screens.login;
