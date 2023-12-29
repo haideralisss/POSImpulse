@@ -5,19 +5,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class Companies {
+public class Stock {
 	
-	private String name, contact, address;
-	
+	private String productName;
+	private double unitCost;
+	private int totalQuantity, productId;
+
 	private int number;
 	private HBox operations;
 	
-	public Companies(int number, String name, String contact, String address)
+	public Stock(int number, int productId, String productName, double unitCost, int totalQuantity)
 	{
 		this.number = number;
-		this.name = name;
-		this.contact = contact;
-		this.address = address;
+		this.productId = productId;
+		this.productName = productName;
+		this.unitCost = unitCost;
+		this.totalQuantity = totalQuantity;
 		
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
@@ -37,20 +40,21 @@ public class Companies {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public String getContact()
-	{
-		return contact;
-	}
-	
-	public String getAddress()
-	{
-		return address;
-	}
+	public int getProductId() {
+        return productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public double getUnitCost() {
+        return unitCost;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
 	
 	public int getNumber()
 	{

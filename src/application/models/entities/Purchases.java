@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 public class Purchases {
 	
 	private String invoiceNum, salesTax, discount, shift, supplierName;
-	private LocalDate purchaseDate;
+	private String purchaseDate;
 	private int supplierId;
 	private double grossTotal, otherCharges, netTotal, amountPaid;
 	private boolean isReturn, isLoose;
@@ -18,7 +18,7 @@ public class Purchases {
 	private int number;
 	private HBox operations;
 	
-	public Purchases(int number, int supplierId, String supplierName, LocalDate purchaseDate, String invoiceNum, float grossTotal, String salesTax, String discount, float otherCharges, float netTotal, boolean isReturn, boolean isLoose, String shift, float amountPaid)
+	public Purchases(int number, int supplierId, String supplierName, String purchaseDate, String invoiceNum, double grossTotal, String salesTax, String discount, double otherCharges, double netTotal, boolean isReturn, boolean isLoose, String shift, double amountPaid)
 	{
 		this.number = number;
 		this.supplierId = supplierId;
@@ -63,7 +63,7 @@ public class Purchases {
 		return supplierName;
 	}
 	
-	public LocalDate getPurchaseDate()
+	public String getPurchaseDate()
 	{
 		return purchaseDate;
 	}

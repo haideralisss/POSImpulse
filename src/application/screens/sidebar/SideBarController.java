@@ -1,6 +1,7 @@
 package application.screens.sidebar;
 
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -125,7 +126,7 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Expenses");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "date", "date", "Date", true, false, true),
+                new Attribute("Date", "date", "expenseDate", "Date", true, false, true),
                 new Attribute("Name", "text", "name", "String", true, false, true),
                 new Attribute("Description", "text", "description", "String", false, false, true),
                 new Attribute("Amount", "text", "amount", "Number", false, false, true)

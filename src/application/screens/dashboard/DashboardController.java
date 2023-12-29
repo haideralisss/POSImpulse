@@ -3,6 +3,9 @@ package application.screens.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.models.repositories.BillsRepo;
+import application.models.repositories.ExpensesRepo;
+import application.models.repositories.StockRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,7 +31,7 @@ public class DashboardController implements Initializable
 	
 	@SuppressWarnings("exports")
 	@FXML
-	public Label sales, expenses;
+	public Label sales, expenses, todaySalesLabel, monthSalesLabel, stockWorthLabel, monthExpensesLabel;
 	
 	CategoryAxis xAxis = new CategoryAxis();
     NumberAxis yAxis = new NumberAxis();
@@ -38,7 +41,10 @@ public class DashboardController implements Initializable
 	
 	XYChart.Series<String, Number> series = new XYChart.Series<>();
 	
-	private String[] names = {"Near Expiry", "Expired Products", "Low Stock", "Check Profit"};
+	BillsRepo billsRepo = new BillsRepo();
+	StockRepo stockRepo = new StockRepo();
+	ExpensesRepo expensesRepo = new ExpensesRepo();
+	private String[] names = {"Low Stock", "Check Profit"};
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
@@ -60,6 +66,10 @@ public class DashboardController implements Initializable
 				new PieChart.Data("Expenses", 1500)
 				);
 		pieChart.setData(piecChartData);
+		todaySalesLabel.setText("Rs. " + billsRepo.fetchTodaySales());
+		monthSalesLabel.setText("Rs. " + billsRepo.fetchMonthSales());
+		stockWorthLabel.setText("Rs. " + stockRepo.fetchStockWorth());
+		monthExpensesLabel.setText("Rs. " + expensesRepo.fetchMonthExpenses());
 	}
 	
 	public void setSalesAndExpenses()

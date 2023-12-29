@@ -11,6 +11,13 @@ import application.utils.backendUtils.*;
 
 public class AccountsRepo {
 	
+	Connection conn;
+	
+	public AccountsRepo()
+	{
+		conn = DatabaseConnection.connect();
+	}
+	
 	public ArrayList<Accounts> getAllAccounts()
 	{
 		ArrayList<Accounts> accountsList = new ArrayList<Accounts>();
@@ -37,6 +44,33 @@ public class AccountsRepo {
 			e.printStackTrace();
 		}
 		return accountsList;
+	}
+	
+	public Accounts getAccount(int id)
+	{
+		Accounts account = null;
+		try(Connection connection = DatabaseConnection.connect())
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next())
+			{
+				account = new Accounts(
+						0,
+						resultSet.getString("username"),
+						resultSet.getString("fullname"),
+						resultSet.getString("phone"),
+						resultSet.getString("password"),
+						resultSet.getBoolean("isAdmin")
+					);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return account;
 	}
 	
 	public ArrayList<Accounts> addAccount(Accounts account)
@@ -92,5 +126,30 @@ public class AccountsRepo {
 	        e.printStackTrace();
 	    }
 	    return getAllAccounts();
+	}
+	
+	public boolean verifyUser(String username, String password) 
+	{
+	    boolean checkFlag = true;
+	    try 
+	    {
+	        String query = "SELECT username, password FROM accounts WHERE username=? AND password=?";
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        
+	        statement.setString(1, username);
+	        statement.setString(2, password);
+	        
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        if (!resultSet.isBeforeFirst() && resultSet.getRow() == 0) 
+	        {
+	            checkFlag = false;
+	        }
+	    } 
+	    catch (SQLException e) 
+	    {
+	        e.printStackTrace();
+	    }
+	    return checkFlag;
 	}
 }

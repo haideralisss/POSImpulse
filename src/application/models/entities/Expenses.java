@@ -1,23 +1,28 @@
 package application.models.entities;
 
+import java.time.LocalDate;
+
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class Companies {
+public class Expenses {
 	
-	private String name, contact, address;
+	String name, description;
+	String expenseDate;
+	double amount;
 	
 	private int number;
 	private HBox operations;
-	
-	public Companies(int number, String name, String contact, String address)
+
+	public Expenses(int number, String expenseDate, String name, String description, double amount)
 	{
 		this.number = number;
+		this.expenseDate = expenseDate;
 		this.name = name;
-		this.contact = contact;
-		this.address = address;
+		this.description = description;
+		this.amount = amount;
 		
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
@@ -37,20 +42,21 @@ public class Companies {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public String getContact()
-	{
-		return contact;
-	}
-	
-	public String getAddress()
-	{
-		return address;
-	}
+	public String getExpenseDate() {
+        return expenseDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
 	
 	public int getNumber()
 	{

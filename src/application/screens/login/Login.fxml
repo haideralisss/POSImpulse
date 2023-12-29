@@ -58,18 +58,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Label layoutX="760.0" layoutY="509.0" text="OR">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label layoutX="712.0" layoutY="564.0" onMouseClicked="#moveToRegisterUserScreen" text="Register new account" textFill="#1f2eff" underline="true">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
    </children>
 </AnchorPane>

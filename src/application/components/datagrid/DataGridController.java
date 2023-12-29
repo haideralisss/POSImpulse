@@ -6,7 +6,9 @@ import com.jfoenix.controls.JFXButton;
 
 import application.components.inputform.InputFormController;
 import application.models.entities.Accounts;
+import application.models.entities.Expenses;
 import application.models.repositories.AccountsRepo;
+import application.models.repositories.ExpensesRepo;
 import application.screens.billing.BillingController;
 import application.screens.purchases.PurchasesController;
 import javafx.collections.FXCollections;
@@ -126,10 +128,18 @@ public class DataGridController
 	
 	public void SetUpTable()
 	{	
-		AccountsRepo accountsRepo = new AccountsRepo();
-		
-        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
-        dataGridTable.setItems(accountsList);
+		if(title.getText() == "Accounts")
+		{
+			AccountsRepo accountsRepo = new AccountsRepo();
+	        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
+	        dataGridTable.setItems(accountsList);
+		}
+		else if(title.getText() == "Expenses")
+		{
+			ExpensesRepo expensesRepo = new ExpensesRepo();
+	        ObservableList<Expenses> expensesList = FXCollections.observableArrayList(expensesRepo.getAllExpenses());
+	        dataGridTable.setItems(expensesList);
+		}
 	}
 	
 	public void OpenInputForm()
