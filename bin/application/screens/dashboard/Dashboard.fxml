@@ -35,7 +35,7 @@
                                     <Image url="@../../assets/sell.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="14.0" layoutY="32.0" style="-fx-text-fill: #ffff;" text="Rs. 256" textFill="WHITE">
+                              <Label fx:id="todaySalesLabel" layoutX="14.0" layoutY="32.0" style="-fx-text-fill: #ffff;" textFill="WHITE">
                                  <font>
                                     <Font name="Calibri Bold" size="27.0" />
                                  </font>
@@ -63,7 +63,7 @@
                                     <Image url="@../../assets/coin.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="14.0" layoutY="35.0" style="-fx-text-fill: #ffff;" text="Rs. 3560" textFill="WHITE">
+                              <Label fx:id="monthSalesLabel" layoutX="14.0" layoutY="35.0" style="-fx-text-fill: #ffff;" textFill="WHITE">
                                  <font>
                                     <Font name="Calibri Bold" size="27.0" />
                                  </font>
@@ -91,7 +91,7 @@
                                     <Image url="@../../assets/stock.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" text="Rs. 50000" textFill="WHITE">
+                              <Label fx:id="stockWorthLabel" layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" textFill="WHITE">
                                  <font>
                                     <Font name="Calibri Bold" size="27.0" />
                                  </font>
@@ -119,7 +119,7 @@
                                     <Image url="@../../assets/expenses.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" text="Rs. 6987" textFill="WHITE">
+                              <Label fx:id="monthExpensesLabel" layoutX="12.0" layoutY="34.0" style="-fx-text-fill: #ffff;" textFill="WHITE">
                                  <font>
                                     <Font name="Calibri Bold" size="27.0" />
                                  </font>
