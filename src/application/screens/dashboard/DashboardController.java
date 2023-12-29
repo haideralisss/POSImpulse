@@ -3,9 +3,11 @@ package application.screens.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.models.entities.Bills;
 import application.models.repositories.BillsRepo;
 import application.models.repositories.ExpensesRepo;
 import application.models.repositories.StockRepo;
+import application.utils.backendUtils.NumberFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,7 +33,9 @@ public class DashboardController implements Initializable
 	
 	@SuppressWarnings("exports")
 	@FXML
-	public Label sales, expenses, todaySalesLabel, monthSalesLabel, stockWorthLabel, monthExpensesLabel;
+	public Label dataGridHeading1, dataGridHeading2, sales, expenses, 
+	todaySalesLabel, monthSalesLabel, stockWorthLabel, 
+	monthExpensesLabel;
 	
 	CategoryAxis xAxis = new CategoryAxis();
     NumberAxis yAxis = new NumberAxis();
@@ -45,37 +49,66 @@ public class DashboardController implements Initializable
 	StockRepo stockRepo = new StockRepo();
 	ExpensesRepo expensesRepo = new ExpensesRepo();
 	private String[] names = {"Low Stock", "Check Profit"};
+	private String monthlySales = "", monthlyExpenses = "";
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
-		series.setName("Monthly Sales");
-
-	    // Add data points to the series
-	    series.getData().add(new XYChart.Data<>("Category 1", 20));
-	    series.getData().add(new XYChart.Data<>("Category 2", 40));
-	    series.getData().add(new XYChart.Data<>("Category 3", 15));
-	    series.getData().add(new XYChart.Data<>("Category 4", 30));
-
-	    // Add the series to the chart
-	    barChart.getData().add(series);
-		
+		monthlyExpenses = expensesRepo.fetchMonthExpenses();
+		monthlySales = billsRepo.fetchMonthSales();
 		comboBox.getItems().addAll(names);
-		ObservableList<PieChart.Data> piecChartData = FXCollections.observableArrayList(
-				new PieChart.Data("Sales", 10000),
-				new PieChart.Data("Expenses", 1500)
-				);
-		pieChart.setData(piecChartData);
-		todaySalesLabel.setText("Rs. " + billsRepo.fetchTodaySales());
-		monthSalesLabel.setText("Rs. " + billsRepo.fetchMonthSales());
-		stockWorthLabel.setText("Rs. " + stockRepo.fetchStockWorth());
-		monthExpensesLabel.setText("Rs. " + expensesRepo.fetchMonthExpenses());
+		setAnalysisData();
+		setMonthlyExpensesGraph();
+		setSalesAndExpensesGraph();
 	}
 	
-	public void setSalesAndExpenses()
+	public void setAnalysisData()
+	{
+		todaySalesLabel.setText("Rs. " + billsRepo.fetchTodaySales());
+		monthSalesLabel.setText("Rs. " + monthlySales);
+		stockWorthLabel.setText("Rs. " + stockRepo.fetchStockWorth());
+		monthExpensesLabel.setText("Rs. " + monthlyExpenses);
+	}
+	
+	public void changeValueAndGetData()
+	{
+		if(comboBox.getValue().equals("Low Stock"))
+		{
+			dataGridHeading1.setText("Low");
+			dataGridHeading2.setText("Stock");
+			dataGridHeading2.setLayoutX(60);
+		}
+		else
+		{
+			dataGridHeading1.setText("Check");
+			dataGridHeading2.setText("Profit");
+			dataGridHeading2.setLayoutX(79);
+		}
+	}
+	
+	public void setMonthlyExpensesGraph()
+	{
+		series.setName("Monthly Sales");
+		for(Bills bill : billsRepo.fetchMonthSalesReport())
+		{
+			series.getData().add(new XYChart.Data<>(bill.getBillsDate(), bill.getAmountPaid()));
+		}
+	    barChart.getData().add(series);
+	}
+	
+	public void setSalesAndExpensesGraph()
+	{
+		ObservableList<PieChart.Data> piecChartData = FXCollections.observableArrayList(
+				new PieChart.Data("Sales", Double.parseDouble(monthlySales)),
+				new PieChart.Data("Expenses", Double.parseDouble(monthlyExpenses))
+				);
+		pieChart.setData(piecChartData);
+	}
+	
+	public void showSalesAndExpensesGraphData()
 	{
 		ObservableList<Data> data = pieChart.getData();
-		sales.setText(Double.toString(data.get(0).getPieValue()));
-		expenses.setText(Double.toString(data.get(1).getPieValue()));
+		sales.setText("Rs. " + NumberFormatter.format(data.get(0).getPieValue()));
+		expenses.setText("Rs. " + NumberFormatter.format(data.get(1).getPieValue()));
 	}
 }

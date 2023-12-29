@@ -34,4 +34,20 @@ public class Bills {
 		this.isCredit = isCredit;
 		this.isReturn = isReturn;
 	}
+	
+	public void setBillDateAndAmountPaid(String billDate, double amountPaid)
+	{
+		this.billDate = billDate;
+		this.amountPaid = amountPaid;
+	}
+	
+	public String getBillsDate()
+	{
+		return billDate;
+	}
+	
+	public double getAmountPaid()
+	{
+		return amountPaid;
+	}
 }

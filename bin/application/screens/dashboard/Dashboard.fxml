@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -144,6 +145,9 @@
                      <padding>
                         <Insets top="34.0" />
                      </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </FlowPane>
                   <TableView editable="true" layoutX="14.0" layoutY="243.0" prefHeight="322.0" prefWidth="955.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-background-radius: 10;" stylesheets="@dashboard.css">
                      <columns>
@@ -152,12 +156,12 @@
                         <TableColumn prefWidth="294.40008544921875" style="-fx-alignment: center; -fx-background-color: #0197f6; -fx-background-radius: 0px 10px 0px 0px; -fx-border-color: transparent; -fx-font-size: 15px;" styleClass="." text="Expiry Date" />
                      </columns>
                   </TableView>
-                  <Label layoutX="14.0" layoutY="195.0" text="Near">
+                  <Label fx:id="dataGridHeading1" layoutX="14.0" layoutY="195.0" text="Low">
                      <font>
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="67.0" layoutY="195.0" text="Expiry" textFill="#448fa3">
+                  <Label fx:id="dataGridHeading2" layoutX="60.0" layoutY="195.0" text="Stock" textFill="#448fa3">
                      <font>
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
@@ -190,8 +194,11 @@
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
                   </Label>
-                  <PieChart fx:id="pieChart" layoutX="545.0" layoutY="642.0" onMouseClicked="#setSalesAndExpenses" prefHeight="357.0" prefWidth="423.0" />
-                  <ComboBox fx:id="comboBox" layoutX="750.0" layoutY="191.0" prefHeight="35.0" prefWidth="210.0" promptText="Near Expiry" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="dashboard-combobox" stylesheets="@dashboard.css" visibleRowCount="4" />
+                  <PieChart fx:id="pieChart" layoutX="545.0" layoutY="642.0" onMouseClicked="#showSalesAndExpensesGraphData" prefHeight="357.0" prefWidth="423.0" />
+                  <ComboBox fx:id="comboBox" layoutX="750.0" layoutY="191.0" onAction="#changeValueAndGetData" prefHeight="35.0" prefWidth="210.0" promptText="Low Stock" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="dashboard-combobox" stylesheets="@dashboard.css" visibleRowCount="4">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></ComboBox>
                   <Label layoutX="768.0" layoutY="601.0" text="Expenses">
                      <font>
                         <Font name="Calibri Bold" size="24.0" />
