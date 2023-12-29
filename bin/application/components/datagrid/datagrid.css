@@ -51,21 +51,44 @@
 }
 
 .columnHeader {
-	-fx-background-color: #D7263d;
 	-fx-pref-height: 35px;
+	-fx-alignment: CENTER;
+}
+
+.dataGrid .column-header {
+	-fx-background-color: #D7263d;
+	-fx-font-weight: bold;
+}
+
+.dataGrid .column-header .label {
+	-fx-font-weight: bold;
 }
 
 .columnHeader .label {
 	-fx-text-fill: #fff;
 	-fx-font-size: 13px;
+	-fx-background-color: #D7263d;
+	-fx-pref-height: 35px;
 }
 
 .startCorner {
 	-fx-background-radius:  10 0 0 0;
+	-fx-alignment: CENTER;
+}
+
+.startCorner .label {
+	-fx-text-fill: #fff;
+	-fx-font-size: 13px;
+}
+
+.endCorner .label {
+	-fx-text-fill: #fff;
 }
 
 .endCorner {
 	-fx-background-radius:  0 10 0 0;
+	-fx-font-size: 13px;
+	-fx-font-weight: bold;
 }
 
 .categoryComboBox .list-cell {

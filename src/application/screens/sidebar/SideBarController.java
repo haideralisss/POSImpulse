@@ -144,8 +144,8 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Admin Panel");
 		List<Attribute> list = Arrays.asList(
-				new Attribute("Username", "text", "username", "String", true, false, true),
-				new Attribute("Full Name", "text", "fullname", "String", true, false, true),
+				new Attribute("Username", "text", "userName", "String", true, false, true),
+				new Attribute("Full Name", "text", "fullName", "String", true, false, true),
 				new Attribute("Phone", "text", "phone", "String", true, false, true),
 				new Attribute("Password", "password", "password", "String", false, true, true),
 				new Attribute("Admin", "checkbox", "isAdmin", "Boolean", false, false, true)

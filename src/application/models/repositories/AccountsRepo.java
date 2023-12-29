@@ -25,15 +25,18 @@ public class AccountsRepo {
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts");
 			ResultSet resultSet = statement.executeQuery();
+			int count = 1;
 			while(resultSet.next())
 			{
 				accountsList.add(new Accounts(
+						count,
 						resultSet.getString("username"),
 						resultSet.getString("fullname"),
 						resultSet.getString("phone"),
 						resultSet.getString("password"),
 						resultSet.getBoolean("isAdmin")
-						));
+					));
+				count++;
 			}
 		}
 		catch(SQLException e)

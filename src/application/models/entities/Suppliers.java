@@ -5,22 +5,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class Accounts {
+public class Suppliers {
 	
-	private String userName, fullName, phone, password;
-	private boolean isAdmin;
+	private String name, contact, address;
 	
 	private int number;
 	private HBox operations;
 	
-	public Accounts(int number, String userName, String fullName, String phone, String password, boolean isAdmin)
+	public Suppliers(int number, String name, String contact, String address)
 	{
 		this.number = number;
-		this.userName = userName;
-		this.fullName = fullName;
-		this.phone = phone;
-		this.password = password;
-		this.isAdmin = isAdmin;
+		this.name = name;
+		this.contact = contact;
+		this.address = address;
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -37,32 +34,21 @@ public class Accounts {
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
 		operations.setAlignment(Pos.CENTER);
-		
 	}
 	
-	public String getUserName()
+	public String getName()
 	{
-		return userName;
+		return name;
 	}
 	
-	public String getFullName()
+	public String getContact()
 	{
-		return fullName;
+		return contact;
 	}
 	
-	public String getPhone()
+	public String getAddress()
 	{
-		return phone;
-	}
-	
-	public String getPassword()
-	{
-		return password;
-	}
-	
-	public boolean getIsAdmin()
-	{
-		return isAdmin;
+		return address;
 	}
 	
 	public int getNumber()

@@ -5,8 +5,12 @@ import java.util.List;
 import com.jfoenix.controls.JFXButton;
 
 import application.components.inputform.InputFormController;
+import application.models.entities.Accounts;
+import application.models.repositories.AccountsRepo;
 import application.screens.billing.BillingController;
 import application.screens.purchases.PurchasesController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -14,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -42,16 +47,15 @@ public class DataGridController
 	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
 		this.anchorPane = anchorPane;
-		
 		this.title.setText(title);
-		SetUpButtons();
-		
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
-//		titleIcon.setFitWidth(30);
-//		titleIcon.setFitHeight(30);
+		
+		SetUpButtons();
+		SetUpTable();
+		dataGridTable.setSelectionModel(null);
 		
 		TableColumn<String, String> firstCol = new TableColumn<>("#");
-        firstCol.getStyleClass().add("columnHeader");
+		firstCol.setCellValueFactory(new PropertyValueFactory<>("Number"));
         firstCol.getStyleClass().add("startCorner");
         dataGridTable.getColumns().add(firstCol);
 		
@@ -63,6 +67,7 @@ public class DataGridController
 	            if(!attribute.isHide())
 	            {
 	            	TableColumn<String, String> column = new TableColumn<>(attribute.getAttribute());
+	            	column.setCellValueFactory(new PropertyValueFactory<>(attribute.getDbAttribute()));
 		            column.getStyleClass().add("columnHeader");
 		            dataGridTable.getColumns().add(column);
 		            
@@ -76,7 +81,7 @@ public class DataGridController
 		}
 		
 		TableColumn<String, String> endCol = new TableColumn<>("Operations");
-        endCol.getStyleClass().add("columnHeader");
+		endCol.setCellValueFactory(new PropertyValueFactory<>("Operations"));
         endCol.getStyleClass().add("endCorner");
         dataGridTable.getColumns().add(endCol);
 		
@@ -117,6 +122,14 @@ public class DataGridController
 			addBtn.setOnAction(event -> OpenInputForm());
 		}
 		buttonsFlowPane.getChildren().add(addBtn);
+	}
+	
+	public void SetUpTable()
+	{	
+		AccountsRepo accountsRepo = new AccountsRepo();
+		
+        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
+        dataGridTable.setItems(accountsList);
 	}
 	
 	public void OpenInputForm()
