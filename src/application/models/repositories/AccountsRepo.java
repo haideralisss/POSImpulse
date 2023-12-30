@@ -4,24 +4,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Accounts;
 import application.utils.backendUtils.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class AccountsRepo {
 	
-	Connection conn;
+	private Connection connection;
 	
 	public AccountsRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public ArrayList<Accounts> getAllAccounts()
 	{
 		ArrayList<Accounts> accountsList = new ArrayList<Accounts>();
-		try(Connection connection = DatabaseConnection.connect())
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts");
 			ResultSet resultSet = statement.executeQuery();
@@ -42,15 +45,57 @@ public class AccountsRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return accountsList;
+	}
+	
+	public Accounts getAccount(int id)
+	{
+		Accounts account = null;
+		try
+	    {
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next())
+			{
+				account = new Accounts(
+						0,
+						resultSet.getString("username"),
+						resultSet.getString("fullname"),
+						resultSet.getString("phone"),
+						resultSet.getString("password"),
+						resultSet.getBoolean("isAdmin")
+					);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return account;
 	}
 	
 	public ArrayList<Accounts> addAccount(Accounts account)
 	{
-		try (Connection connection = DatabaseConnection.connect())
-		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO accounts VALUES (?, ?, ?, ?, ?)");
+		try
+	    {
+			PreparedStatement statement = connection.prepareStatement(
+		            "INSERT INTO accounts (userName, fullName, phone, password, isAdmin) VALUES (?, ?, ?, ?, ?)",
+		            Statement.RETURN_GENERATED_KEYS
+		        );
 			statement.setString(1, account.getUserName());
 			statement.setString(2, account.getFullName());
 			statement.setString(3, account.getPhone());
@@ -60,14 +105,24 @@ public class AccountsRepo {
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
-		}
+			System.out.println(account.getPhone() + account.getIsAdmin());
+			Alert errorAlert = new Alert(AlertType.ERROR);
+			errorAlert.setTitle("Error");
+			errorAlert.setContentText(e.getMessage());
+			errorAlert.showAndWait();
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllAccounts();
 	}
 	
 	public ArrayList<Accounts> updateAccount(int id, Accounts updatedAccount) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE accounts SET fullname = ?, phone = ?, password = ?, isAdmin = ? WHERE id = ?");
@@ -81,13 +136,19 @@ public class AccountsRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllAccounts();
 	}
 
 	public ArrayList<Accounts> deleteAccount(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
 	        statement.setInt(1, id);
@@ -97,6 +158,12 @@ public class AccountsRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllAccounts();
 	}
@@ -104,10 +171,10 @@ public class AccountsRepo {
 	public boolean verifyUser(String username, String password) 
 	{
 	    boolean checkFlag = true;
-	    try 
+	    try
 	    {
 	        String query = "SELECT username, password FROM accounts WHERE username=? AND password=?";
-	        PreparedStatement statement = conn.prepareStatement(query);
+	        PreparedStatement statement = connection.prepareStatement(query);
 	        
 	        statement.setString(1, username);
 	        statement.setString(2, password);
@@ -122,6 +189,12 @@ public class AccountsRepo {
 	    catch (SQLException e) 
 	    {
 	        e.printStackTrace();
+	    } finally {
+	        try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return checkFlag;
 	}

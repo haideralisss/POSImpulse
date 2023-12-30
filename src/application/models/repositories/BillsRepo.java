@@ -7,11 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 import application.utils.backendUtils.DatabaseConnection;
-import application.utils.backendUtils.*;
-
 import application.models.entities.Bills;
+import application.models.entities.Products;
+import application.utils.backendUtils.*;
 
 public class BillsRepo 
 {
@@ -42,7 +43,7 @@ public class BillsRepo
 	                }
 	            }
 	        }
-	    } 
+	    }
 	    catch (SQLException e) 
 	    {
 	        e.printStackTrace();
@@ -117,6 +118,189 @@ public class BillsRepo
 	    }
         return monthSales;
     }
+	
+	public ArrayList<Bills> getAllBills()
+	{
+		ArrayList<Bills> billsList = new ArrayList<Bills>();
+		
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills");
+			ResultSet resultSet = statement.executeQuery();
+			int count = 1;
+			while(resultSet.next())
+			{
+				billsList.add(new Bills(
+						count,
+						resultSet.getString("customerName"),
+						resultSet.getInt("invoiceNum"),
+						resultSet.getObject("billDate").toString(),
+						resultSet.getDouble("grossTotal"),
+						resultSet.getString("discount"),
+						resultSet.getString("salesTax"),
+						resultSet.getDouble("netTotal"),
+						resultSet.getDouble("amountPaid"),
+						resultSet.getString("shift"),
+						resultSet.getBoolean("isCredit"),
+						resultSet.getBoolean("isReturn"),
+						resultSet.getDouble("profit")
+					));
+				count++;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return billsList;
+	}
+	
+	public Bills getBill(int id) {
+		Bills bill = null;
+		
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills WHERE id = ?");
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+			int count = 1;
+			while(resultSet.next())
+			{
+				bill = new Bills(
+						count,
+						resultSet.getString("customerName"),
+						resultSet.getInt("invoiceNum"),
+						resultSet.getObject("billDate").toString(),
+						resultSet.getDouble("grossTotal"),
+						resultSet.getString("discount"),
+						resultSet.getString("salesTax"),
+						resultSet.getDouble("netTotal"),
+						resultSet.getDouble("amountPaid"),
+						resultSet.getString("shift"),
+						resultSet.getBoolean("isCredit"),
+						resultSet.getBoolean("isReturn"),
+						resultSet.getDouble("profit")
+					);
+				count++;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return bill;
+	}
+	
+	public ArrayList<Bills> addBill(Bills bill)
+	{
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement.setString(1, bill.getCustomerName());
+			statement.setInt(2, bill.getInvoiceNum());
+			statement.setObject(3, bill.getBillDate());
+			statement.setDouble(4, bill.getGrossTotal());
+			statement.setString(5, bill.getDiscount());
+			statement.setString(6, bill.getSalesTax());
+			statement.setDouble(7, bill.getNetTotal());
+			statement.setDouble(8, bill.getAmountPaid());
+			statement.setString(9, bill.getShift());
+			statement.setBoolean(10, bill.getIsCredit());
+			statement.setBoolean(11, bill.getIsReturn());
+			statement.setDouble(12, bill.getProfit());
+			statement.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return getAllBills();
+	}
+	
+	public ArrayList<Bills> updateBill(int id, Bills updatedBill) 
+	{
+		try
+		{
+	        PreparedStatement statement = connection.prepareStatement(
+	                "UPDATE bills SET customerName = ?, invoiceNum = ?, billDate = ?, grossTotal = ?, discount = ?, salesTax = ?, netTotal = ?, amountPaid = ?, shift = ?, isCredit = ?, isReturn = ?, profit = ? WHERE id = ?");
+	        statement.setString(1, updatedBill.getCustomerName());
+			statement.setInt(2, updatedBill.getInvoiceNum());
+			statement.setObject(3, updatedBill.getBillDate());
+			statement.setDouble(4, updatedBill.getGrossTotal());
+			statement.setString(5, updatedBill.getDiscount());
+			statement.setString(6, updatedBill.getSalesTax());
+			statement.setDouble(7, updatedBill.getNetTotal());
+			statement.setDouble(8, updatedBill.getAmountPaid());
+			statement.setString(9, updatedBill.getShift());
+			statement.setBoolean(10, updatedBill.getIsCredit());
+			statement.setBoolean(11, updatedBill.getIsReturn());
+			statement.setDouble(12, updatedBill.getProfit());
+			statement.setInt(13, id);
+	        statement.executeUpdate();
+	    } 
+	    catch (SQLException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    finally 
+	    {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return getAllBills();
+	}
+
+	public ArrayList<Bills> deleteBills(int id) 
+	{
+		try
+		{
+	    	
+	        PreparedStatement statement = connection.prepareStatement("DELETE FROM bills WHERE id = ?");
+	        statement.setInt(1, id);
+
+	        statement.executeUpdate();
+	    }
+	    catch (SQLException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    finally 
+	    {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return getAllBills();
+	}
 	
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{

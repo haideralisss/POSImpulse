@@ -11,35 +11,14 @@ public class BillProducts {
 	private double price, netTotal;
 	private String discount;
 	
-	private int number;
-	private HBox operations;
-	
-	public BillProducts(int number, int billId, int productId, int quantity, double price, String discount, double netTotal)
+	public BillProducts(int billId, int productId, int quantity, double price, String discount, double netTotal)
 	{
-		this.number = number;
 		this.billId = billId;
 		this.productId = productId;
 		this.quantity = quantity;
 		this.price = price;
 		this.discount = discount;
 		this.netTotal = netTotal;
-		
-		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
-		delButton.setImage(delIcon);
-		delButton.setFitWidth(15);
-		delButton.setFitHeight(15);
-		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
-		editButton.setImage(editIcon);
-		editButton.setFitWidth(15);
-		editButton.setFitHeight(15);
-		
-		operations = new HBox();
-		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
 	}
 
 	public int getBillId() {
@@ -65,14 +44,4 @@ public class BillProducts {
     public double getNetTotal() {
         return netTotal;
     }
-	
-	public int getNumber()
-	{
-		return number;
-	}
-	
-	public HBox getOperations()
-	{
-		return operations;
-	}
 }

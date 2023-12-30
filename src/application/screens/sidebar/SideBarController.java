@@ -38,15 +38,15 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Billing");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "text", "date", "Date", true, false, true),
+                new Attribute("Date", "text", "billDate", "Date", true, false, true),
                 new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
-                new Attribute("Customer Name", "text", "customerName", "String", true, false, true),
-                new Attribute("Gross Total", "text", "grossTotal", "Number", false, false, true),
+                new Attribute("Customer Name", "text", "customerName", "String", true, true, true),
+                new Attribute("Gross Total", "text", "grossTotal", "Number", false, true, true),
                 new Attribute("Discount", "text", "discount", "Number", false, true, true),
                 new Attribute("Sales Tax", "text", "salesTax", "Number", false, true, true),
                 new Attribute("Net Total", "text", "netTotal", "Number", false, false, false),
                 new Attribute("Amount Paid", "text", "amountPaid", "Number", false, false, true),
-                new Attribute("Credit", "checkbox", "isCredit", "Boolean", false, false, true),
+                new Attribute("Credit", "checkbox", "isCredit", "Boolean", false, true, true),
                 new Attribute("Return", "checkbox", "isReturn", "Boolean", false, false, true),
                 new Attribute("Shift", "text", "shift", "String", false, false, true)
         );
@@ -57,16 +57,16 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Purchases");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "date", "date", "Date", true, false, true),
+                new Attribute("Date", "date", "purchaseDate", "Date", true, false, true),
                 new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
                 new Attribute("Supplier Name", "text", "supplierName", "Number", true, false, true),
-                new Attribute("Gross Total", "text", "grossTotal", "Number", false, false, true),
+                new Attribute("Gross Total", "text", "grossTotal", "Number", false, true, true),
                 new Attribute("Discount", "text", "discount", "Number", false, true, true),
                 new Attribute("Sales Taxes", "text", "salesTax", "Number", false, true, true),
                 new Attribute("Other Charges", "text", "otherCharges", "Number", false, true, true),
                 new Attribute("Net Total", "text", "netTotal", "Number", false, false, false),
                 new Attribute("Amount Paid", "text", "amountPaid", "Number", false, false, true),
-                new Attribute("Loose", "checkbox", "isLoose", "Boolean", false, false, true),
+                new Attribute("Loose", "checkbox", "isLoose", "Boolean", false, true, true),
                 new Attribute("Return", "checkbox", "isReturn", "Boolean", false, false, true),
                 new Attribute("Shift", "text", "shift", "String", false, false, true)
         );
@@ -116,8 +116,7 @@ public class SideBarController implements Initializable {
                 new Attribute("Product Name", "text", "productId", "String", true, false, true, true, "productId", "products"),
                 new Attribute("Quantity", "text", "totalQuantity", "Number", false, false, true),
                 new Attribute("Unit Cost", "text", "unitCost", "Number", false, false, true),
-                new Attribute("Total Price", "text", "totalPrice", "Number", false, false, false),
-                new Attribute("Expiry Date", "date", "expiryDate", "Date", true, false, true)
+                new Attribute("Total Price", "text", "totalPrice", "Number", false, false, false)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -126,7 +125,7 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Expenses");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "date", "date", "Date", true, false, true),
+                new Attribute("Date", "date", "expenseDate", "Date", true, false, true),
                 new Attribute("Name", "text", "name", "String", true, false, true),
                 new Attribute("Description", "text", "description", "String", false, false, true),
                 new Attribute("Amount", "text", "amount", "Number", false, false, true)

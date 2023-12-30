@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import application.models.entities.Expenses;
+import application.models.entities.Products;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
@@ -51,7 +54,6 @@ public class ExpensesRepo
         {
             e.printStackTrace();
         }
-
 	    finally
 	    {
 	    	try 
@@ -65,4 +67,135 @@ public class ExpensesRepo
 	    }
         return monthExpenses;
     }
+	
+	public ArrayList<Expenses> getAllExpenses()
+	{
+		ArrayList<Expenses> expensesList = new ArrayList<Expenses>();
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses");
+			ResultSet resultSet = statement.executeQuery();
+			int count = 1;
+			while(resultSet.next())
+			{
+				expensesList.add(new Expenses(
+						count,
+						resultSet.getObject("expenseDate").toString(),
+						resultSet.getString("name"),
+						resultSet.getString("description"),
+						resultSet.getDouble("amount")
+					));
+				count++;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return expensesList;
+	}
+	
+	public Expenses getExpense(int id)
+	{
+		Expenses expense = null;
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses WHERE id = ?");
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next())
+			{
+				expense = new Expenses(
+						0,
+						resultSet.getObject("expenseDate").toString(),
+						resultSet.getString("name"),
+						resultSet.getString("description"),
+						resultSet.getDouble("amount")
+					);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return expense;
+	}
+	
+	public ArrayList<Expenses> addExpense(Expenses expense)
+	{
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
+			statement.setObject(1, expense.getExpenseDate());
+			statement.setString(2, expense.getName());
+			statement.setString(3, expense.getDescription());
+			statement.setDouble(4, expense.getAmount());
+			statement.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return getAllExpenses();
+	}
+	
+	public ArrayList<Expenses> updateExpense(int id, Expenses updatedExpense) 
+	{
+		try
+		{
+	        PreparedStatement statement = connection.prepareStatement(
+	                "UPDATE expenses SET expenseDate = ?, name = ?, description = ?, amount = ? WHERE id = ?");
+	        statement.setObject(1, updatedExpense.getExpenseDate());
+			statement.setString(2, updatedExpense.getName());
+			statement.setString(3, updatedExpense.getDescription());
+			statement.setDouble(4, updatedExpense.getAmount());
+	        statement.setInt(5, id);
+	        statement.executeUpdate();
+	    } 
+	    catch (SQLException e)
+	    {
+	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return getAllExpenses();
+	}
+
+	public ArrayList<Expenses> deleteExpense(int id) 
+	{
+		try
+		{
+	        PreparedStatement statement = connection.prepareStatement("DELETE FROM expenses WHERE id = ?");
+	        statement.setInt(1, id);
+
+	        statement.executeUpdate();
+	    }
+	    catch (SQLException e)
+	    {
+	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return getAllExpenses();
+	}
 }

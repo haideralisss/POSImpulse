@@ -18,6 +18,7 @@ public class Companies {
 		this.name = name;
 		this.contact = contact;
 		this.address = address;
+		
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -60,5 +61,4 @@ public class Companies {
 	{
 		return operations;
 	}
-
 }
