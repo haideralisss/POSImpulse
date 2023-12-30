@@ -94,3 +94,11 @@
 .categoryComboBox .list-cell {
     -fx-cursor: hand;
 }
+
+.dataGrid-date-picker {
+	-fx-background-color: transparent;
+}
+
+.dataGrid-date-picker .text-field {
+	-fx-opacity: 0;
+}

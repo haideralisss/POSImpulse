@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import application.models.entities.Bills;
+import application.models.entities.Companies;
 import application.models.entities.Purchases;
 import application.utils.backendUtils.DatabaseConnection;
+import application.utils.backendUtils.DateFormatter;
 
 public class PurchasesRepo {
 	
@@ -191,4 +195,124 @@ private Connection connection;
 	    }
 	    return getAllPurchases();
 	}
+	
+	public ArrayList<Purchases> fetchPurchasesByInvoiceNumber(String invoiceNumber) 
+	{
+        ArrayList<Purchases> searchData = new ArrayList<>();
+        Connection conn = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+        	String query = "SELECT p.id, p.purchaseDate, p.invoiceNum, p.grossTotal, p.discount, p.salesTax, " +
+                    "p.otherCharges, p.netTotal, p.amountPaid, p.isReturn, p.isLoose, p.shift, " +
+                    "s.name AS supplierName " +
+                    "FROM purchases p " +
+                    "JOIN suppliers s ON p.supplierId = s.id " +
+                    "WHERE p.invoiceNum LIKE ? COLLATE NOCASE";
+
+            try (PreparedStatement statement = conn.prepareStatement(query)) 
+            {
+            	statement.setString(1, "%" + invoiceNumber + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next())
+                    {
+                    	Purchases purchase = new Purchases(
+                    	        count,
+                    	        1,
+                    	        resultSet.getString("supplierName"),
+                    	        resultSet.getString("purchaseDate"),
+                    	        resultSet.getString("invoiceNum"),
+                    	        resultSet.getDouble("grossTotal"),
+                    	        resultSet.getString("salesTax"),
+                    	        resultSet.getString("discount"),
+                    	        resultSet.getDouble("otherCharges"),
+                    	        resultSet.getDouble("netTotal"),
+                    	        resultSet.getBoolean("isReturn"),
+                    	        resultSet.getBoolean("isLoose"),
+                    	        resultSet.getString("shift"),
+                    	        resultSet.getDouble("amountPaid")
+                    	);
+                        searchData.add(purchase);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
+    }
+	
+	public ArrayList<Purchases> fetchPurchaseByDate(LocalDate date) 
+	{
+		ArrayList<Purchases> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int count = 1;
+        try
+        {
+        	String query = "SELECT p.id, p.purchaseDate, p.invoiceNum, p.grossTotal, p.discount, p.salesTax, " +
+                    "p.otherCharges, p.netTotal, p.isReturn, p.isLoose, p.shift, p.amountPaid, " +
+                    "s.name AS supplierName " +
+                    "FROM purchases p " +
+                    "JOIN suppliers s ON p.supplierId = s.id " +
+                    "WHERE p.purchaseDate= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, DateFormatter.formatDate(date));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) 
+            {
+            	Purchases purchase = new Purchases(
+            			count,
+            	        1,
+            	        resultSet.getString("supplierName"),
+            	        resultSet.getString("purchaseDate"),
+            	        resultSet.getString("invoiceNum"),
+            	        resultSet.getDouble("grossTotal"),
+            	        resultSet.getString("salesTax"),
+            	        resultSet.getString("discount"),
+            	        resultSet.getDouble("otherCharges"),
+            	        resultSet.getDouble("netTotal"),
+            	        resultSet.getBoolean("isReturn"),
+            	        resultSet.getBoolean("isLoose"),
+            	        resultSet.getString("shift"),
+            	        resultSet.getDouble("amountPaid")
+                );
+            	searchData.add(purchase);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				connection.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
+    }
 }

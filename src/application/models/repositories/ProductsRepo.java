@@ -8,22 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.models.entities.Products;
+import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
 
-public class ProductsRepo {
-	
-	private Connection connection;
-	
-	public ProductsRepo()
-	{
-		connection = DatabaseConnection.connect();
-	}
+public class ProductsRepo 
+{
 	
 	public ArrayList<Products> getAllProducts()
 	{
 		ArrayList<Products> productsList = new ArrayList<Products>();
+		Connection connection = DatabaseConnection.connect();
 	    try
 	    {
 			String query = "SELECT p.*, c.name AS companyName FROM products p " +
@@ -58,8 +54,10 @@ public class ProductsRepo {
 		return productsList;
 	}
 	
-	public Products getProduct(int id) {
+	public Products getProduct(int id)
+	{
 	    Products product = null;
+		Connection connection = DatabaseConnection.connect();
 	    try
 	    {
 	        String query = "SELECT p.*, c.name AS companyName FROM products p " +
@@ -68,7 +66,8 @@ public class ProductsRepo {
 	        PreparedStatement statement = connection.prepareStatement(query);
 	        statement.setInt(1, id);
 	        ResultSet resultSet = statement.executeQuery();
-	        if (resultSet.next()) {
+	        if (resultSet.next()) 
+	        {
 	            product = new Products(
 	                    resultSet.getInt("id"),
 	                    resultSet.getString("name"),
@@ -93,7 +92,7 @@ public class ProductsRepo {
 	
 	public ArrayList<Products> addProduct(Products product)
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?, ?, ?)");
@@ -119,7 +118,7 @@ public class ProductsRepo {
 	
 	public ArrayList<Products> updateProduct(int id, Products updatedProduct) 
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
@@ -147,7 +146,8 @@ public class ProductsRepo {
 
 	public ArrayList<Products> deleteProduct(int id) 
 	{
-		Connection connection = null;
+
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
@@ -167,4 +167,58 @@ public class ProductsRepo {
 	    }
 	    return getAllProducts();
 	}
+	
+	public ArrayList<Products> fetchByProductName(String productName) 
+	{
+        ArrayList<Products> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+        	String query = "SELECT p.id, p.name, p.packSize, p.purchasePrice, p.retailPrice, " +
+                    "c.name AS companyName " +
+                    "FROM products p " +
+                    "JOIN companies c ON p.companyId = c.id " +
+                    "WHERE p.name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + productName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Products product = new Products(
+                        		count,
+                                resultSet.getString("name"),
+                                resultSet.getInt("packSize"),
+                                resultSet.getDouble("purchasePrice"),
+                                resultSet.getDouble("retailPrice"),
+                                1,
+                                resultSet.getString("companyName")
+                        );
+                        searchData.add(product);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }

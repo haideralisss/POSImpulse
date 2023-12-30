@@ -122,7 +122,7 @@ public class BillsRepo
 	public ArrayList<Bills> getAllBills()
 	{
 		ArrayList<Bills> billsList = new ArrayList<Bills>();
-		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills");
@@ -163,9 +163,10 @@ public class BillsRepo
 		return billsList;
 	}
 	
-	public Bills getBill(int id) {
+	public Bills getBill(int id) 
+	{
 		Bills bill = null;
-		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills WHERE id = ?");
@@ -209,6 +210,7 @@ public class BillsRepo
 	
 	public ArrayList<Bills> addBill(Bills bill)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -243,6 +245,7 @@ public class BillsRepo
 	
 	public ArrayList<Bills> updateBill(int id, Bills updatedBill) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement(
@@ -279,6 +282,7 @@ public class BillsRepo
 
 	public ArrayList<Bills> deleteBills(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	    	
@@ -304,6 +308,7 @@ public class BillsRepo
 	
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{
+		Connection connection = DatabaseConnection.connect();
         ArrayList<Bills> monthSalesList = new ArrayList<>();
         Connection conn = DatabaseConnection.connect();
         try
@@ -420,5 +425,113 @@ public class BillsRepo
 			}
 	    }
         return dailyProfit;
+    }
+	
+	public ArrayList<Bills> fetchBillByInvoiceNumber(int invoiceNumber) 
+	{
+        ArrayList<Bills> searchData = new ArrayList<>();
+        Connection conn = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM bills WHERE invoiceNum = ? LIMIT 10";
+
+            try (PreparedStatement statement = conn.prepareStatement(query)) 
+            {
+                statement.setInt(1, invoiceNumber);
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next())
+                    {
+                        Bills bill = new Bills(
+                        		count,
+                        		resultSet.getString("customerName"),
+                        		resultSet.getInt("invoiceNum"),
+                        		resultSet.getString("billDate"),
+                        		resultSet.getDouble("grossTotal"),
+                        		resultSet.getString("discount"),
+                        		resultSet.getString("salesTax"),
+                        		resultSet.getDouble("netTotal"),
+                        		resultSet.getDouble("amountPaid"),
+                        		resultSet.getString("shift"),
+                        		resultSet.getBoolean("isCredit"),
+                        		resultSet.getBoolean("isReturn"),
+                        		resultSet.getDouble("profit")
+                        );
+                        searchData.add(bill);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
+    }
+	
+	public ArrayList<Bills> fetchBillByDate(LocalDate date) 
+	{
+		ArrayList<Bills> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int count = 1;
+        try
+        {
+            String query = "SELECT * FROM bills WHERE billDate= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, DateFormatter.formatDate(date));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) 
+            {
+            	Bills bill = new Bills(
+                		count,
+                		resultSet.getString("customerName"),
+                		resultSet.getInt("invoiceNum"),
+                		resultSet.getString("billDate"),
+                		resultSet.getDouble("grossTotal"),
+                		resultSet.getString("discount"),
+                		resultSet.getString("salesTax"),
+                		resultSet.getDouble("netTotal"),
+                		resultSet.getDouble("amountPaid"),
+                		resultSet.getString("shift"),
+                		resultSet.getBoolean("isCredit"),
+                		resultSet.getBoolean("isReturn"),
+                		resultSet.getDouble("profit")
+                );
+            	searchData.add(bill);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				connection.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
     }
 }

@@ -5,10 +5,13 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import application.models.entities.Bills;
 import application.models.entities.Expenses;
 import application.models.entities.Products;
+import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
@@ -71,6 +74,7 @@ public class ExpensesRepo
 	public ArrayList<Expenses> getAllExpenses()
 	{
 		ArrayList<Expenses> expensesList = new ArrayList<Expenses>();
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses");
@@ -104,6 +108,7 @@ public class ExpensesRepo
 	public Expenses getExpense(int id)
 	{
 		Expenses expense = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses WHERE id = ?");
@@ -135,6 +140,7 @@ public class ExpensesRepo
 	
 	public ArrayList<Expenses> addExpense(Expenses expense)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
@@ -153,6 +159,7 @@ public class ExpensesRepo
 	
 	public ArrayList<Expenses> updateExpense(int id, Expenses updatedExpense) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement(
@@ -179,6 +186,7 @@ public class ExpensesRepo
 
 	public ArrayList<Expenses> deleteExpense(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM expenses WHERE id = ?");
@@ -198,4 +206,96 @@ public class ExpensesRepo
 	    }
 	    return getAllExpenses();
 	}
+	
+	public ArrayList<Expenses> fetchByExpensesName(String expenseName) 
+	{
+        ArrayList<Expenses> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM expenses WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + expenseName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Expenses expense = new Expenses(
+                        		count,
+                                resultSet.getString("expenseDate"),
+                                resultSet.getString("name"),
+                                resultSet.getString("description"),
+                                resultSet.getDouble("amount")
+                        );
+                        searchData.add(expense);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
+	
+	public ArrayList<Expenses> fetchExpensesByDate(LocalDate date) 
+	{
+		ArrayList<Expenses> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int count = 1;
+        try
+        {
+            String query = "SELECT * FROM expenses WHERE expenseDate= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, DateFormatter.formatDate(date));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) 
+            {
+            	Expenses expense = new Expenses(
+                		count,
+                        resultSet.getString("expenseDate"),
+                        resultSet.getString("name"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("amount")
+                );
+            	searchData.add(expense);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				connection.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
+    }
 }

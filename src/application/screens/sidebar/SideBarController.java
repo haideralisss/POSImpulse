@@ -16,8 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class SideBarController implements Initializable {
-	
+public class SideBarController implements Initializable 
+{
 	@SuppressWarnings("exports")
 	@FXML
 	public AnchorPane anchorPane, nextAnchorPane;
@@ -59,7 +59,7 @@ public class SideBarController implements Initializable {
 		List<Attribute> list = Arrays.asList(
                 new Attribute("Date", "date", "purchaseDate", "Date", true, false, true),
                 new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
-                new Attribute("Supplier Name", "text", "supplierName", "Number", true, false, true),
+                new Attribute("Supplier Name", "text", "supplierName", "Number", false, false, true),
                 new Attribute("Gross Total", "text", "grossTotal", "Number", false, true, true),
                 new Attribute("Discount", "text", "discount", "Number", false, true, true),
                 new Attribute("Sales Taxes", "text", "salesTax", "Number", false, true, true),
@@ -79,8 +79,8 @@ public class SideBarController implements Initializable {
 		topBarLabel.setText("Companies");
 		List<Attribute> list = Arrays.asList(
                 new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Contact", "text", "contact", "String", true, false, true),
-                new Attribute("Address", "text", "address", "String", true, false, true)
+                new Attribute("Contact", "text", "contact", "String", false, false, true),
+                new Attribute("Address", "text", "address", "String", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -90,8 +90,8 @@ public class SideBarController implements Initializable {
 		topBarLabel.setText("Suppliers");
 		List<Attribute> list = Arrays.asList(
                 new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Contact", "text", "contact", "String", true, false, true),
-                new Attribute("Address", "text", "address", "String", true, false, true)
+                new Attribute("Contact", "text", "contact", "String", false, false, true),
+                new Attribute("Address", "text", "address", "String", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -104,7 +104,7 @@ public class SideBarController implements Initializable {
                 new Attribute("Pack Size", "text", "packSize", "Number", false, false, true),
                 new Attribute("Purchase Price", "text", "purchasePrice", "Number", false, false, true),
                 new Attribute("Retail Price", "text", "retailPrice", "Number", false, false, true),
-                new Attribute("Company Name", "text", "companyId", "Number", true, false, true, true, "companyId", "companies")
+                new Attribute("Company Name", "text", "companyName", "Number", false, false, true, true, "companyName", "companies")
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -113,10 +113,10 @@ public class SideBarController implements Initializable {
 	{
 		topBarLabel.setText("Stock");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Product Name", "text", "productId", "String", true, false, true, true, "productId", "products"),
+                new Attribute("Product Name", "text", "productName", "String", true, false, true, true, "productId", "products"),
                 new Attribute("Quantity", "text", "totalQuantity", "Number", false, false, true),
                 new Attribute("Unit Cost", "text", "unitCost", "Number", false, false, true),
-                new Attribute("Total Price", "text", "totalPrice", "Number", false, false, false)
+                new Attribute("Total Quantity", "text", "totalQuantity", "Number", false, false, false)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -167,20 +167,20 @@ public class SideBarController implements Initializable {
 	{
 		try
 		{
-		anchorPane.getChildren().clear();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/" + path));
-		nextAnchorPane = (AnchorPane) loader.load();
-		anchorPane.getChildren().add(nextAnchorPane);
-		AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
-	    nextAnchorPane.toFront();
-		
-		DataGridController dgController;
-		
-		if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
-		{
-			dgController = loader.getController();
-			dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
-		}
+			anchorPane.getChildren().clear();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/" + path));
+			nextAnchorPane = (AnchorPane) loader.load();
+			anchorPane.getChildren().add(nextAnchorPane);
+			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+		    nextAnchorPane.toFront();
+			
+			DataGridController dgController;
+			
+			if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
+			{
+				dgController = loader.getController();
+				dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
+			}
 		}
 		catch(IOException e)
 		{

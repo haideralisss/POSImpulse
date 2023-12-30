@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.models.entities.Stock;
-<<<<<<< HEAD
-=======
 import application.models.entities.Suppliers;
->>>>>>> 5cb18efa9e5f7860c5c3ebb56a79eb3a4d339497
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.NumberFormatter;
 
@@ -39,7 +36,6 @@ public class StockRepo
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-<<<<<<< HEAD
 		}
 	    finally
 	    {
@@ -51,19 +47,10 @@ public class StockRepo
 	    	{
 				e.printStackTrace();
 			}
-=======
-		} finally {
-	        try {
-	            connection.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
->>>>>>> 5cb18efa9e5f7860c5c3ebb56a79eb3a4d339497
-	    }
+		}
 		return stockWorth;
 	}
 	
-<<<<<<< HEAD
 	public ArrayList<Stock> fetchProductByLowStock() 
 	{
         ArrayList<Stock> productsData = new ArrayList<>();
@@ -109,10 +96,11 @@ public class StockRepo
 	    }
         return productsData;
     }
-=======
+	
 	public ArrayList<Stock> getAllStock()
 	{
 		ArrayList<Stock> stockList = new ArrayList<Stock>();
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
@@ -148,6 +136,7 @@ public class StockRepo
 	public Stock getStock(int id)
 	{
 		Stock stock = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
@@ -182,6 +171,7 @@ public class StockRepo
 	
 	public ArrayList<Stock> addStock(Stock stock)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock VALUES (?, ?, ?)");
@@ -205,6 +195,7 @@ public class StockRepo
 	
 	public ArrayList<Stock> updateStock(int id, Stock updatedStock) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
@@ -230,6 +221,7 @@ public class StockRepo
 
 	public ArrayList<Stock> deleteStock(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
@@ -249,6 +241,68 @@ public class StockRepo
 	    }
 	    return getAllStock();
 	}
->>>>>>> 5cb18efa9e5f7860c5c3ebb56a79eb3a4d339497
+	
+	public ArrayList<Stock> fetchStockByProductName(String productName) 
+	{
+		ArrayList<Stock> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int productId = 0;
+		int count = 1;
+        try
+        {
+        	String productQuery = "SELECT p.id from products p where name LIKE ? COLLATE NOCASE";
+        	try (PreparedStatement statement = connection.prepareStatement(productQuery))
+        	{
+        		statement.setString(1, '%' + productName + '%');
+        		try(ResultSet resultSet = statement.executeQuery())
+        		{
+        			if(resultSet.next())
+        			{
+        				productId = resultSet.getInt("id");
+        			}
+        		}
+        	}
+            String query = "SELECT s.id, p.name AS productId, s.unitCost, s.totalQuantity " +
+                    "FROM stock s " +
+                    "JOIN products p ON s.productId = p.id " +
+                    "WHERE s.productId = ?";
 
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setInt(1, productId);
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while(resultSet.next()) 
+                    {
+                    	Stock stock = new Stock(
+                    			count,
+                                1,
+                                resultSet.getString("productId"),
+                                resultSet.getDouble("unitCost"),
+                                resultSet.getInt("totalQuantity")
+                        );
+                    	searchData.add(stock);
+                    	count++;
+                    }
+                }
+            }
+        }
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally 
+        {
+			try 
+			{
+	            connection.close();
+	        } 
+			catch (SQLException e) 
+			{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }

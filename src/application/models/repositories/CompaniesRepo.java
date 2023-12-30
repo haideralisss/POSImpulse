@@ -8,18 +8,13 @@ import java.util.ArrayList;
 import application.models.entities.Companies;
 import application.utils.backendUtils.DatabaseConnection;
 
-public class CompaniesRepo {
-	
-	private Connection connection;
-	
-	public CompaniesRepo()
-	{
-		connection = DatabaseConnection.connect();
-	}
+public class CompaniesRepo 
+{
 	
 	public ArrayList<Companies> getAllCompanies()
 	{
 		ArrayList<Companies> companiesList = new ArrayList<Companies>();
+		Connection connection = DatabaseConnection.connect();
 	    try
 	    {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies");
@@ -52,6 +47,7 @@ public class CompaniesRepo {
 	public Companies getCompany(int id)
 	{
 		Companies company = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies WHERE id = ?");
@@ -82,6 +78,7 @@ public class CompaniesRepo {
 	
 	public ArrayList<Companies> addCompany(Companies company)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO companies VALUES (?, ?, ?)");
@@ -131,6 +128,7 @@ public class CompaniesRepo {
 
 	public ArrayList<Companies> deleteCompany(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM companies WHERE id = ?");
@@ -141,13 +139,65 @@ public class CompaniesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
-	    } finally {
-	    	try {
+	    } 
+		finally 
+		{
+	    	try 
+	    	{
 	            connection.close();
-	        } catch (SQLException e) {
+	        } 
+	    	catch (SQLException e) 
+	    	{
 	            e.printStackTrace();
 	        }
 	    }
 	    return getAllCompanies();
 	}
+	
+	public ArrayList<Companies> fetchByCompanyName(String companyName) 
+	{
+        ArrayList<Companies> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM companies WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + companyName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Companies company = new Companies(
+                        		count,
+                                resultSet.getString("name"),
+                                resultSet.getString("contact"),
+                                resultSet.getString("address")
+                        );
+                        searchData.add(company);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }

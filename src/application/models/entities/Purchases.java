@@ -18,6 +18,24 @@ public class Purchases {
 	private int number;
 	private HBox operations;
 	
+	public Purchases()
+	{
+		this.number = 0;
+		this.supplierId = 0;
+		this.supplierName = "";
+		this.purchaseDate = "";
+		this.invoiceNum = "";
+		this.grossTotal = 0;
+		this.salesTax = "";
+		this.discount = "";
+		this.otherCharges = 0;
+		this.netTotal = 0;
+		this.isReturn = false;
+		this.isLoose = false;
+		this.shift = "";
+		this.amountPaid = 0;
+	}
+	
 	public Purchases(int number, int supplierId, String supplierName, String purchaseDate, String invoiceNum, double grossTotal, String salesTax, String discount, double otherCharges, double netTotal, boolean isReturn, boolean isLoose, String shift, double amountPaid)
 	{
 		this.number = number;

@@ -5,7 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class Bills {
+public class Bills 
+{
 	
 	String customerName, discount, salesTax, shift;
 	int invoiceNum;
@@ -116,6 +117,11 @@ public class Bills {
 	{
 		this.billDate = billDate;
 		this.profit = profit;
+	}
+	
+	public void setInvoiceNum(int invoiceNum)
+	{
+		this.invoiceNum = invoiceNum;
 	}
 	
 	public String getCustomerName() {

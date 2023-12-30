@@ -7,18 +7,20 @@ import javafx.scene.layout.HBox;
 
 public class Stock 
 {
-	public Stock()
-	{
-		productName = "";
-		unitCost = 0;
-		totalQuantity = 0;
-	}
+
 	private String productName;
 	private double unitCost;
 	private int totalQuantity, productId;
 
 	private int number;
 	private HBox operations;
+	
+	public Stock()
+	{
+		productName = "";
+		unitCost = 0;
+		totalQuantity = 0;
+	}
 	
 	public Stock(int number, int productId, String productName, double unitCost, int totalQuantity)
 	{
