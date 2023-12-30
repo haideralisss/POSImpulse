@@ -6,9 +6,21 @@ import com.jfoenix.controls.JFXButton;
 
 import application.components.inputform.InputFormController;
 import application.models.entities.Accounts;
+import application.models.entities.Bills;
+import application.models.entities.Companies;
 import application.models.entities.Expenses;
+import application.models.entities.Products;
+import application.models.entities.Purchases;
+import application.models.entities.Stock;
+import application.models.entities.Suppliers;
 import application.models.repositories.AccountsRepo;
+import application.models.repositories.BillsRepo;
+import application.models.repositories.CompaniesRepo;
 import application.models.repositories.ExpensesRepo;
+import application.models.repositories.ProductsRepo;
+import application.models.repositories.PurchasesRepo;
+import application.models.repositories.StockRepo;
+import application.models.repositories.SuppliersRepo;
 import application.screens.billing.BillingController;
 import application.screens.purchases.PurchasesController;
 import javafx.collections.FXCollections;
@@ -128,17 +140,53 @@ public class DataGridController
 	
 	public void SetUpTable()
 	{	
-		if(title.getText() == "Accounts")
+		if(title.getText() == "Billing")
 		{
-			AccountsRepo accountsRepo = new AccountsRepo();
-	        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
-	        dataGridTable.setItems(accountsList);
+			BillsRepo billsRepo = new BillsRepo();
+	        ObservableList<Bills> billsList = FXCollections.observableArrayList(billsRepo.getAllBills());
+	        dataGridTable.setItems(billsList);
+		}
+		else if(title.getText() == "Purchases")
+		{
+			PurchasesRepo purchasesRepo = new PurchasesRepo();
+	        ObservableList<Purchases> purchasesList = FXCollections.observableArrayList(purchasesRepo.getAllPurchases());
+	        dataGridTable.setItems(purchasesList);
+		}
+		else if(title.getText() == "Companies")
+		{
+			CompaniesRepo companiesRepo = new CompaniesRepo();
+	        ObservableList<Companies> companiesList = FXCollections.observableArrayList(companiesRepo.getAllCompanies());
+	        dataGridTable.setItems(companiesList);
+		}
+		else if(title.getText() == "Suppliers")
+		{
+			SuppliersRepo suppliersRepo = new SuppliersRepo();
+	        ObservableList<Suppliers> suppliersList = FXCollections.observableArrayList(suppliersRepo.getAllSuppliers());
+	        dataGridTable.setItems(suppliersList);
+		}
+		else if(title.getText() == "Products")
+		{
+			ProductsRepo productsRepo = new ProductsRepo();
+	        ObservableList<Products> productsList = FXCollections.observableArrayList(productsRepo.getAllProducts());
+	        dataGridTable.setItems(productsList);
+		}
+		else if(title.getText() == "Stock")
+		{
+			StockRepo stockRepo = new StockRepo();
+	        ObservableList<Stock> stockList = FXCollections.observableArrayList(stockRepo.getAllStock());
+	        dataGridTable.setItems(stockList);
 		}
 		else if(title.getText() == "Expenses")
 		{
 			ExpensesRepo expensesRepo = new ExpensesRepo();
 	        ObservableList<Expenses> expensesList = FXCollections.observableArrayList(expensesRepo.getAllExpenses());
 	        dataGridTable.setItems(expensesList);
+		}
+		else if(title.getText() == "Accounts")
+		{
+			AccountsRepo accountsRepo = new AccountsRepo();
+	        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
+	        dataGridTable.setItems(accountsList);
 		}
 	}
 	

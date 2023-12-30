@@ -122,6 +122,10 @@ public class Bills {
         return invoiceNum;
     }
 
+    public String getBillsDate() {
+        return billDate;
+    }
+    
     public String getBillDate() {
         return billDate;
     }
