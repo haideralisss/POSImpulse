@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import application.models.entities.Companies;
 import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 
@@ -157,4 +158,51 @@ public class SuppliersRepo {
 	    }
 	    return getAllSuppliers();
 	}
+	
+	public ArrayList<Suppliers> fetchBySupplierName(String supplierName) 
+	{
+        ArrayList<Suppliers> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM suppliers WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + supplierName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Suppliers supplier = new Suppliers(
+                        		count,
+                                resultSet.getString("name"),
+                                resultSet.getString("contact"),
+                                resultSet.getString("address")
+                        );
+                        searchData.add(supplier);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }

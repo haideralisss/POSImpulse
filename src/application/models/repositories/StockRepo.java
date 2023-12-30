@@ -21,10 +21,10 @@ public class StockRepo {
 	{
 		String stockWorth = "0";
 		double totalAmount = 0;
-		Connection connection = DatabaseConnection.connect();
-		try
-		{
-            PreparedStatement preparedStatement = connection.prepareStatement(
+		Connection conn = DatabaseConnection.connect();
+	    try
+	    {
+            PreparedStatement preparedStatement = conn.prepareStatement(
                      "SELECT SUM((p.purchasePrice / p.packSize) * s.totalQuantity) AS totalAmount " +
                              "FROM stock s " +
                              "JOIN products p ON s.productId = p.id");
@@ -40,15 +40,66 @@ public class StockRepo {
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-		} finally {
-	        try {
-	            connection.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		}
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+		}
 		return stockWorth;
 	}
+	
+	public ArrayList<Stock> fetchProductByLowStock() 
+	{
+        ArrayList<Stock> productsData = new ArrayList<>();
+        Connection conn = DatabaseConnection.connect();
+        try 
+        {
+            String query = "SELECT " +
+                    "products.name AS productId, " +
+                    "SUM(stock.totalQuantity) AS totalQuantity " +
+                    "FROM stock " +
+                    "JOIN products ON stock.productId = products.id " +
+                    "GROUP BY stock.productId " + 
+                    "HAVING totalQuantity <= IFNULL(products.packSize, totalQuantity)";
+        	
+
+            try (PreparedStatement statement = conn.prepareStatement(query);
+                 ResultSet resultSet = statement.executeQuery()) 
+            {
+                while (resultSet.next()) 
+                {
+                	Stock stock = new Stock();
+                    String productId = resultSet.getString("productId");
+                    int totalQuantity = resultSet.getInt("totalQuantity");
+                    stock.setProductNameAndTotalQuantity(productId, totalQuantity);
+                    productsData.add(stock);
+                }
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return productsData;
+    }
 	
 	public ArrayList<Stock> getAllStock()
 	{
@@ -196,5 +247,69 @@ public class StockRepo {
 	    }
 	    return getAllStock();
 	}
+	
+	public ArrayList<Stock> fetchStockByProductName(String productName) 
+	{
+		ArrayList<Stock> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int productId = 0;
+		int count = 1;
+        try
+        {
+        	String productQuery = "SELECT p.id from products p where name LIKE ? COLLATE NOCASE";
+        	try (PreparedStatement statement = connection.prepareStatement(productQuery))
+        	{
+        		statement.setString(1, '%' + productName + '%');
+        		try(ResultSet resultSet = statement.executeQuery())
+        		{
+        			if(resultSet.next())
+        			{
+        				productId = resultSet.getInt("id");
+        			}
+        		}
+        	}
+            String query = "SELECT s.* " +
+                    "FROM stock s " +
+                    "JOIN products p ON s.productId = p.id " +
+                    "WHERE s.productId = ?";
 
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setInt(1, productId);
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while(resultSet.next()) 
+                    {
+                    	Stock stock = new Stock(
+                    			resultSet.getInt("id"),
+        						count,
+        						resultSet.getInt("productId"),
+        						resultSet.getString("productName"),
+        						resultSet.getDouble("unitCost"),
+        						resultSet.getInt("totalQuantity")
+                        );
+                    	searchData.add(stock);
+                    	count++;
+                    }
+                }
+            }
+        }
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally 
+        {
+			try 
+			{
+	            connection.close();
+	        } 
+			catch (SQLException e) 
+			{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }

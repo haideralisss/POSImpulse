@@ -20,8 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class Stock {
-	
+public class Stock 
+{
+
 	private String productName;
 	private double unitCost;
 	private int totalQuantity, productId, id;
@@ -36,9 +37,9 @@ public class Stock {
 	
 	public Stock()
 	{
-		id = number = productId = totalQuantity = 0;
-		unitCost = 0;
 		productName = "";
+		unitCost = 0;
+		totalQuantity = 0;
 	}
 	
 	public Stock(int id, int number, int productId, String productName, double unitCost, int totalQuantity)
@@ -112,6 +113,22 @@ public class Stock {
 		operations.setMaxWidth(Double.MAX_VALUE);
 		operations.setAlignment(Pos.CENTER);
 	}
+
+	public void setProductNameAndTotalQuantity(String productName, int totalQuantity)
+	{
+		this.productName = productName;
+		this.totalQuantity = totalQuantity;
+	}
+	
+	public String getProductName()
+	{
+		return productName;
+	}
+	
+	public double unitCost()
+	{
+		return unitCost;
+	}
 	
 	public static void setDataGridTable(TableView<Stock> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
@@ -122,10 +139,6 @@ public class Stock {
 	
 	public int getProductId() {
         return productId;
-    }
-
-    public String getProductName() {
-        return productName;
     }
 
     public double getUnitCost() {

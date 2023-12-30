@@ -20,8 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class Products {
-	
+public class Products 
+{	
 	private String name, companyName;
 	private int packSize, companyId, id;
 	private double purchasePrice, retailPrice;
@@ -122,27 +122,33 @@ public class Products {
         anchorPane = AnchorPANE;
     }
 	
-	public String getName() {
+	public String getName() 
+	{
         return name;
     }
 
-    public int getPackSize() {
+    public int getPackSize() 
+    {
         return packSize;
     }
 
-    public double getPurchasePrice() {
+    public double getPurchasePrice() 
+    {
         return purchasePrice;
     }
 
-    public double getRetailPrice() {
+    public double getRetailPrice() 
+    {
         return retailPrice;
     }
 
-    public int getCompanyId() {
+    public int getCompanyId() 
+    {
         return companyId;
     }
 
-    public String getCompanyName() {
+    public String getCompanyName() 
+    {
         return companyName;
     }
     

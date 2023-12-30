@@ -17,7 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class Bills {
+public class Bills 
+{
 	
 	private String customerName, discount, salesTax, shift;
 	private int invoiceNum, id;
@@ -192,16 +193,23 @@ public class Bills {
 		this.isReturn = isReturn;
 	}
 	
+	public void setBillDateAndProfit(String billDate, double profit)
+	{
+		this.billDate = billDate;
+		this.profit = profit;
+	}
+	
+	public void setInvoiceNum(int invoiceNum)
+	{
+		this.invoiceNum = invoiceNum;
+	}
+	
 	public String getCustomerName() {
         return customerName;
     }
 
     public int getInvoiceNum() {
         return invoiceNum;
-    }
-
-    public String getBillsDate() {
-        return billDate;
     }
     
     public String getBillDate() {
@@ -239,7 +247,7 @@ public class Bills {
     public String getIsReturn() {
         return (isReturn ? "Yes" : "No");
     }
-
+    
     public double getProfit() {
         return profit;
     }

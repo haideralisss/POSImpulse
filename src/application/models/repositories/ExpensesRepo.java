@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import application.models.entities.Expenses;
@@ -25,9 +26,10 @@ public class ExpensesRepo {
 	{
 		String monthExpenses = "0";
 		double totalAmount = 0;
-		Connection connection = DatabaseConnection.connect();
-		try
-		{
+
+		Connection conn = DatabaseConnection.connect();
+        try
+        {
         	java.util.Date now = new java.util.Date();
 
             // Set current month's first and last day
@@ -39,7 +41,7 @@ public class ExpensesRepo {
             String sqlQuery = "SELECT SUM(amount) AS totalAmount FROM expenses " +
                               "WHERE expenseDate>= ? AND expenseDate<= ?";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) 
+            try (PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery)) 
             {
 
             	preparedStatement.setString(1, DateFormatter.formatSqlDate(sqlFirstDayOfMonth));
@@ -58,12 +60,17 @@ public class ExpensesRepo {
         catch (SQLException e) 
         {
             e.printStackTrace();
-        } finally {
-        	try {
-	            connection.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
+        }
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
 	    }
         return monthExpenses;
     }
@@ -205,4 +212,98 @@ public class ExpensesRepo {
 	    }
 	    return getAllExpenses();
 	}
+	
+	public ArrayList<Expenses> fetchByExpensesName(String expenseName) 
+	{
+        ArrayList<Expenses> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM expenses WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + expenseName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Expenses expense = new Expenses(
+                        		resultSet.getInt("id"),
+                        		count,
+                                resultSet.getString("expenseDate"),
+                                resultSet.getString("name"),
+                                resultSet.getString("description"),
+                                resultSet.getDouble("amount")
+                        );
+                        searchData.add(expense);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
+	
+	public ArrayList<Expenses> fetchExpensesByDate(LocalDate date) 
+	{
+		ArrayList<Expenses> searchData = new ArrayList<>();
+		Connection connection = DatabaseConnection.connect();
+		int count = 1;
+        try
+        {
+            String query = "SELECT * FROM expenses WHERE expenseDate= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, DateFormatter.formatDate(date));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) 
+            {
+            	Expenses expense = new Expenses(
+            			resultSet.getInt("id"),
+                		count,
+                        resultSet.getString("expenseDate"),
+                        resultSet.getString("name"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("amount")
+                );
+            	searchData.add(expense);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally
+	    {
+	    	try 
+	    	{
+				connection.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return searchData;
+    }
 }

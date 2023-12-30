@@ -16,8 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class SideBarController implements Initializable {
-	
+public class SideBarController implements Initializable 
+{
 	@SuppressWarnings("exports")
 	@FXML
 	public AnchorPane anchorPane, nextAnchorPane;
@@ -170,20 +170,20 @@ public class SideBarController implements Initializable {
 	{
 		try
 		{
-		anchorPane.getChildren().clear();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/" + path));
-		nextAnchorPane = (AnchorPane) loader.load();
-		anchorPane.getChildren().add(nextAnchorPane);
-		AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
-	    nextAnchorPane.toFront();
-		
-		DataGridController dgController;
-		
-		if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
-		{
-			dgController = loader.getController();
-			dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
-		}
+			anchorPane.getChildren().clear();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/" + path));
+			nextAnchorPane = (AnchorPane) loader.load();
+			anchorPane.getChildren().add(nextAnchorPane);
+			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+		    nextAnchorPane.toFront();
+			
+			DataGridController dgController;
+			
+			if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
+			{
+				dgController = loader.getController();
+				dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
+			}
 		}
 		catch(IOException e)
 		{

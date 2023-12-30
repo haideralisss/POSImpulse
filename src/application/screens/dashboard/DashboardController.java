@@ -20,6 +20,9 @@ import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class DashboardController implements Initializable 
 {
@@ -30,6 +33,13 @@ public class DashboardController implements Initializable
 	
 	@FXML
 	public ComboBox<String> comboBox;
+	
+	@FXML
+	public TableView<Object> dashboardDataGrid;
+	
+	@FXML
+	public TableColumn<?, ?> dashboardColumn1;
+	public TableColumn<?, ?> dashboardColumn2;
 	
 	@SuppressWarnings("exports")
 	@FXML
@@ -48,18 +58,23 @@ public class DashboardController implements Initializable
 	BillsRepo billsRepo = new BillsRepo();
 	StockRepo stockRepo = new StockRepo();
 	ExpensesRepo expensesRepo = new ExpensesRepo();
+	
 	private String[] names = {"Low Stock", "Check Profit"};
 	private String monthlySales = "", monthlyExpenses = "";
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
+		dashboardColumn1.getStyleClass().add("firstColumn");
+		dashboardColumn2.getStyleClass().add("lastColumn");
+		
 		monthlyExpenses = expensesRepo.fetchMonthExpenses();
 		monthlySales = billsRepo.fetchMonthSales();
 		comboBox.getItems().addAll(names);
 		setAnalysisData();
 		setMonthlyExpensesGraph();
 		setSalesAndExpensesGraph();
+		getAndSetLowStockData();
 	}
 	
 	public void setAnalysisData()
@@ -70,16 +85,38 @@ public class DashboardController implements Initializable
 		monthExpensesLabel.setText("Rs. " + monthlyExpenses);
 	}
 	
+	public void getAndSetLowStockData()
+	{
+		dashboardColumn1.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
+		dashboardColumn2.setCellValueFactory(new PropertyValueFactory<>("TotalQuantity"));
+		dashboardColumn1.setText("Product Name");
+		dashboardColumn2.setText("Total Quantity");
+		ObservableList<Object> lowStocksList = FXCollections.observableArrayList(stockRepo.fetchProductByLowStock());
+		dashboardDataGrid.setItems(lowStocksList);
+	}
+	
+	public void getAndSetProfitData()
+	{
+		dashboardColumn1.setCellValueFactory(new PropertyValueFactory<>("BillDate"));
+		dashboardColumn2.setCellValueFactory(new PropertyValueFactory<>("Profit"));
+		dashboardColumn1.setText("Date");
+		dashboardColumn2.setText("Total Profit");
+		ObservableList<Object> profit = FXCollections.observableArrayList(billsRepo.fetchDailyProfit());
+		dashboardDataGrid.setItems(profit);
+	}
+	
 	public void changeValueAndGetData()
 	{
 		if(comboBox.getValue().equals("Low Stock"))
-		{
+		{	
+			getAndSetLowStockData();
 			dataGridHeading1.setText("Low");
 			dataGridHeading2.setText("Stock");
 			dataGridHeading2.setLayoutX(60);
 		}
 		else
 		{
+			getAndSetProfitData();
 			dataGridHeading1.setText("Check");
 			dataGridHeading2.setText("Profit");
 			dataGridHeading2.setLayoutX(79);
@@ -91,7 +128,7 @@ public class DashboardController implements Initializable
 		series.setName("Monthly Sales");
 		for(Bills bill : billsRepo.fetchMonthSalesReport())
 		{
-			series.getData().add(new XYChart.Data<>(bill.getBillsDate(), bill.getAmountPaid()));
+			series.getData().add(new XYChart.Data<>(bill.getBillDate(), bill.getAmountPaid()));
 		}
 	    barChart.getData().add(series);
 	}

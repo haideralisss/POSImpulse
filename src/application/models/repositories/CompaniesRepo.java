@@ -146,13 +146,66 @@ public class CompaniesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
-	    } finally {
-	    	try {
+	    } 
+		finally 
+		{
+	    	try 
+	    	{
 	            connection.close();
-	        } catch (SQLException e) {
+	        } 
+	    	catch (SQLException e) 
+	    	{
 	            e.printStackTrace();
 	        }
 	    }
 	    return getAllCompanies();
 	}
+	
+	public ArrayList<Companies> fetchByCompanyName(String companyName) 
+	{
+        ArrayList<Companies> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM companies WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + companyName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Companies company = new Companies(
+                        		resultSet.getInt("id"),
+                        		count,
+                                resultSet.getString("name"),
+                                resultSet.getString("contact"),
+                                resultSet.getString("address")
+                        );
+                        searchData.add(company);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }
