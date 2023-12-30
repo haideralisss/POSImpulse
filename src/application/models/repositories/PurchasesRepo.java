@@ -11,18 +11,18 @@ import application.utils.backendUtils.DatabaseConnection;
 
 public class PurchasesRepo {
 	
-	Connection conn;
+private Connection connection;
 	
 	public PurchasesRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public ArrayList<Purchases> getAllPurchases()
 	{
 		ArrayList<Purchases> purchasesList = new ArrayList<Purchases>();
-		try(Connection connection = DatabaseConnection.connect())
-		{
+	    try
+	    {
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -52,14 +52,20 @@ public class PurchasesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return purchasesList;
 	}
 	
 	public Purchases getPurchase(int id) {
 		Purchases purchase = null;
-		try(Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id WHERE id = ?";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -88,14 +94,20 @@ public class PurchasesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return purchase;
 	}
 	
 	public ArrayList<Purchases> addPurchase(Purchases purchase)
 	{
-		try (Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setInt(1, purchase.getSupplierId());
 			statement.setObject(2, purchase.getPurchaseDate());
@@ -114,13 +126,19 @@ public class PurchasesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllPurchases();
 	}
 	
 	public ArrayList<Purchases> updatePurchase(int id, Purchases updatedPurchase) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE purchases SET supplierId = ?, purchaseDate = ?, invoiceNum = ?, grossTotal = ?, salesTax = ?, discount = ?, otherCharges = ?, netTotal = ?, isReturn = ?, isLoose = ?, shift = ?, amountPaid = ? WHERE id = ?");
@@ -142,13 +160,19 @@ public class PurchasesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllPurchases();
 	}
 
 	public ArrayList<Purchases> deletePurchases(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM purchases WHERE id = ?");
 	        statement.setInt(1, id);
@@ -158,6 +182,12 @@ public class PurchasesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllPurchases();
 	}

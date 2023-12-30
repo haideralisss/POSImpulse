@@ -16,12 +16,11 @@ import application.utils.backendUtils.*;
 
 public class BillsRepo 
 {
-	
-	Connection conn;
+	private Connection connection;
 	
 	public BillsRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public String fetchTodaySales()
@@ -29,31 +28,35 @@ public class BillsRepo
 		String todaySales = "0";
 		double totalAmount = 0.0;
 		
-	    try
-	    {
-	        LocalDate now = LocalDate.now();
-	        
-	        String query = "SELECT COALESCE(SUM(CASE WHEN isReturn = 0 AND isCredit = 0 THEN amountPaid ELSE 0 END), 0) - " +
-	                       "COALESCE(SUM(CASE WHEN isReturn = 1 THEN amountPaid ELSE 0 END), 0) AS totalAmount " +
-	                       "FROM bills WHERE billDate = ? AND isCredit != 1";
-
-	        try (PreparedStatement statement = conn.prepareStatement(query)) 
-	        {
-	            statement.setString(1, DateFormatter.formatDate(now));
-
-	            try (ResultSet resultSet = statement.executeQuery()) 
-	            {
-	                if (resultSet.next()) 
-	                {
-	                    totalAmount = resultSet.getDouble("totalAmount");
-	                    todaySales = NumberFormatter.format(totalAmount);
-	                }
-	            }
-	        }
-	    } 
+		try
+		{
+	       	LocalDate now = LocalDate.now();
+		       
+		    String query = "SELECT COALESCE(SUM(CASE WHEN isReturn = 0 AND isCredit = 0 THEN amountPaid ELSE 0 END), 0) - " +
+		                   "COALESCE(SUM(CASE WHEN isReturn = 1 THEN amountPaid ELSE 0 END), 0) AS totalAmount " +
+		                   "FROM bills WHERE billDate = ? AND isCredit != 1";
+	       	PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, DateFormatter.formatDate(now));
+            try (ResultSet resultSet = statement.executeQuery()) 
+            {
+                if (resultSet.next()) 
+                {
+                    totalAmount = resultSet.getDouble("totalAmount");
+                    todaySales = NumberFormatter.format(totalAmount);
+                }
+            }
+        }
 	    catch (SQLException e) 
 	    {
 	        e.printStackTrace();
+	    } 
+	    finally 
+	    {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return todaySales;
 	}
@@ -62,8 +65,9 @@ public class BillsRepo
 	{
 		String monthSales = "0";
         double totalAmount = 0.0;
-        try (Connection connection = DatabaseConnection.connect()) 
-        {
+        
+		try
+		{
             // Get the current date
             java.util.Date now = new java.util.Date();
 
@@ -100,14 +104,24 @@ public class BillsRepo
         {
             e.printStackTrace();
         }
+        finally 
+	    {
+        	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
         return monthSales;
     }
 	
 	public ArrayList<Bills> getAllBills()
 	{
 		ArrayList<Bills> billsList = new ArrayList<Bills>();
-		try(Connection connection = DatabaseConnection.connect())
+		
+		try
 		{
+			
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills");
 			ResultSet resultSet = statement.executeQuery();
 			int count = 1;
@@ -135,12 +149,21 @@ public class BillsRepo
 		{
 			e.printStackTrace();
 		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return billsList;
 	}
 	
 	public Bills getBill(int id) {
 		Bills bill = null;
-		try(Connection connection = DatabaseConnection.connect())
+		
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills WHERE id = ?");
 			statement.setInt(1, id);
@@ -170,12 +193,20 @@ public class BillsRepo
 		{
 			e.printStackTrace();
 		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return bill;
 	}
 	
 	public ArrayList<Bills> addBill(Bills bill)
 	{
-		try (Connection connection = DatabaseConnection.connect())
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setString(1, bill.getCustomerName());
@@ -196,13 +227,21 @@ public class BillsRepo
 		{
 			e.printStackTrace();
 		}
+		finally 
+	    {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllBills();
 	}
 	
 	public ArrayList<Bills> updateBill(int id, Bills updatedBill) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
-	    {
+		try
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE bills SET customerName = ?, invoiceNum = ?, billDate = ?, grossTotal = ?, discount = ?, salesTax = ?, netTotal = ?, amountPaid = ?, shift = ?, isCredit = ?, isReturn = ?, profit = ? WHERE id = ?");
 	        statement.setString(1, updatedBill.getCustomerName());
@@ -224,13 +263,22 @@ public class BillsRepo
 	    {
 	        e.printStackTrace();
 	    }
+	    finally 
+	    {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	    return getAllBills();
 	}
 
 	public ArrayList<Bills> deleteBills(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
-	    {
+		try
+		{
+	    	
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM bills WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -240,14 +288,23 @@ public class BillsRepo
 	    {
 	        e.printStackTrace();
 	    }
+	    finally 
+	    {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	    return getAllBills();
 	}
 	
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{
         ArrayList<Bills> monthSalesList = new ArrayList<>();
-        try
-        {
+        
+		try
+		{
         	java.util.Date now = new java.util.Date();
 
             // Set current month's first and last day
@@ -257,7 +314,7 @@ public class BillsRepo
             Date sqlFirstDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-01");
             Date sqlLastDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-31");
         	
-             PreparedStatement preparedStatement = conn.prepareStatement(
+             PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT strftime('%Y-%m-%d', billDate) AS date, " +
                              "SUM(CASE WHEN isReturn = 0 THEN amountPaid ELSE 0 END) AS totalAmount, " +
                              "SUM(CASE WHEN isReturn = 1 THEN amountPaid ELSE 0 END) AS totalSubtractedAmount " +
@@ -288,7 +345,14 @@ public class BillsRepo
         {
             e.printStackTrace();
         }
-
+        finally 
+	    {
+	        try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
         return monthSalesList;
     }
 }

@@ -14,18 +14,18 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class ProductsRepo {
 	
-	Connection conn;
+	private Connection connection;
 	
 	public ProductsRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public ArrayList<Products> getAllProducts()
 	{
 		ArrayList<Products> productsList = new ArrayList<Products>();
-		try(Connection connection = DatabaseConnection.connect())
-		{
+	    try
+	    {
 			String query = "SELECT p.*, c.name AS companyName FROM products p " +
                     "INNER JOIN companies c ON p.companyId = c.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -48,13 +48,20 @@ public class ProductsRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return productsList;
 	}
 	
 	public Products getProduct(int id) {
 	    Products product = null;
-	    try (Connection connection = DatabaseConnection.connect()) {
+	    try
+	    {
 	        String query = "SELECT p.*, c.name AS companyName FROM products p " +
 	                       "INNER JOIN companies c ON p.companyId = c.id " +
 	                       "WHERE p.id = ?";
@@ -74,14 +81,21 @@ public class ProductsRepo {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return product;
 	}
 	
 	public ArrayList<Products> addProduct(Products product)
 	{
-		try (Connection connection = DatabaseConnection.connect())
-		{
+		Connection connection = null;
+		try
+	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?, ?, ?)");
 			statement.setString(1, product.getName());
 			statement.setInt(2, product.getPackSize());
@@ -93,13 +107,20 @@ public class ProductsRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllProducts();
 	}
 	
 	public ArrayList<Products> updateProduct(int id, Products updatedProduct) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		Connection connection = null;
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE products SET name = ?, packSize = ?, purchasePrice = ?, retailPrice = ?, companyId = ? WHERE id = ?");
@@ -114,13 +135,20 @@ public class ProductsRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllProducts();
 	}
 
 	public ArrayList<Products> deleteProduct(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		Connection connection = null;
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
 	        statement.setInt(1, id);
@@ -130,6 +158,12 @@ public class ProductsRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	        try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllProducts();
 	}

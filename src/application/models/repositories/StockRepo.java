@@ -13,20 +13,20 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class StockRepo {
 	
-	Connection conn;
+private Connection connection;
 	
 	public StockRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public String fetchStockWorth() 
 	{
 		String stockWorth = "0";
 		double totalAmount = 0;
-		try 
-        {
-            PreparedStatement preparedStatement = conn.prepareStatement(
+	    try
+	    {
+            PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT SUM((p.purchasePrice / p.packSize) * s.totalQuantity) AS totalAmount " +
                              "FROM stock s " +
                              "JOIN products p ON s.productId = p.id");
@@ -42,15 +42,21 @@ public class StockRepo {
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-		}
+		} finally {
+	        try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return stockWorth;
 	}
 	
 	public ArrayList<Stock> getAllStock()
 	{
 		ArrayList<Stock> stockList = new ArrayList<Stock>();
-		try(Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -71,15 +77,21 @@ public class StockRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return stockList;
 	}
 	
 	public Stock getStock(int id)
 	{
 		Stock stock = null;
-		try(Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id " +
 					"WHERE id = ?";
@@ -100,14 +112,20 @@ public class StockRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return stock;
 	}
 	
 	public ArrayList<Stock> addStock(Stock stock)
 	{
-		try (Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock VALUES (?, ?, ?)");
 			statement.setInt(1, stock.getProductId());
 			statement.setDouble(2, stock.getUnitCost());
@@ -117,13 +135,19 @@ public class StockRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllStock();
 	}
 	
 	public ArrayList<Stock> updateStock(int id, Stock updatedStock) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE stock SET productId = ?, unitCost = ?, totalQuantity = ? WHERE id = ?");
@@ -136,13 +160,19 @@ public class StockRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllStock();
 	}
 
 	public ArrayList<Stock> deleteStock(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
 	        statement.setInt(1, id);
@@ -152,6 +182,12 @@ public class StockRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllStock();
 	}

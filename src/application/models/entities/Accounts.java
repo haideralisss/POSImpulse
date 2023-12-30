@@ -13,6 +13,13 @@ public class Accounts {
 	private int number;
 	private HBox operations;
 	
+	public Accounts()
+	{
+		number = 0;
+		userName = fullName = phone = password = "";
+		isAdmin = false;
+	}
+	
 	public Accounts(int number, String userName, String fullName, String phone, String password, boolean isAdmin)
 	{
 		this.number = number;

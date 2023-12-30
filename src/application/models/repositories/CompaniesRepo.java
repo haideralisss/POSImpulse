@@ -10,18 +10,18 @@ import application.utils.backendUtils.DatabaseConnection;
 
 public class CompaniesRepo {
 	
-	Connection conn;
+	private Connection connection;
 	
 	public CompaniesRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 	
 	public ArrayList<Companies> getAllCompanies()
 	{
 		ArrayList<Companies> companiesList = new ArrayList<Companies>();
-		try(Connection connection = DatabaseConnection.connect())
-		{
+	    try
+	    {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies");
 			ResultSet resultSet = statement.executeQuery();
 			int count = 1;
@@ -39,15 +39,21 @@ public class CompaniesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return companiesList;
 	}
 	
 	public Companies getCompany(int id)
 	{
 		Companies company = null;
-		try(Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies WHERE id = ?");
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
@@ -64,14 +70,20 @@ public class CompaniesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return company;
 	}
 	
 	public ArrayList<Companies> addCompany(Companies company)
 	{
-		try (Connection connection = DatabaseConnection.connect())
-		{
+		try
+	    {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO companies VALUES (?, ?, ?)");
 			statement.setString(1, company.getName());
 			statement.setString(2, company.getContact());
@@ -81,13 +93,20 @@ public class CompaniesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return getAllCompanies();
 	}
 	
 	public ArrayList<Companies> updateCompany(int id, Companies updatedCompany) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		Connection connection = null;
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE companies SET name = ?, contact = ?, address = ? WHERE id = ?");
@@ -100,13 +119,19 @@ public class CompaniesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllCompanies();
 	}
 
 	public ArrayList<Companies> deleteCompany(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
+		try
 	    {
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM companies WHERE id = ?");
 	        statement.setInt(1, id);
@@ -116,6 +141,12 @@ public class CompaniesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllCompanies();
 	}

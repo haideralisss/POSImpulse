@@ -15,19 +15,19 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class ExpensesRepo {
 	
-	Connection conn;
+private Connection connection;
 	
 	public ExpensesRepo()
 	{
-		conn = DatabaseConnection.connect();
+		connection = DatabaseConnection.connect();
 	}
 
 	public String fetchMonthExpenses() 
 	{
 		String monthExpenses = "0";
 		double totalAmount = 0;
-        try
-        {
+		try
+		{
         	java.util.Date now = new java.util.Date();
 
             // Set current month's first and last day
@@ -39,7 +39,7 @@ public class ExpensesRepo {
             String sqlQuery = "SELECT SUM(amount) AS totalAmount FROM expenses " +
                               "WHERE expenseDate>= ? AND expenseDate<= ?";
 
-            try (PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery)) 
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) 
             {
 
             	preparedStatement.setString(1, DateFormatter.formatSqlDate(sqlFirstDayOfMonth));
@@ -58,14 +58,20 @@ public class ExpensesRepo {
         catch (SQLException e) 
         {
             e.printStackTrace();
-        }
+        } finally {
+        	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
         return monthExpenses;
     }
 	
 	public ArrayList<Expenses> getAllExpenses()
 	{
 		ArrayList<Expenses> expensesList = new ArrayList<Expenses>();
-		try(Connection connection = DatabaseConnection.connect())
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses");
 			ResultSet resultSet = statement.executeQuery();
@@ -85,14 +91,20 @@ public class ExpensesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return expensesList;
 	}
 	
 	public Expenses getExpense(int id)
 	{
 		Expenses expense = null;
-		try(Connection connection = DatabaseConnection.connect())
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses WHERE id = ?");
 			statement.setInt(1, id);
@@ -111,13 +123,19 @@ public class ExpensesRepo {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-		}
+		} finally {
+			try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		return expense;
 	}
 	
 	public ArrayList<Expenses> addExpense(Expenses expense)
 	{
-		try (Connection connection = DatabaseConnection.connect())
+		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
 			statement.setObject(1, expense.getExpenseDate());
@@ -135,8 +153,8 @@ public class ExpensesRepo {
 	
 	public ArrayList<Expenses> updateExpense(int id, Expenses updatedExpense) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
-	    {
+		try
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE expenses SET expenseDate = ?, name = ?, description = ?, amount = ? WHERE id = ?");
 	        statement.setObject(1, updatedExpense.getExpenseDate());
@@ -149,14 +167,20 @@ public class ExpensesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllExpenses();
 	}
 
 	public ArrayList<Expenses> deleteExpense(int id) 
 	{
-	    try (Connection connection = DatabaseConnection.connect()) 
-	    {
+		try
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM expenses WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -165,6 +189,12 @@ public class ExpensesRepo {
 	    catch (SQLException e)
 	    {
 	        e.printStackTrace();
+	    } finally {
+	    	try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    return getAllExpenses();
 	}

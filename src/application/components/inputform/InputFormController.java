@@ -1,6 +1,10 @@
 package application.components.inputform;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -8,8 +12,13 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
+import application.models.entities.Accounts;
+import application.models.repositories.AccountsRepo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -40,6 +49,7 @@ public class InputFormController {
 	public Label heading;
 	
 	List<Attribute> attributes;
+	private Map<String, Node> inputComponents = new HashMap<>();
 	
 	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
@@ -49,8 +59,6 @@ public class InputFormController {
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
 		titleIcon.setFitWidth(30);
 		titleIcon.setFitHeight(30);
-		//anchorVBox.setVgrow(inputAnchorPane, javafx.scene.layout.Priority.ALWAYS);
-		//inputAnchorPane.setTopAnchor(heading, 10.0);
 		
 		for(Attribute attribute : attributes) {
 			if(attribute.isInput())
@@ -123,8 +131,94 @@ public class InputFormController {
 		}	
 	}
 	
-	public void SubmitEvent()
-	{
-		
-	}
+	private Object createEntityInstance(Class<?> entityClass) {
+        try {
+            return entityClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+        return null;
+    }
+
+    private void setValueByReflection(Object object, String fieldName, String value) {
+        try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+
+            // Determine the field type and convert the value accordingly
+            if (field.getType() == String.class) {
+                field.set(object, value);
+            } else if (field.getType() == Boolean.TYPE) {
+                field.set(object, Boolean.parseBoolean(value));
+            } // Add more cases for other data types as needed
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+    
+    private void setValueByReflection(Object object, String fieldName, Object value) {
+        try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+
+            // Determine the field type and convert the value accordingly
+            if (field.getType() == String.class) {
+                field.set(object, (String) value);
+            } else if (field.getType() == Boolean.TYPE) {
+                field.set(object, (Boolean) value);
+            } else if (field.getType() == LocalDate.class) {
+                // Assuming 'value' is a String representation of the date, you may need to parse it
+                // Replace the following line with the correct parsing logic based on your date format
+                LocalDate dateValue = LocalDate.parse((String) value);
+                field.set(object, dateValue);
+            } // Add more cases for other data types as needed
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+    
+    private Object getComponentValue(Attribute attribute, Node inputComponent) {
+        if (attribute.getType().equals("text")) {
+            return ((JFXTextField) inputComponent).getText();
+        } else if (attribute.getType().equals("checkbox")) {
+            return ((JFXCheckBox) inputComponent).isSelected();
+        } else if (attribute.getType().equals("password")) {
+            return ((JFXPasswordField) inputComponent).getText();
+        } else if (attribute.getType().equals("date")) {
+            // You may need to handle date parsing based on your date picker component
+            // For simplicity, assuming it returns a String here
+            return ((DatePicker) inputComponent).getEditor().getText();
+        }
+
+        // Handle other types or return null for unsupported types
+        return null;
+    }
+	
+    public void SubmitEvent() {
+        Object entityInstance = null;
+
+        if (title.getText().equals("Accounts")) {
+            entityInstance = createEntityInstance(Accounts.class);
+        }
+
+        if (entityInstance != null) {
+            for (Attribute attribute : attributes) {
+                if (attribute.isInput()) {
+                    Node inputComponent = inputComponents.get(attribute.getAttribute());
+                    if (inputComponent != null) {
+                        Object value = getComponentValue(attribute, inputComponent);
+                        setValueByReflection(entityInstance, attribute.getAttribute(), value);
+                    }
+                }
+            }
+        }
+        
+        if(title.getText() == "Accounts")
+        {
+        	AccountsRepo accountsRepo = new AccountsRepo();
+        	accountsRepo.addAccount((Accounts) entityInstance);
+        }
+    }
+
 }
