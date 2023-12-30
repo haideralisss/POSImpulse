@@ -130,12 +130,13 @@ public class AccountsRepo {
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement(
-	                "UPDATE accounts SET fullname = ?, phone = ?, password = ?, isAdmin = ? WHERE id = ?");
-	        statement.setString(1, updatedAccount.getFullName());
-	        statement.setString(2, updatedAccount.getPhone());
-	        statement.setString(3, updatedAccount.getPassword());
-	        statement.setBoolean(4, (updatedAccount.getIsAdmin() == "Yes" ? true : false));
-	        statement.setInt(5, id);
+	                "UPDATE accounts SET username = ?, fullname = ?, phone = ?, password = ?, isAdmin = ? WHERE id = ?");
+	        statement.setString(1, updatedAccount.getUserName());
+	        statement.setString(2, updatedAccount.getFullName());
+	        statement.setString(3, updatedAccount.getPhone());
+	        statement.setString(4, updatedAccount.getPassword());
+	        statement.setBoolean(5, (updatedAccount.getIsAdmin() == "Yes" ? true : false));
+	        statement.setInt(6, id);
 	        statement.executeUpdate();
 	    } 
 	    catch (SQLException e)

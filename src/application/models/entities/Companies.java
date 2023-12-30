@@ -1,9 +1,14 @@
 package application.models.entities;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
+import application.components.datagrid.Attribute;
+import application.components.inputform.InputFormController;
 import application.models.repositories.CompaniesRepo;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -12,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class Companies {
@@ -23,6 +29,9 @@ public class Companies {
 	private HBox operations;
 	
 	private static TableView<Companies> dataGridTable;
+	private static String title;
+	private static List<Attribute> attributes;
+	private static AnchorPane anchorPane;
 	
 	public Companies()
 	{
@@ -39,6 +48,7 @@ public class Companies {
 		this.address = address;
 		
 		HBox delHBox = new HBox();
+		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -50,8 +60,30 @@ public class Companies {
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
 		operations = new HBox();
-		operations.getChildren().add(editButton);
+		operations.getChildren().add(editHBox);
 		operations.getChildren().add(delHBox);
+		
+		editHBox.setMaxWidth(Double.MAX_VALUE);
+		editHBox.setAlignment(Pos.CENTER);
+		editHBox.getChildren().add(editButton);
+		editHBox.setCursor(Cursor.HAND);
+		editHBox.setOnMouseClicked(event -> {
+			try {
+				anchorPane.getChildren().clear();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/components/inputform/InputForm.fxml"));
+				AnchorPane nextAnchorPane;
+				nextAnchorPane = (AnchorPane) loader.load();
+				anchorPane.getChildren().add(nextAnchorPane);
+				AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+			    nextAnchorPane.toFront();
+				
+				InputFormController ifController;
+				ifController = loader.getController();
+				ifController.SetupInputForm(title, attributes, anchorPane, this);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 		
 		delHBox.getChildren().add(delButton);
 		delHBox.setMaxWidth(Double.MAX_VALUE);
@@ -70,7 +102,6 @@ public class Companies {
 		    Optional<ButtonType> result = alert.showAndWait();
 		    if (result.isPresent() && result.get() == confirmButton) {
 		        CompaniesRepo companiesRepo = new CompaniesRepo();
-		        companiesRepo.deleteCompany(this.id);
 		        dataGridTable.setItems(FXCollections.observableArrayList(companiesRepo.deleteCompany(this.id)));
 		    }
 		});
@@ -79,8 +110,11 @@ public class Companies {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView<Companies> table) {
+	public static void setDataGridTable(TableView<Companies> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
+        title = Title;
+        attributes = Attributes;
+        anchorPane = AnchorPANE;
     }
 	
 	public String getName()
@@ -96,6 +130,11 @@ public class Companies {
 	public String getAddress()
 	{
 		return address;
+	}
+	
+	public int getId()
+	{
+		return id;
 	}
 	
 	public int getNumber()

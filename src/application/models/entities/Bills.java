@@ -1,6 +1,9 @@
 package application.models.entities;
 
+import java.util.List;
 import java.util.Optional;
+
+import application.components.datagrid.Attribute;
 import application.models.repositories.BillsRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -11,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class Bills {
@@ -25,6 +29,9 @@ public class Bills {
 	private HBox operations;
 	
 	private static TableView<Bills> dataGridTable;
+	//private static String title;
+	//private static List<Attribute> attributes;
+	//private static AnchorPane anchorPane;
 	
 	public Bills()
 	{
@@ -43,6 +50,8 @@ public class Bills {
 		this.isReturn = false;
 		this.profit = 0;
 		
+		HBox delHBox = new HBox();
+		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -54,8 +63,37 @@ public class Bills {
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
 		operations = new HBox();
-		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
+		operations.getChildren().add(editHBox);
+		operations.getChildren().add(delHBox);
+		
+		editHBox.setMaxWidth(Double.MAX_VALUE);
+		editHBox.setAlignment(Pos.CENTER);
+		editHBox.getChildren().add(editButton);
+		editHBox.setCursor(Cursor.HAND);
+		editHBox.setOnMouseClicked(event -> {
+			
+		});
+		
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		    alert.setTitle("Confirmation Dialog");
+		    alert.setHeaderText("Delete Bill");
+		    alert.setContentText("Are you sure you want to delete this bill?");
+
+		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
+
+		    Optional<ButtonType> result = alert.showAndWait();
+		    if (result.isPresent() && result.get() == confirmButton) {
+		        BillsRepo billsRepo = new BillsRepo();
+		        dataGridTable.setItems(FXCollections.observableArrayList(billsRepo.deleteBill(this.id)));
+		    }
+		});
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
 		operations.setAlignment(Pos.CENTER);
@@ -119,8 +157,11 @@ public class Bills {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView<Bills> table) {
+	public static void setDataGridTable(TableView<Bills> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
+        //title = Title;
+        //attributes = Attributes;
+        //anchorPane = AnchorPANE;
     }
 	
 	public void setStringData(String customerName, String billDate, String discount, String salesTax, String shift) 
@@ -202,6 +243,11 @@ public class Bills {
     public double getProfit() {
         return profit;
     }
+    
+    public int getId()
+	{
+		return id;
+	}
 	
 	public int getNumber()
 	{

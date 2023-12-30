@@ -66,8 +66,10 @@ public class InputFormController {
 	List<Attribute> attributes;
 	private Map<String, Node> inputComponents = new HashMap<>();
 	
+	private Object updateObject;
+	
 	@SuppressWarnings("exports")
-	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane)
+	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane, Object obj)
 	{
 		this.title.setText(title);
 		this.anchorPane = anchorPane;
@@ -132,6 +134,13 @@ public class InputFormController {
 				}
 			}
 		}
+		
+		if(obj != null)
+		{
+			this.heading.setText("Updation Form");
+	        populateFieldsFromObject(obj);
+	        this.updateObject = obj;
+		}
 	}
 	
 	public void CancelEvent()
@@ -158,21 +167,6 @@ public class InputFormController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @SuppressWarnings("unused")
-	private void setValueByReflection(Object object, String fieldName, String value) {
-        try {
-            Field field = object.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            if (field.getType() == String.class) {
-                field.set(object, value);
-            } else if (field.getType() == Boolean.TYPE) {
-                field.set(object, Boolean.parseBoolean(value));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     
     private void setValueByReflection(Object object, String fieldName, Object value) {
@@ -216,6 +210,35 @@ public class InputFormController {
         return null;
     }
 	
+    private void populateFieldsFromObject(Object obj) {
+        for (Attribute attribute : attributes) {
+            if (attribute.isInput()) {
+                Node inputComponent = inputComponents.get(attribute.getDbAttribute());
+                if (inputComponent != null) {
+                    try {
+                        Field field = obj.getClass().getDeclaredField(attribute.getDbAttribute());
+                        field.setAccessible(true);
+                        Object value = field.get(obj);
+                        setComponentValue(attribute, inputComponent, value);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+    
+    private void setComponentValue(Attribute attribute, Node inputComponent, Object value) {
+        if (attribute.getType().equals("text")) {
+            ((JFXTextField) inputComponent).setText(value != null ? value.toString() : "");
+        } else if (attribute.getType().equals("checkbox")) {
+            ((JFXCheckBox) inputComponent).setSelected((Boolean) value);
+        } else if (attribute.getType().equals("password")) {
+            ((JFXPasswordField) inputComponent).setText(value != null ? value.toString() : "");
+        } else if (attribute.getType().equals("date")) {
+            ((DatePicker) inputComponent).getEditor().setText(value != null ? value.toString() : "");
+        }
+    }
     public void SubmitEvent() {
         Object entityInstance = null;
 
@@ -265,32 +288,50 @@ public class InputFormController {
         if(title.getText().equals("Accounts"))
         {
         	AccountsRepo accountsRepo = new AccountsRepo();
-        	accountsRepo.addAccount((Accounts) entityInstance);
+        	if(updateObject == null)
+        		accountsRepo.addAccount((Accounts) entityInstance);
+        	else
+        		accountsRepo.updateAccount(((Accounts) updateObject).getId(), (Accounts) entityInstance);
         }
         else if(title.getText().equals("Expenses"))
         {
         	ExpensesRepo expensesRepo = new ExpensesRepo();
-        	expensesRepo.addExpense((Expenses) entityInstance);
+        	if(updateObject == null)
+        		expensesRepo.addExpense((Expenses) entityInstance);
+        	else
+        		expensesRepo.updateExpense(((Expenses) updateObject).getId(), (Expenses) entityInstance);
         }
         else if(title.getText().equals("Products"))
         {
         	ProductsRepo productsRepo = new ProductsRepo();
-        	productsRepo.addProduct((Products) entityInstance);
+        	if(updateObject == null)
+        		productsRepo.addProduct((Products) entityInstance);
+        	else
+        		productsRepo.updateProduct(((Products) updateObject).getId(), (Products) entityInstance);
         }
         else if(title.getText().equals("Stock"))
         {
         	StockRepo stockRepo = new StockRepo();
-        	stockRepo.addStock((Stock) entityInstance);
+        	if(updateObject == null)
+        		stockRepo.addStock((Stock) entityInstance);
+        	else
+        		stockRepo.updateStock(((Stock) updateObject).getId(), (Stock) entityInstance);
         }
         else if(title.getText().equals("Suppliers"))
         {
         	SuppliersRepo suppliersRepo = new SuppliersRepo();
-        	suppliersRepo.addSupplier((Suppliers) entityInstance);
+        	if(updateObject == null)
+        		suppliersRepo.addSupplier((Suppliers) entityInstance);
+        	else
+        		suppliersRepo.updateSupplier(((Suppliers) updateObject).getId(), (Suppliers) entityInstance);
         }
         else if(title.getText().equals("Companies"))
         {
         	CompaniesRepo companiesRepo = new CompaniesRepo();
-        	companiesRepo.addCompany((Companies) entityInstance);
+        	if(updateObject == null)
+        		companiesRepo.addCompany((Companies) entityInstance);
+        	else
+        		companiesRepo.updateCompany(((Companies) updateObject).getId(), (Companies) entityInstance);
         }
 
     	CancelEvent();

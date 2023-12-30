@@ -109,7 +109,7 @@ public class SuppliersRepo {
 		return getAllSuppliers();
 	}
 	
-	public ArrayList<Suppliers> updateSuppliers(int id, Suppliers updatedSupplier) 
+	public ArrayList<Suppliers> updateSupplier(int id, Suppliers updatedSupplier) 
 	{
 		Connection connection = DatabaseConnection.connect();
 		try

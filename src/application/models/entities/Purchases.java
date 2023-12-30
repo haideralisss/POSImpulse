@@ -1,7 +1,9 @@
 package application.models.entities;
 
+import java.util.List;
 import java.util.Optional;
 
+import application.components.datagrid.Attribute;
 import application.models.repositories.PurchasesRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -12,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class Purchases {
@@ -25,6 +28,9 @@ public class Purchases {
 	private HBox operations;
 	
 	private static TableView<Purchases> dataGridTable;
+	//private static String title;
+	//private static List<Attribute> attributes;
+	//private static AnchorPane anchorPane;
 	
 	public Purchases()
 	{
@@ -53,6 +59,7 @@ public class Purchases {
 		this.amountPaid = amountPaid;
 		
 		HBox delHBox = new HBox();
+		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -64,8 +71,16 @@ public class Purchases {
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
 		operations = new HBox();
-		operations.getChildren().add(editButton);
+		operations.getChildren().add(editHBox);
 		operations.getChildren().add(delHBox);
+		
+		editHBox.setMaxWidth(Double.MAX_VALUE);
+		editHBox.setAlignment(Pos.CENTER);
+		editHBox.getChildren().add(editButton);
+		editHBox.setCursor(Cursor.HAND);
+		editHBox.setOnMouseClicked(event -> {
+			
+		});
 		
 		delHBox.getChildren().add(delButton);
 		delHBox.setMaxWidth(Double.MAX_VALUE);
@@ -83,8 +98,7 @@ public class Purchases {
 
 		    Optional<ButtonType> result = alert.showAndWait();
 		    if (result.isPresent() && result.get() == confirmButton) {
-		        PurchasesRepo purchasesRepo = new PurchasesRepo();
-		        purchasesRepo.deletePurchase(this.id);
+		        PurchasesRepo purchasesRepo = new PurchasesRepo();;
 		        dataGridTable.setItems(FXCollections.observableArrayList(purchasesRepo.deletePurchase(this.id)));
 		    }
 		});
@@ -93,8 +107,11 @@ public class Purchases {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView<Purchases> table) {
+	public static void setDataGridTable(TableView<Purchases> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
+        //title = Title;
+        //attributes = Attributes;
+        //anchorPane = AnchorPANE;
     }
 	
 	public int getSupplierId()
@@ -160,6 +177,11 @@ public class Purchases {
 	public double getAmountPaid()
 	{
 		return amountPaid;
+	}
+	
+	public int getId()
+	{
+		return id;
 	}
 	
 	public int getNumber()

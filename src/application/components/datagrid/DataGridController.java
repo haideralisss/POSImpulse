@@ -58,7 +58,8 @@ public class DataGridController
 	@FXML
 	public ImageView titleIcon;
 	
-	List<Attribute> attributes;
+	public List<Attribute> attributes;
+	
 	@SuppressWarnings("exports")
 	public AnchorPane anchorPane;
 	
@@ -68,10 +69,6 @@ public class DataGridController
 		this.anchorPane = anchorPane;
 		this.title.setText(title);
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
-		
-		SetUpButtons();
-		SetUpTable();
-		dataGridTable.setSelectionModel(null);
 		
 		TableColumn<String, String> firstCol = new TableColumn<>("#");
 		firstCol.setCellValueFactory(new PropertyValueFactory<>("Number"));
@@ -105,6 +102,10 @@ public class DataGridController
         dataGridTable.getColumns().add(endCol);
 		
 		category.setValue(category.getItems().get(0));
+		
+		SetUpButtons();
+		SetUpTable();
+		dataGridTable.setSelectionModel(null);
 	}
 	
 	public void SetUpButtons()
@@ -148,56 +149,56 @@ public class DataGridController
 	{	
 		if(title.getText() == "Billing")
 		{
-			Bills.setDataGridTable(dataGridTable);
+			Bills.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			BillsRepo billsRepo = new BillsRepo();
 	        ObservableList<Bills> billsList = FXCollections.observableArrayList(billsRepo.getAllBills());
 	        dataGridTable.setItems(billsList);
 		}
 		else if(title.getText() == "Purchases")
 		{
-			Purchases.setDataGridTable(dataGridTable);
+			Purchases.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			PurchasesRepo purchasesRepo = new PurchasesRepo();
 	        ObservableList<Purchases> purchasesList = FXCollections.observableArrayList(purchasesRepo.getAllPurchases());
 	        dataGridTable.setItems(purchasesList);
 		}
 		else if(title.getText() == "Companies")
 		{
-			Companies.setDataGridTable(dataGridTable);
+			Companies.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			CompaniesRepo companiesRepo = new CompaniesRepo();
 	        ObservableList<Companies> companiesList = FXCollections.observableArrayList(companiesRepo.getAllCompanies());
 	        dataGridTable.setItems(companiesList);
 		}
 		else if(title.getText() == "Suppliers")
 		{
-			Suppliers.setDataGridTable(dataGridTable);
+			Suppliers.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			SuppliersRepo suppliersRepo = new SuppliersRepo();
 	        ObservableList<Suppliers> suppliersList = FXCollections.observableArrayList(suppliersRepo.getAllSuppliers());
 	        dataGridTable.setItems(suppliersList);
 		}
 		else if(title.getText() == "Products")
 		{
-			Purchases.setDataGridTable(dataGridTable);
+			Products.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			ProductsRepo productsRepo = new ProductsRepo();
 	        ObservableList<Products> productsList = FXCollections.observableArrayList(productsRepo.getAllProducts());
 	        dataGridTable.setItems(productsList);
 		}
 		else if(title.getText() == "Stock")
 		{
-			Stock.setDataGridTable(dataGridTable);
+			Stock.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			StockRepo stockRepo = new StockRepo();
 	        ObservableList<Stock> stockList = FXCollections.observableArrayList(stockRepo.getAllStock());
 	        dataGridTable.setItems(stockList);
 		}
 		else if(title.getText() == "Expenses")
 		{
-			Expenses.setDataGridTable(dataGridTable);
+			Expenses.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			ExpensesRepo expensesRepo = new ExpensesRepo();
 	        ObservableList<Expenses> expensesList = FXCollections.observableArrayList(expensesRepo.getAllExpenses());
 	        dataGridTable.setItems(expensesList);
 		}
 		else if(title.getText() == "Accounts")
 		{
-			Accounts.setDataGridTable(dataGridTable);
+			Accounts.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
             AccountsRepo accountsRepo = new AccountsRepo();
             ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
             dataGridTable.setItems(accountsList);
@@ -217,7 +218,7 @@ public class DataGridController
 			
 			InputFormController ifController;
 			ifController = loader.getController();
-			ifController.SetupInputForm(title.getText(), attributes, anchorPane);
+			ifController.SetupInputForm(title.getText(), attributes, anchorPane, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
