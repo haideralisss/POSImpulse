@@ -14,18 +14,17 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class ProductsRepo {
 	
-	private Connection connection;
-	
 	public ProductsRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 	
 	public ArrayList<Products> getAllProducts()
 	{
 		ArrayList<Products> productsList = new ArrayList<Products>();
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
 			String query = "SELECT p.*, c.name AS companyName FROM products p " +
                     "INNER JOIN companies c ON p.companyId = c.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -34,6 +33,7 @@ public class ProductsRepo {
 			while(resultSet.next())
 			{
 				productsList.add(new Products(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("name"),
 						resultSet.getInt("packSize"),
@@ -60,8 +60,9 @@ public class ProductsRepo {
 	
 	public Products getProduct(int id) {
 	    Products product = null;
-	    try
-	    {
+	    Connection connection = DatabaseConnection.connect();
+		try
+		{
 	        String query = "SELECT p.*, c.name AS companyName FROM products p " +
 	                       "INNER JOIN companies c ON p.companyId = c.id " +
 	                       "WHERE p.id = ?";
@@ -71,6 +72,7 @@ public class ProductsRepo {
 	        if (resultSet.next()) {
 	            product = new Products(
 	                    resultSet.getInt("id"),
+	                    0,
 	                    resultSet.getString("name"),
 	                    resultSet.getInt("packSize"),
 	                    resultSet.getDouble("purchasePrice"),
@@ -93,9 +95,9 @@ public class ProductsRepo {
 	
 	public ArrayList<Products> addProduct(Products product)
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?, ?, ?)");
 			statement.setString(1, product.getName());
 			statement.setInt(2, product.getPackSize());
@@ -119,9 +121,9 @@ public class ProductsRepo {
 	
 	public ArrayList<Products> updateProduct(int id, Products updatedProduct) 
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE products SET name = ?, packSize = ?, purchasePrice = ?, retailPrice = ?, companyId = ? WHERE id = ?");
 	        statement.setString(1, updatedProduct.getName());
@@ -147,9 +149,9 @@ public class ProductsRepo {
 
 	public ArrayList<Products> deleteProduct(int id) 
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
 	        statement.setInt(1, id);
 

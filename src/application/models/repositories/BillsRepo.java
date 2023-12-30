@@ -16,11 +16,10 @@ import application.utils.backendUtils.*;
 
 public class BillsRepo 
 {
-	private Connection connection;
 	
 	public BillsRepo()
 	{
-		connection = DatabaseConnection.connect();
+		
 	}
 	
 	public String fetchTodaySales()
@@ -28,6 +27,7 @@ public class BillsRepo
 		String todaySales = "0";
 		double totalAmount = 0.0;
 		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	       	LocalDate now = LocalDate.now();
@@ -66,6 +66,7 @@ public class BillsRepo
 		String monthSales = "0";
         double totalAmount = 0.0;
         
+        Connection connection = DatabaseConnection.connect();
 		try
 		{
             // Get the current date
@@ -119,15 +120,16 @@ public class BillsRepo
 	{
 		ArrayList<Bills> billsList = new ArrayList<Bills>();
 		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills");
 			ResultSet resultSet = statement.executeQuery();
 			int count = 1;
 			while(resultSet.next())
 			{
 				billsList.add(new Bills(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("customerName"),
 						resultSet.getInt("invoiceNum"),
@@ -163,6 +165,7 @@ public class BillsRepo
 	public Bills getBill(int id) {
 		Bills bill = null;
 		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bills WHERE id = ?");
@@ -172,6 +175,7 @@ public class BillsRepo
 			while(resultSet.next())
 			{
 				bill = new Bills(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("customerName"),
 						resultSet.getInt("invoiceNum"),
@@ -206,6 +210,7 @@ public class BillsRepo
 	
 	public ArrayList<Bills> addBill(Bills bill)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -240,6 +245,7 @@ public class BillsRepo
 	
 	public ArrayList<Bills> updateBill(int id, Bills updatedBill) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement(
@@ -274,11 +280,11 @@ public class BillsRepo
 	    return getAllBills();
 	}
 
-	public ArrayList<Bills> deleteBills(int id) 
+	public ArrayList<Bills> deleteBill(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
-	    	
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM bills WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -303,6 +309,7 @@ public class BillsRepo
 	{
         ArrayList<Bills> monthSalesList = new ArrayList<>();
         
+        Connection connection = DatabaseConnection.connect();
 		try
 		{
         	java.util.Date now = new java.util.Date();

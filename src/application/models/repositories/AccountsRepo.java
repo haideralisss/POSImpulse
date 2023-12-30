@@ -14,16 +14,16 @@ import javafx.scene.control.Alert.AlertType;
 
 public class AccountsRepo {
 	
-	private Connection connection;
-	
 	public AccountsRepo()
 	{
-		connection = DatabaseConnection.connect();
+		
 	}
 	
 	public ArrayList<Accounts> getAllAccounts()
 	{
 		ArrayList<Accounts> accountsList = new ArrayList<Accounts>();
+		
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts");
@@ -32,6 +32,7 @@ public class AccountsRepo {
 			while(resultSet.next())
 			{
 				accountsList.add(new Accounts(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("username"),
 						resultSet.getString("fullname"),
@@ -58,14 +59,16 @@ public class AccountsRepo {
 	public Accounts getAccount(int id)
 	{
 		Accounts account = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
 				account = new Accounts(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getString("username"),
 						resultSet.getString("fullname"),
@@ -90,8 +93,9 @@ public class AccountsRepo {
 	
 	public ArrayList<Accounts> addAccount(Accounts account)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement(
 		            "INSERT INTO accounts (userName, fullName, phone, password, isAdmin) VALUES (?, ?, ?, ?, ?)",
 		            Statement.RETURN_GENERATED_KEYS
@@ -122,8 +126,9 @@ public class AccountsRepo {
 	
 	public ArrayList<Accounts> updateAccount(int id, Accounts updatedAccount) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE accounts SET fullname = ?, phone = ?, password = ?, isAdmin = ? WHERE id = ?");
 	        statement.setString(1, updatedAccount.getFullName());
@@ -148,8 +153,9 @@ public class AccountsRepo {
 
 	public ArrayList<Accounts> deleteAccount(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -171,8 +177,9 @@ public class AccountsRepo {
 	public boolean verifyUser(String username, String password) 
 	{
 	    boolean checkFlag = true;
-	    try
-	    {
+	    Connection connection = DatabaseConnection.connect();
+		try
+		{
 	        String query = "SELECT username, password FROM accounts WHERE username=? AND password=?";
 	        PreparedStatement statement = connection.prepareStatement(query);
 	        

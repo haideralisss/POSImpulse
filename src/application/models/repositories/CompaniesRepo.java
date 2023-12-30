@@ -10,24 +10,24 @@ import application.utils.backendUtils.DatabaseConnection;
 
 public class CompaniesRepo {
 	
-	private Connection connection;
-	
 	public CompaniesRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 	
 	public ArrayList<Companies> getAllCompanies()
 	{
 		ArrayList<Companies> companiesList = new ArrayList<Companies>();
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies");
 			ResultSet resultSet = statement.executeQuery();
 			int count = 1;
 			while(resultSet.next())
 			{
 				companiesList.add(new Companies(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("name"),
 						resultSet.getString("contact"),
@@ -52,14 +52,16 @@ public class CompaniesRepo {
 	public Companies getCompany(int id)
 	{
 		Companies company = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM companies WHERE id = ?");
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
 				company = new Companies(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getString("name"),
 						resultSet.getString("contact"),
@@ -82,8 +84,9 @@ public class CompaniesRepo {
 	
 	public ArrayList<Companies> addCompany(Companies company)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO companies VALUES (?, ?, ?)");
 			statement.setString(1, company.getName());
 			statement.setString(2, company.getContact());
@@ -105,9 +108,9 @@ public class CompaniesRepo {
 	
 	public ArrayList<Companies> updateCompany(int id, Companies updatedCompany) 
 	{
-		Connection connection = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE companies SET name = ?, contact = ?, address = ? WHERE id = ?");
 			statement.setString(1, updatedCompany.getName());
@@ -131,8 +134,9 @@ public class CompaniesRepo {
 
 	public ArrayList<Companies> deleteCompany(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM companies WHERE id = ?");
 	        statement.setInt(1, id);
 

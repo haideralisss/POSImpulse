@@ -15,17 +15,16 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class ExpensesRepo {
 	
-private Connection connection;
-	
 	public ExpensesRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 
 	public String fetchMonthExpenses() 
 	{
 		String monthExpenses = "0";
 		double totalAmount = 0;
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
         	java.util.Date now = new java.util.Date();
@@ -71,6 +70,7 @@ private Connection connection;
 	public ArrayList<Expenses> getAllExpenses()
 	{
 		ArrayList<Expenses> expensesList = new ArrayList<Expenses>();
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses");
@@ -79,6 +79,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				expensesList.add(new Expenses(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getObject("expenseDate").toString(),
 						resultSet.getString("name"),
@@ -104,6 +105,7 @@ private Connection connection;
 	public Expenses getExpense(int id)
 	{
 		Expenses expense = null;
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM expenses WHERE id = ?");
@@ -112,6 +114,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				expense = new Expenses(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getObject("expenseDate").toString(),
 						resultSet.getString("name"),
@@ -135,6 +138,7 @@ private Connection connection;
 	
 	public ArrayList<Expenses> addExpense(Expenses expense)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
@@ -153,6 +157,7 @@ private Connection connection;
 	
 	public ArrayList<Expenses> updateExpense(int id, Expenses updatedExpense) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement(
@@ -179,6 +184,7 @@ private Connection connection;
 
 	public ArrayList<Expenses> deleteExpense(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
 		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM expenses WHERE id = ?");

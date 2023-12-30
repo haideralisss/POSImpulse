@@ -11,24 +11,24 @@ import application.utils.backendUtils.DatabaseConnection;
 
 public class SuppliersRepo {
 	
-	Connection connection;
-	
 	public SuppliersRepo()
 	{
-		connection = DatabaseConnection.connect();
+		
 	}
 	
 	public ArrayList<Suppliers> getAllSuppliers()
 	{
 		ArrayList<Suppliers> suppliersList = new ArrayList<Suppliers>();
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM suppliers");
 			ResultSet resultSet = statement.executeQuery();
 			int count = 1;
 			while(resultSet.next())
 			{
 				suppliersList.add(new Suppliers(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("name"),
 						resultSet.getString("contact"),
@@ -53,14 +53,16 @@ public class SuppliersRepo {
 	public Suppliers getSupplier(int id)
 	{
 		Suppliers supplier = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM suppliers WHERE id = ?");
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
 				supplier = new Suppliers(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getString("name"),
 						resultSet.getString("contact"),
@@ -83,8 +85,9 @@ public class SuppliersRepo {
 	
 	public ArrayList<Suppliers> addSupplier(Suppliers supplier)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO suppliers VALUES (?, ?, ?)");
 			statement.setString(1, supplier.getName());
 			statement.setString(2, supplier.getContact());
@@ -106,8 +109,9 @@ public class SuppliersRepo {
 	
 	public ArrayList<Suppliers> updateSuppliers(int id, Suppliers updatedSupplier) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE suppliers SET name = ?, contact = ?, address = ? WHERE id = ?");
 			statement.setString(1, updatedSupplier.getName());
@@ -131,8 +135,9 @@ public class SuppliersRepo {
 
 	public ArrayList<Suppliers> deleteSupplier(int id) 
 	{
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM suppliers WHERE id = ?");
 	        statement.setInt(1, id);
 

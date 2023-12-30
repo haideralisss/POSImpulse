@@ -1,6 +1,16 @@
 package application.models.entities;
 
+import java.util.Optional;
+
+import application.models.repositories.PurchasesRepo;
+import application.models.repositories.StockRepo;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -9,13 +19,16 @@ public class Stock {
 	
 	private String productName;
 	private double unitCost;
-	private int totalQuantity, productId;
+	private int totalQuantity, productId, id;
 
 	private int number;
 	private HBox operations;
 	
-	public Stock(int number, int productId, String productName, double unitCost, int totalQuantity)
+	private static TableView dataGridTable;
+	
+	public Stock(int id, int number, int productId, String productName, double unitCost, int totalQuantity)
 	{
+		this.id = id;
 		this.number = number;
 		this.productId = productId;
 		this.productName = productName;
@@ -38,7 +51,33 @@ public class Stock {
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
 		operations.setAlignment(Pos.CENTER);
+		
+		delButton.setCursor(Cursor.HAND);
+		delButton.setOnMouseClicked(event -> {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		    alert.setTitle("Confirmation Dialog");
+		    alert.setHeaderText("Delete Stock");
+		    alert.setContentText("Are you sure you want to delete this stock?");
+
+		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
+
+		    Optional<ButtonType> result = alert.showAndWait();
+		    if (result.isPresent() && result.get() == confirmButton) {
+		        StockRepo stockRepo = new StockRepo();
+		        stockRepo.deleteStock(this.id);
+		        dataGridTable.setItems(FXCollections.observableArrayList(stockRepo.deleteStock(this.id)));
+		    }
+		});
+		
+		operations.setMaxWidth(Double.MAX_VALUE);
+		operations.setAlignment(Pos.CENTER);
 	}
+	
+	public static void setDataGridTable(TableView table) {
+        dataGridTable = table;
+    }
 	
 	public int getProductId() {
         return productId;

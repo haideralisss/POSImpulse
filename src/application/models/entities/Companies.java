@@ -1,19 +1,33 @@
 package application.models.entities;
 
+import java.util.Optional;
+
+import application.models.repositories.BillsRepo;
+import application.models.repositories.CompaniesRepo;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class Companies {
 	
+	private int id;
 	private String name, contact, address;
 	
 	private int number;
 	private HBox operations;
 	
-	public Companies(int number, String name, String contact, String address)
+	private static TableView dataGridTable;
+	
+	public Companies(int id, int number, String name, String contact, String address)
 	{
+		this.id = id;
 		this.number = number;
 		this.name = name;
 		this.contact = contact;
@@ -35,7 +49,33 @@ public class Companies {
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
 		operations.setAlignment(Pos.CENTER);
+		
+		delButton.setCursor(Cursor.HAND);
+		delButton.setOnMouseClicked(event -> {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		    alert.setTitle("Confirmation Dialog");
+		    alert.setHeaderText("Delete Company");
+		    alert.setContentText("Are you sure you want to delete this company?");
+
+		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
+
+		    Optional<ButtonType> result = alert.showAndWait();
+		    if (result.isPresent() && result.get() == confirmButton) {
+		        CompaniesRepo companiesRepo = new CompaniesRepo();
+		        companiesRepo.deleteCompany(this.id);
+		        dataGridTable.setItems(FXCollections.observableArrayList(companiesRepo.deleteCompany(this.id)));
+		    }
+		});
+		
+		operations.setMaxWidth(Double.MAX_VALUE);
+		operations.setAlignment(Pos.CENTER);
 	}
+	
+	public static void setDataGridTable(TableView table) {
+        dataGridTable = table;
+    }
 	
 	public String getName()
 	{

@@ -184,9 +184,10 @@ public class DataGridController
 		}
 		else if(title.getText() == "Accounts")
 		{
-			AccountsRepo accountsRepo = new AccountsRepo();
-	        ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
-	        dataGridTable.setItems(accountsList);
+			Accounts.setDataGridTable(dataGridTable);
+            AccountsRepo accountsRepo = new AccountsRepo();
+            ObservableList<Accounts> accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
+            dataGridTable.setItems(accountsList);
 		}
 	}
 	

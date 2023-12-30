@@ -11,18 +11,17 @@ import application.utils.backendUtils.DatabaseConnection;
 
 public class PurchasesRepo {
 	
-private Connection connection;
-	
 	public PurchasesRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 	
 	public ArrayList<Purchases> getAllPurchases()
 	{
 		ArrayList<Purchases> purchasesList = new ArrayList<Purchases>();
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -31,6 +30,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				purchasesList.add(new Purchases(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getInt("supplierId"),
 						resultSet.getString("supplierName"),
@@ -64,8 +64,9 @@ private Connection connection;
 	
 	public Purchases getPurchase(int id) {
 		Purchases purchase = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id WHERE id = ?";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -74,6 +75,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				purchase = new Purchases(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getInt("supplierId"),
 						resultSet.getString("supplierName"),
@@ -106,8 +108,9 @@ private Connection connection;
 	
 	public ArrayList<Purchases> addPurchase(Purchases purchase)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setInt(1, purchase.getSupplierId());
 			statement.setObject(2, purchase.getPurchaseDate());
@@ -138,8 +141,9 @@ private Connection connection;
 	
 	public ArrayList<Purchases> updatePurchase(int id, Purchases updatedPurchase) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE purchases SET supplierId = ?, purchaseDate = ?, invoiceNum = ?, grossTotal = ?, salesTax = ?, discount = ?, otherCharges = ?, netTotal = ?, isReturn = ?, isLoose = ?, shift = ?, amountPaid = ? WHERE id = ?");
 	        statement.setInt(1, updatedPurchase.getSupplierId());
@@ -170,10 +174,11 @@ private Connection connection;
 	    return getAllPurchases();
 	}
 
-	public ArrayList<Purchases> deletePurchases(int id) 
+	public ArrayList<Purchases> deletePurchase(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM purchases WHERE id = ?");
 	        statement.setInt(1, id);
 

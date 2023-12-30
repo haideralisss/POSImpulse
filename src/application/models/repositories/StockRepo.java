@@ -13,19 +13,18 @@ import application.utils.backendUtils.NumberFormatter;
 
 public class StockRepo {
 	
-private Connection connection;
-	
 	public StockRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 	
 	public String fetchStockWorth() 
 	{
 		String stockWorth = "0";
 		double totalAmount = 0;
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
             PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT SUM((p.purchasePrice / p.packSize) * s.totalQuantity) AS totalAmount " +
                              "FROM stock s " +
@@ -55,8 +54,9 @@ private Connection connection;
 	public ArrayList<Stock> getAllStock()
 	{
 		ArrayList<Stock> stockList = new ArrayList<Stock>();
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -65,6 +65,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				stockList.add(new Stock(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getInt("productId"),
 						resultSet.getString("productName"),
@@ -90,8 +91,9 @@ private Connection connection;
 	public Stock getStock(int id)
 	{
 		Stock stock = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id " +
 					"WHERE id = ?";
@@ -101,6 +103,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				stock = new Stock(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getInt("productId"),
 						resultSet.getString("productName"),
@@ -124,8 +127,9 @@ private Connection connection;
 	
 	public ArrayList<Stock> addStock(Stock stock)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock VALUES (?, ?, ?)");
 			statement.setInt(1, stock.getProductId());
 			statement.setDouble(2, stock.getUnitCost());
@@ -147,8 +151,9 @@ private Connection connection;
 	
 	public ArrayList<Stock> updateStock(int id, Stock updatedStock) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE stock SET productId = ?, unitCost = ?, totalQuantity = ? WHERE id = ?");
 	        statement.setInt(1, updatedStock.getProductId());
@@ -172,8 +177,9 @@ private Connection connection;
 
 	public ArrayList<Stock> deleteStock(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
 	        statement.setInt(1, id);
 

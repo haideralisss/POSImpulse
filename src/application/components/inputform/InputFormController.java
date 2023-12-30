@@ -160,15 +160,12 @@ public class InputFormController {
         try {
             Field field = object.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
-
-            // Determine the field type and convert the value accordingly
+            
             if (field.getType() == String.class) {
                 field.set(object, (String) value);
             } else if (field.getType() == Boolean.TYPE) {
                 field.set(object, (Boolean) value);
             } else if (field.getType() == LocalDate.class) {
-                // Assuming 'value' is a String representation of the date, you may need to parse it
-                // Replace the following line with the correct parsing logic based on your date format
                 LocalDate dateValue = LocalDate.parse((String) value);
                 field.set(object, dateValue);
             } // Add more cases for other data types as needed
@@ -202,23 +199,24 @@ public class InputFormController {
             entityInstance = createEntityInstance(Accounts.class);
         }
 
-        if (entityInstance != null) {
-            for (Attribute attribute : attributes) {
+        	for (Attribute attribute : attributes) {
                 if (attribute.isInput()) {
                     Node inputComponent = inputComponents.get(attribute.getAttribute());
                     if (inputComponent != null) {
                         Object value = getComponentValue(attribute, inputComponent);
+                        System.out.println("Attribute: " + attribute.getAttribute() + ", Value: " + value);
                         setValueByReflection(entityInstance, attribute.getAttribute(), value);
                     }
                 }
             }
-        }
         
-        if(title.getText() == "Accounts")
+        if("Accounts".equals(title.getText()))
         {
         	AccountsRepo accountsRepo = new AccountsRepo();
         	accountsRepo.addAccount((Accounts) entityInstance);
         }
+        
+        CancelEvent();
     }
 
 }

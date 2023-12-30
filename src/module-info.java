@@ -11,6 +11,7 @@ module POSImpulse {
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.components.inputform to javafx.fxml;
+	opens application.components.datagrid to javafx.fxml;
 	opens application.screens.profile to javafx.fxml;
 	opens application.screens.billing to javafx.fxml;
 	opens application.screens.purchases to javafx.fxml;
