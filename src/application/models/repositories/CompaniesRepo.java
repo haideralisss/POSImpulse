@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import application.models.entities.Companies;
 import application.utils.backendUtils.DatabaseConnection;
@@ -87,7 +88,7 @@ public class CompaniesRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO companies VALUES (?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO companies (name, contact, address) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, company.getName());
 			statement.setString(2, company.getContact());
 			statement.setString(3, company.getAddress());

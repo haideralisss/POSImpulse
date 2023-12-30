@@ -1,9 +1,6 @@
 package application.models.entities;
 
-import java.time.LocalDate;
 import java.util.Optional;
-
-import application.models.repositories.AccountsRepo;
 import application.models.repositories.BillsRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -27,7 +24,7 @@ public class Bills {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Bills> dataGridTable;
 	
 	public Bills()
 	{
@@ -81,6 +78,7 @@ public class Bills {
 		this.isReturn = isReturn;
 		this.profit = profit;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -93,10 +91,13 @@ public class Bills {
 		editButton.setFitHeight(15);
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
+		operations.getChildren().add(delHBox);
 		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Bill");
@@ -118,7 +119,7 @@ public class Bills {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Bills> table) {
         dataGridTable = table;
     }
 	
@@ -191,11 +192,11 @@ public class Bills {
     }
 
     public boolean getIsCredit() {
-        return isCredit;
+    	return isCredit;
     }
 
-    public boolean getIsReturn() {
-        return isReturn;
+    public String getIsReturn() {
+        return (isReturn ? "Yes" : "No");
     }
 
     public double getProfit() {

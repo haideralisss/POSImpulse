@@ -1,9 +1,7 @@
 package application.models.entities;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import application.models.repositories.CompaniesRepo;
 import application.models.repositories.ExpensesRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -26,8 +24,15 @@ public class Expenses {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Expenses> dataGridTable;
 
+	public Expenses()
+	{
+		id = number = 0;
+		name = description = expenseDate = "";
+		amount = 0;
+	}
+	
 	public Expenses(int id, int number, String expenseDate, String name, String description, double amount)
 	{
 		this.id = id;
@@ -37,6 +42,7 @@ public class Expenses {
 		this.description = description;
 		this.amount = amount;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -49,13 +55,13 @@ public class Expenses {
 		editButton.setFitHeight(15);
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
+		operations.getChildren().add(delHBox);
 		
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
-		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Expense");
@@ -77,7 +83,7 @@ public class Expenses {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Expenses> table) {
         dataGridTable = table;
     }
 	

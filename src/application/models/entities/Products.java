@@ -2,7 +2,6 @@ package application.models.entities;
 
 import java.util.Optional;
 
-import application.models.repositories.ExpensesRepo;
 import application.models.repositories.ProductsRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -24,7 +23,14 @@ public class Products {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Products> dataGridTable;
+	
+	public Products()
+	{
+		id = number = packSize = companyId = 0;
+		name = companyName = "";
+		purchasePrice = retailPrice = 0;
+	}
 	
 	public Products(int id, int number, String name, int packSize, double purchasePrice, double retailPrice, int companyId, String companyName)
 	{
@@ -37,6 +43,7 @@ public class Products {
 		this.companyId = companyId;
 		this.companyName = companyName;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -47,15 +54,15 @@ public class Products {
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
-		
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
+		operations.getChildren().add(delHBox);
 		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Product");
@@ -77,7 +84,7 @@ public class Products {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Products> table) {
         dataGridTable = table;
     }
 	

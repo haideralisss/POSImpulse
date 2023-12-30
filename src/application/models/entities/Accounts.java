@@ -23,7 +23,7 @@ public class Accounts {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Accounts> dataGridTable;
 	
 	public Accounts()
 	{
@@ -57,7 +57,6 @@ public class Accounts {
 		operations.getChildren().add(editButton);
 		operations.getChildren().add(delHBox);
 		
-		
 		delHBox.getChildren().add(delButton);
 		delHBox.setMaxWidth(Double.MAX_VALUE);
 		delHBox.setAlignment(Pos.CENTER);
@@ -84,7 +83,7 @@ public class Accounts {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Accounts> table) {
         dataGridTable = table;
     }
 	
@@ -108,9 +107,9 @@ public class Accounts {
 		return password;
 	}
 	
-	public boolean getIsAdmin()
+	public String getIsAdmin()
 	{
-		return isAdmin;
+		return (isAdmin ? "Yes" : "No");
 	}
 	
 	public int getNumber()

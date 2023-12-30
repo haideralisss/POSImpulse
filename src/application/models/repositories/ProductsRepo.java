@@ -1,16 +1,14 @@
 package application.models.repositories;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Products;
 import application.utils.backendUtils.DatabaseConnection;
-import application.utils.backendUtils.DateFormatter;
-import application.utils.backendUtils.NumberFormatter;
 
 public class ProductsRepo {
 	
@@ -98,7 +96,7 @@ public class ProductsRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO products (name, packSize, purchasePrice, retailPrice, companyId) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, product.getName());
 			statement.setInt(2, product.getPackSize());
 			statement.setDouble(3, product.getPurchasePrice());

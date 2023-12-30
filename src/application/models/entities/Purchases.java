@@ -1,9 +1,7 @@
 package application.models.entities;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import application.models.repositories.ProductsRepo;
 import application.models.repositories.PurchasesRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -18,8 +16,7 @@ import javafx.scene.layout.HBox;
 
 public class Purchases {
 	
-	private String invoiceNum, salesTax, discount, shift, supplierName;
-	private String purchaseDate;
+	private String invoiceNum, salesTax, discount, shift, supplierName, purchaseDate;
 	private int supplierId, id;
 	private double grossTotal, otherCharges, netTotal, amountPaid;
 	private boolean isReturn, isLoose;
@@ -27,7 +24,15 @@ public class Purchases {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Purchases> dataGridTable;
+	
+	public Purchases()
+	{
+		id = number = supplierId = 0;
+		invoiceNum = salesTax = discount = shift = supplierName = purchaseDate = "";
+		grossTotal = otherCharges = netTotal = amountPaid = 0;
+		isReturn = isLoose = false;
+	}
 	
 	public Purchases(int id, int number, int supplierId, String supplierName, String purchaseDate, String invoiceNum, double grossTotal, String salesTax, String discount, double otherCharges, double netTotal, boolean isReturn, boolean isLoose, String shift, double amountPaid)
 	{
@@ -47,6 +52,7 @@ public class Purchases {
 		this.shift = shift;
 		this.amountPaid = amountPaid;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -57,15 +63,15 @@ public class Purchases {
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
-		
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
+		operations.getChildren().add(delHBox);
 		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Purchase");
@@ -87,7 +93,7 @@ public class Purchases {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Purchases> table) {
         dataGridTable = table;
     }
 	
@@ -136,9 +142,9 @@ public class Purchases {
 		return netTotal;
 	}
 	
-	public boolean getIsReturn()
+	public String getIsReturn()
 	{
-		return isReturn;
+		return (isReturn ? "Yes" : "No");
 	}
 	
 	public boolean getIsLoose()

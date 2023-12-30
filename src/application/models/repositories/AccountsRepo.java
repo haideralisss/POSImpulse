@@ -74,7 +74,7 @@ public class AccountsRepo {
 						resultSet.getString("fullname"),
 						resultSet.getString("phone"),
 						resultSet.getString("password"),
-						resultSet.getBoolean("isAdmin")
+						(account.getIsAdmin() == "Yes" ? true : false)
 					);
 			}
 		}
@@ -104,7 +104,7 @@ public class AccountsRepo {
 			statement.setString(2, account.getFullName());
 			statement.setString(3, account.getPhone());
 			statement.setString(4, account.getPassword());
-			statement.setBoolean(5, account.getIsAdmin());
+			statement.setBoolean(5, (account.getIsAdmin() == "Yes" ? true : false));
 			statement.executeUpdate();
 		}
 		catch(SQLException e)
@@ -112,7 +112,7 @@ public class AccountsRepo {
 			System.out.println(account.getPhone() + account.getIsAdmin());
 			Alert errorAlert = new Alert(AlertType.ERROR);
 			errorAlert.setTitle("Error");
-			errorAlert.setContentText(e.getMessage());
+			errorAlert.setContentText(e.getLocalizedMessage());
 			errorAlert.showAndWait();
 		} finally {
 			try {
@@ -134,7 +134,7 @@ public class AccountsRepo {
 	        statement.setString(1, updatedAccount.getFullName());
 	        statement.setString(2, updatedAccount.getPhone());
 	        statement.setString(3, updatedAccount.getPassword());
-	        statement.setBoolean(4, updatedAccount.getIsAdmin());
+	        statement.setBoolean(4, (updatedAccount.getIsAdmin() == "Yes" ? true : false));
 	        statement.setInt(5, id);
 	        statement.executeUpdate();
 	    } 

@@ -11,7 +11,8 @@ public class ChangePasswordController {
 	@FXML
     private AnchorPane profileAnchorPane;
 
-    public void initializeProfileAnchorPane(AnchorPane profileAnchorPane) {
+    @SuppressWarnings("exports")
+	public void initializeProfileAnchorPane(AnchorPane profileAnchorPane) {
         this.profileAnchorPane = profileAnchorPane;
     }
 	

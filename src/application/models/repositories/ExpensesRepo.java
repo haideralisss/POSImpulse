@@ -5,10 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Expenses;
-import application.models.entities.Products;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
@@ -20,6 +20,7 @@ public class ExpensesRepo {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public String fetchMonthExpenses() 
 	{
 		String monthExpenses = "0";
@@ -141,7 +142,7 @@ public class ExpensesRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses (expenseDate, name, description, amount) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setObject(1, expense.getExpenseDate());
 			statement.setString(2, expense.getName());
 			statement.setString(3, expense.getDescription());

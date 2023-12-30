@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Purchases;
@@ -111,7 +112,7 @@ public class PurchasesRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases (supplierId, purchaseDate, invoiceNum, grossTotal, salesTax, discount, otherCharges, netTotal, isReturn, isLoose, shift, amountPaid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, purchase.getSupplierId());
 			statement.setObject(2, purchase.getPurchaseDate());
 			statement.setString(3, purchase.getInvoiceNum());
@@ -120,7 +121,7 @@ public class PurchasesRepo {
 			statement.setString(6, purchase.getDiscount());
 			statement.setDouble(7, purchase.getOtherCharges());
 			statement.setDouble(8, purchase.getNetTotal());
-			statement.setBoolean(9, purchase.getIsReturn());
+			statement.setBoolean(9, (purchase.getIsReturn() == "Yes" ? true : false));
 			statement.setBoolean(10, purchase.getIsLoose());
 			statement.setString(11, purchase.getShift());
 			statement.setDouble(12, purchase.getAmountPaid());
@@ -154,7 +155,7 @@ public class PurchasesRepo {
 			statement.setString(6, updatedPurchase.getDiscount());
 			statement.setDouble(7, updatedPurchase.getOtherCharges());
 			statement.setDouble(8, updatedPurchase.getNetTotal());
-			statement.setBoolean(9, updatedPurchase.getIsReturn());
+			statement.setBoolean(9, (updatedPurchase.getIsReturn() == "Yes" ? true : false));
 			statement.setBoolean(10, updatedPurchase.getIsLoose());
 			statement.setString(11, updatedPurchase.getShift());
 			statement.setDouble(12, updatedPurchase.getAmountPaid());

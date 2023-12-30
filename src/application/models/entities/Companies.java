@@ -2,7 +2,6 @@ package application.models.entities;
 
 import java.util.Optional;
 
-import application.models.repositories.BillsRepo;
 import application.models.repositories.CompaniesRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -23,7 +22,13 @@ public class Companies {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Companies> dataGridTable;
+	
+	public Companies()
+	{
+		id = number = 0;
+		name = contact = address = "";
+	}
 	
 	public Companies(int id, int number, String name, String contact, String address)
 	{
@@ -33,6 +38,7 @@ public class Companies {
 		this.contact = contact;
 		this.address = address;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -45,13 +51,13 @@ public class Companies {
 		editButton.setFitHeight(15);
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
+		operations.getChildren().add(delHBox);
 		
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
-		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Company");
@@ -73,7 +79,7 @@ public class Companies {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Companies> table) {
         dataGridTable = table;
     }
 	

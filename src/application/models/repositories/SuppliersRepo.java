@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Suppliers;
@@ -88,7 +89,8 @@ public class SuppliersRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO suppliers VALUES (?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO suppliers (name, contact, address) VALUES (?, ?, ?)",
+		            Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, supplier.getName());
 			statement.setString(2, supplier.getContact());
 			statement.setString(3, supplier.getAddress());

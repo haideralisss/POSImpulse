@@ -5,7 +5,6 @@ import java.util.List;
 
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
-import application.screens.billing.BillCartItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,7 +21,7 @@ public class PurchasesController {
 	@FXML
 	VBox CartVBox;
 	
-	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes)
+	public void SetRoute(@SuppressWarnings("exports") AnchorPane anchorPane, List<Attribute> attributes)
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;

@@ -5,13 +5,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.time.format.DateTimeFormatter;
 
 import application.utils.backendUtils.DatabaseConnection;
 import application.models.entities.Bills;
-import application.models.entities.Products;
 import application.utils.backendUtils.*;
 
 public class BillsRepo 
@@ -61,6 +60,7 @@ public class BillsRepo
 	    return todaySales;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String fetchMonthSales() 
 	{
 		String monthSales = "0";
@@ -213,7 +213,7 @@ public class BillsRepo
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills (customerName, invoiceNum, billDate, grossTotal, discount, salesTax, netTotal, amountPaid, shift, isCredit, isReturn, profit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, bill.getCustomerName());
 			statement.setInt(2, bill.getInvoiceNum());
 			statement.setObject(3, bill.getBillDate());
@@ -224,7 +224,7 @@ public class BillsRepo
 			statement.setDouble(8, bill.getAmountPaid());
 			statement.setString(9, bill.getShift());
 			statement.setBoolean(10, bill.getIsCredit());
-			statement.setBoolean(11, bill.getIsReturn());
+			statement.setBoolean(11, (bill.getIsReturn() == "Yes" ? true : false));
 			statement.setDouble(12, bill.getProfit());
 			statement.executeUpdate();
 		}
@@ -260,7 +260,7 @@ public class BillsRepo
 			statement.setDouble(8, updatedBill.getAmountPaid());
 			statement.setString(9, updatedBill.getShift());
 			statement.setBoolean(10, updatedBill.getIsCredit());
-			statement.setBoolean(11, updatedBill.getIsReturn());
+			statement.setBoolean(11, (updatedBill.getIsReturn() == "Yes" ? true : false));
 			statement.setDouble(12, updatedBill.getProfit());
 			statement.setInt(13, id);
 	        statement.executeUpdate();
@@ -305,6 +305,7 @@ public class BillsRepo
 	    return getAllBills();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{
         ArrayList<Bills> monthSalesList = new ArrayList<>();

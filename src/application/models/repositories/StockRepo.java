@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.models.entities.Stock;
-import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.NumberFormatter;
 
@@ -130,7 +129,7 @@ public class StockRepo {
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock VALUES (?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock (productId, unitCost, totalQuantity) VALUES (?, ?, ?)");
 			statement.setInt(1, stock.getProductId());
 			statement.setDouble(2, stock.getUnitCost());
 			statement.setInt(3, stock.getTotalQuantity());

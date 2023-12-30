@@ -2,7 +2,6 @@ package application.models.entities;
 
 import java.util.Optional;
 
-import application.models.repositories.PurchasesRepo;
 import application.models.repositories.StockRepo;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -24,7 +23,14 @@ public class Stock {
 	private int number;
 	private HBox operations;
 	
-	private static TableView dataGridTable;
+	private static TableView<Stock> dataGridTable;
+	
+	public Stock()
+	{
+		id = number = productId = totalQuantity = 0;
+		unitCost = 0;
+		productName = "";
+	}
 	
 	public Stock(int id, int number, int productId, String productName, double unitCost, int totalQuantity)
 	{
@@ -35,6 +41,7 @@ public class Stock {
 		this.unitCost = unitCost;
 		this.totalQuantity = totalQuantity;
 		
+		HBox delHBox = new HBox();
 		ImageView delButton = new ImageView();
 		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
@@ -47,13 +54,13 @@ public class Stock {
 		editButton.setFitHeight(15);
 		operations = new HBox();
 		operations.getChildren().add(editButton);
-		operations.getChildren().add(delButton);
+		operations.getChildren().add(delHBox);
 		
-		operations.setMaxWidth(Double.MAX_VALUE);
-		operations.setAlignment(Pos.CENTER);
-		
-		delButton.setCursor(Cursor.HAND);
-		delButton.setOnMouseClicked(event -> {
+		delHBox.getChildren().add(delButton);
+		delHBox.setMaxWidth(Double.MAX_VALUE);
+		delHBox.setAlignment(Pos.CENTER);
+		delHBox.setCursor(Cursor.HAND);
+		delHBox.setOnMouseClicked(event -> {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		    alert.setTitle("Confirmation Dialog");
 		    alert.setHeaderText("Delete Stock");
@@ -75,7 +82,7 @@ public class Stock {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
-	public static void setDataGridTable(TableView table) {
+	public static void setDataGridTable(TableView<Stock> table) {
         dataGridTable = table;
     }
 	
@@ -93,6 +100,10 @@ public class Stock {
 
     public int getTotalQuantity() {
         return totalQuantity;
+    }
+    
+    public double getTotalPrice() {
+    	return unitCost * totalQuantity;
     }
 	
 	public int getNumber()

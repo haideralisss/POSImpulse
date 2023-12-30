@@ -7,15 +7,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 public class BillCartItem {
 	
+	@SuppressWarnings("exports")
 	public VBox nameStockBox;
+	@SuppressWarnings("exports")
 	public JFXTextField price, qty, disc;
+	@SuppressWarnings("exports")
 	public Label netTotal;
+	@SuppressWarnings("exports")
 	public ImageView delButton;
 	
 	public BillCartItem(String name, String stock)
@@ -52,31 +53,37 @@ public class BillCartItem {
 		delButton.getStyleClass().add("delButtonIcon");
 	}
 	
+	@SuppressWarnings("exports")
 	public VBox getNameStockBox()
 	{
 		return nameStockBox;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getPrice()
 	{
 		return price;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getQty()
 	{
 		return qty;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getDisc()
 	{
 		return disc;
 	}
 	
+	@SuppressWarnings("exports")
 	public Label getNetTotal()
 	{
 		return netTotal;
 	}
 	
+	@SuppressWarnings("exports")
 	public ImageView getDelButton()
 	{
 		return delButton;
