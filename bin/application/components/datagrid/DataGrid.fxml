@@ -36,7 +36,7 @@
       </Label>
       <Pane layoutX="33.0" layoutY="111.0" prefHeight="41.0" prefWidth="492.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, #888, 5, 0, 0, 0); -fx-background-radius: 20;">
          <children>
-            <JFXTextField focusColor="#ffffff00" layoutX="24.0" layoutY="3.0" prefHeight="35.0" prefWidth="400.0" promptText="Search here..." unFocusColor="#4d4d4d00">
+            <JFXTextField fx:id="fetchDataFromDatabase" focusColor="#ffffff00" layoutX="24.0" layoutY="3.0" prefHeight="35.0" prefWidth="400.0" promptText="Search here..." unFocusColor="#4d4d4d00">
                <font>
                   <Font size="16.0" />
                </font>

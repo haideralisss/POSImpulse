@@ -1,5 +1,36 @@
-.table-view .column-header .label {
+/* .tableView .column-header {
+	-fx-alignment: center;
+	-fx-background-color:  #0197f6;
+	-fx-background-radius:  10px 0px 0px 0px;
+	-fx-border-color: transparent;
+}*/
+
+.tableView .column-header.firstColumn {
+	-fx-alignment: center;
+	-fx-background-color: #0197f6;
+	-fx-background-radius:  10px 0px 0px 0px;
+	-fx-border-color: transparent;
+}
+
+.tableView .column-header.lastColumn {
+	-fx-alignment: center;
+	-fx-background-color: #d7263d;
+	-fx-background-radius: 0px 15px 0px 0px;
+	-fx-border-color: transparent;
+}
+
+.tableView .column-header .label {
+	-fx-font-size: 15px;
 	-fx-text-fill: white;
+}
+
+.tableView .table-cell {
+	-fx-alignment: center;
+}
+
+.tableView .table-row-cell {
+	-fx-font-size: 15px;
+	-fx-background-color: transparent;
 }
 
 .tableView {

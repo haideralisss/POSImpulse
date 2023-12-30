@@ -41,7 +41,13 @@ public class Bills {
 		this.amountPaid = amountPaid;
 	}
 	
-	public String getBillsDate()
+	public void setBillDateAndProfit(String billDate, double profit)
+	{
+		this.billDate = billDate;
+		this.profit = profit;
+	}
+	
+	public String getBillDate()
 	{
 		return billDate;
 	}
@@ -49,5 +55,10 @@ public class Bills {
 	public double getAmountPaid()
 	{
 		return amountPaid;
+	}
+	
+	public double getProfit()
+	{
+		return profit;
 	}
 }

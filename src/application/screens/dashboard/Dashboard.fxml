@@ -149,11 +149,10 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </FlowPane>
-                  <TableView editable="true" layoutX="14.0" layoutY="243.0" prefHeight="322.0" prefWidth="955.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-background-radius: 10;" stylesheets="@dashboard.css">
+                  <TableView fx:id="dashboardDataGrid" editable="true" layoutX="14.0" layoutY="243.0" prefHeight="322.0" prefWidth="955.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-background-radius: 10;" styleClass="tableView" stylesheets="@dashboard.css">
                      <columns>
-                        <TableColumn prefWidth="308.8000297546387" style="-fx-alignment: center; -fx-background-color: #0197f6; -fx-background-radius: 10px 0px 0px 0px; -fx-border-color: transparent; -fx-font-size: 15px;" text="Proudct Name" />
-                        <TableColumn minWidth="0.0" prefWidth="346.39996337890625" style="-fx-alignment: center; -fx-background-color: #d7263d; -fx-font-size: 15px;" text="Total Quantity" />
-                        <TableColumn prefWidth="294.40008544921875" style="-fx-alignment: center; -fx-background-color: #0197f6; -fx-background-radius: 0px 10px 0px 0px; -fx-border-color: transparent; -fx-font-size: 15px;" styleClass="." text="Expiry Date" />
+                        <TableColumn fx:id="dashboardColumn1" prefWidth="482.6666603088379" text="Proudct Name" />
+                        <TableColumn fx:id="dashboardColumn2" minWidth="0.0" prefWidth="472.5332946777344" text="Total Quantity" />
                      </columns>
                   </TableView>
                   <Label fx:id="dataGridHeading1" layoutX="14.0" layoutY="195.0" text="Low">

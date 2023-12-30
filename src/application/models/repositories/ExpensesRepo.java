@@ -10,19 +10,14 @@ import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
 
-public class ExpensesRepo {
-	
-	Connection conn;
-	
-	public ExpensesRepo()
-	{
-		conn = DatabaseConnection.connect();
-	}
+public class ExpensesRepo 
+{
 
 	public String fetchMonthExpenses() 
 	{
 		String monthExpenses = "0";
 		double totalAmount = 0;
+		Connection conn = DatabaseConnection.connect();
         try
         {
         	java.util.Date now = new java.util.Date();
@@ -56,6 +51,18 @@ public class ExpensesRepo {
         {
             e.printStackTrace();
         }
+
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
         return monthExpenses;
     }
 }

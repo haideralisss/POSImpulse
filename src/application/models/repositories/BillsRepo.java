@@ -16,18 +16,11 @@ import application.models.entities.Bills;
 public class BillsRepo 
 {
 	
-	Connection conn;
-	
-	public BillsRepo()
-	{
-		conn = DatabaseConnection.connect();
-	}
-	
 	public String fetchTodaySales()
 	{
 		String todaySales = "0";
 		double totalAmount = 0.0;
-		
+		Connection conn = DatabaseConnection.connect();
 	    try
 	    {
 	        LocalDate now = LocalDate.now();
@@ -54,6 +47,17 @@ public class BillsRepo
 	    {
 	        e.printStackTrace();
 	    }
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
 	    return todaySales;
 	}
 	
@@ -61,7 +65,8 @@ public class BillsRepo
 	{
 		String monthSales = "0";
         double totalAmount = 0.0;
-        try (Connection connection = DatabaseConnection.connect()) 
+        Connection conn = DatabaseConnection.connect();
+        try
         {
             // Get the current date
             java.util.Date now = new java.util.Date();
@@ -80,7 +85,7 @@ public class BillsRepo
                     "FROM bills " +
                     "WHERE billDate >= ? AND billDate <= ? AND isCredit != 1";
 
-            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            try (PreparedStatement statement = conn.prepareStatement(query)) 
             {
                 statement.setString(1, DateFormatter.formatSqlDate(sqlFirstDayOfMonth));
                 statement.setString(2, DateFormatter.formatSqlDate(sqlLastDayOfMonth));
@@ -99,12 +104,24 @@ public class BillsRepo
         {
             e.printStackTrace();
         }
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
         return monthSales;
     }
 	
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{
         ArrayList<Bills> monthSalesList = new ArrayList<>();
+        Connection conn = DatabaseConnection.connect();
         try
         {
         	java.util.Date now = new java.util.Date();
@@ -147,7 +164,77 @@ public class BillsRepo
         {
             e.printStackTrace();
         }
-
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
         return monthSalesList;
+    }
+	
+	public ArrayList<Bills> fetchDailyProfit() 
+	{
+        ArrayList<Bills> dailyProfit = new ArrayList<>();
+        Connection conn = DatabaseConnection.connect();
+        try 
+        {
+        	java.util.Date now = new java.util.Date();
+
+            // Set current month's first and last day
+            int currentMonth = now.getMonth() + 1; // SQLite months are 1-based
+            int currentYear = now.getYear() + 1900; // Adjust for year offset
+
+            Date sqlFirstDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-01");
+            Date sqlLastDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-31");
+            
+            try (PreparedStatement preparedStatement = conn.prepareStatement(
+                    "SELECT billDate, " +
+                            "SUM(CASE WHEN isReturn = 0 THEN profit ELSE 0 END) - " +
+                            "SUM(CASE WHEN isReturn = 1 THEN profit ELSE 0 END) AS totalProfit " +
+                            "FROM bills " +
+                            "WHERE billDate >= ? AND billDate<= ? AND isCredit != 1 " +
+                            "GROUP BY billDate " +
+                            "ORDER BY billDate ASC")) 
+            {
+
+                preparedStatement.setString(1, DateFormatter.formatSqlDate(sqlFirstDayOfMonth));
+                preparedStatement.setString(2, DateFormatter.formatSqlDate(sqlLastDayOfMonth));
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                    	Bills bill = new Bills();
+                        String date = resultSet.getString("billDate");
+                        double totalProfit = resultSet.getDouble("totalProfit");
+
+                        bill.setBillDateAndProfit(date, totalProfit);
+                        dailyProfit.add(bill);
+                    }
+                }
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+	    finally
+	    {
+	    	try 
+	    	{
+				conn.close();
+			} 
+	    	catch (SQLException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    }
+        return dailyProfit;
     }
 }

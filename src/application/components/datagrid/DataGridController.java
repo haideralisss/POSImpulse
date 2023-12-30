@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,6 +44,8 @@ public class DataGridController
 	
 	List<Attribute> attributes;
 	public AnchorPane anchorPane;
+	
+	String[] items = {"Haider ali", "My name"};
 	
 	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
