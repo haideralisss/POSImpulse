@@ -46,15 +46,24 @@ public class BillingController implements Initializable
 	
 	@SuppressWarnings("exports")
 	@FXML
-	public JFXTextField productSearchField;
+	public JFXTextField productSearchField, customerName, discount, salesTax;
+	
+	@FXML
+	public Label grossTotalLabel, netTotalLabel;
 	
 	ProductsRepo productsRepo;
+	Products product;
+	
+	ArrayList<BillCartItem> billProducts = new ArrayList<>();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1)
 	{
 		productsRepo = new ProductsRepo();
+		product = new Products();
 		productSearchBar.setStyle("visibility: hidden;");
+		customerName.setText("Cash Sale");
+		
 	}
 	
 	@SuppressWarnings("exports")
@@ -62,34 +71,6 @@ public class BillingController implements Initializable
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
-		
-		FlowPane cartRow = new FlowPane();
-		cartRow.getStyleClass().add("oddCartRow");
-		FlowPane cartRow2 = new FlowPane();
-		cartRow2.getStyleClass().add("evenCartRow");
-		
-		BillCartItem bci = new BillCartItem("Panadol", "12");
-		cartRow.getStyleClass().add("cartRowWidth");
-		cartRow.getChildren().add(bci.getNameStockBox());
-		cartRow.getChildren().add(bci.getPrice());
-		cartRow.getChildren().add(bci.getQty());
-		cartRow.getChildren().add(bci.getDisc());
-		cartRow.getChildren().add(bci.getNetTotal());
-		cartRow.setAlignment(Pos.CENTER_LEFT);
-		cartRow.getChildren().add(bci.getDelButton());
-		
-		BillCartItem bci2 = new BillCartItem("Panadol", "12");
-		cartRow2.getStyleClass().add("cartRowWidth");
-		cartRow2.getChildren().add(bci2.getNameStockBox());
-		cartRow2.getChildren().add(bci2.getPrice());
-		cartRow2.getChildren().add(bci2.getQty());
-		cartRow2.getChildren().add(bci2.getDisc());
-		cartRow2.getChildren().add(bci2.getNetTotal());
-		cartRow2.setAlignment(Pos.CENTER_LEFT);
-		cartRow2.getChildren().add(bci.getDelButton());
-		
-		CartVBox.getChildren().add(cartRow);
-		CartVBox.getChildren().add(cartRow2);
 	}
 	
 	public void CancelBill()
@@ -133,8 +114,20 @@ public class BillingController implements Initializable
 				});
 				
 				productSearchBar.setOnMouseClicked(e -> {
-					Products selectedItem = productSearchBar.getSelectionModel().getSelectedItem();
-					productSearchField.setText(selectedItem.getName());
+					product = productSearchBar.getSelectionModel().getSelectedItem();
+					FlowPane cartRow = new FlowPane();
+					cartRow.getStyleClass().add("oddCartRow");
+					BillCartItem bci = new BillCartItem(product.getName(), "12", grossTotalLabel, netTotalLabel, billProducts);
+					cartRow.getStyleClass().add("cartRowWidth");
+					cartRow.getChildren().add(bci.getNameStockBox());
+					cartRow.getChildren().add(bci.getPrice());
+					cartRow.getChildren().add(bci.getQty());
+					cartRow.getChildren().add(bci.getDisc());
+					cartRow.getChildren().add(bci.getNetTotal());
+					cartRow.setAlignment(Pos.CENTER_LEFT);
+					cartRow.getChildren().add(bci.getDelButton());
+					CartVBox.getChildren().add(cartRow);
+					billProducts.add(bci);
 					productSearchBar.setStyle("visibility: hidden;");
 		        });
 			}
@@ -147,5 +140,41 @@ public class BillingController implements Initializable
 		{
 			productSearchBar.setStyle("visibility: hidden;");
 		}
+	}
+	
+	public void changeDiscount()
+	{
+		if(discount.getText().length() > 0)
+		{
+			double gValue = getNumberOnly(grossTotalLabel.getText());
+			double nValue = getNumberOnly(netTotalLabel.getText());
+			nValue = (gValue - Double.parseDouble(discount.getText()));
+			netTotalLabel.setText(String.valueOf(nValue));
+		}
+		else
+		{
+			netTotalLabel.setText(String.valueOf(grossTotalLabel.getText()));
+		}
+	}
+	
+	public void changeSalesTax()
+	{
+		if(salesTax.getText().length() > 0)
+		{
+			double nValue = getNumberOnly(grossTotalLabel.getText());
+			nValue += Double.parseDouble(salesTax.getText());
+			netTotalLabel.setText(String.valueOf(nValue));
+		}
+		else
+		{
+			netTotalLabel.setText(String.valueOf(grossTotalLabel.getText()));
+		}
+	}
+	
+	public double getNumberOnly(String str) 
+	{
+	    str = str.replace("Rs.", "");
+	    String numericString = str.replaceAll("[^0-9.]", "");
+	    return Double.parseDouble(numericString);
 	}
 }
