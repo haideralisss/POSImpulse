@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.models.entities.Stock;
+import application.screens.billing.BillCartItem;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.NumberFormatter;
 
@@ -53,6 +54,37 @@ public class StockRepo {
 			}
 		}
 		return stockWorth;
+	}
+	
+	public void updateStocksAfterBill(ArrayList<BillCartItem> items)
+	{
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
+			for(BillCartItem item : items)
+			{
+				PreparedStatement preparedStatement = connection.prepareStatement(
+	                    "UPDATE stock set totalQuantity= ? WHERE id= ?");
+				preparedStatement.setString(1, String.valueOf(item.getNewQuantity()));
+				preparedStatement.setString(2, String.valueOf(item.getStockId()));
+				preparedStatement.executeUpdate();
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				connection.close();
+			} 
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public ArrayList<Stock> fetchProductByLowStock() 
@@ -311,5 +343,53 @@ public class StockRepo {
 	        }
 	    }
         return searchData;
+    }
+	
+	public Stock fetchStockByProductId(String productId) 
+	{
+		Stock stock = null;
+		Connection connection = DatabaseConnection.connect();
+		int count = 1;
+        try
+        {
+            String query = "SELECT * from stock WHERE productId= ?";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, productId);
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while(resultSet.next()) 
+                    {
+                    	stock = new Stock(
+                    			resultSet.getInt("id"),
+        						count,
+        						resultSet.getInt("productId"),
+        						"Nothing",
+        						resultSet.getDouble("unitCost"),
+        						resultSet.getInt("totalQuantity")
+                        );
+                    	count++;
+                    }
+                }
+            }
+        }
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        finally 
+        {
+			try 
+			{
+	            connection.close();
+	        } 
+			catch (SQLException e) 
+			{
+	            e.printStackTrace();
+	        }
+	    }
+        return stock;
     }
 }

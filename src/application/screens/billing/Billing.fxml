@@ -62,12 +62,12 @@
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXCheckBox layoutX="242.0" layoutY="22.0" prefHeight="21.0" prefWidth="0.0" text=" ">
+            <JFXCheckBox fx:id="isCredit" layoutX="242.0" layoutY="22.0" prefHeight="21.0" prefWidth="0.0" text=" ">
                <font>
                   <Font />
                </font>
             </JFXCheckBox>
-            <JFXCheckBox layoutX="242.0" layoutY="58.0" prefHeight="21.0" prefWidth="0.0" text=" ">
+            <JFXCheckBox fx:id="isReturn" layoutX="242.0" layoutY="58.0" prefHeight="21.0" prefWidth="0.0" text=" ">
                <font>
                   <Font size="10.0" />
                </font>
@@ -120,12 +120,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="206.0" layoutY="487.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="amountCollected" layoutX="206.0" layoutY="487.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXButton layoutX="25.0" layoutY="626.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save">
+            <JFXButton layoutX="25.0" layoutY="626.0" onAction="#saveBill" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -145,7 +145,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="206.0" layoutY="560.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="amountPaid" layoutX="206.0" layoutY="560.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>

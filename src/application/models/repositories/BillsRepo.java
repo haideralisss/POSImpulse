@@ -21,6 +21,49 @@ public class BillsRepo
 		
 	}
 	
+	public void insertBill(String customerName, String billDate,
+            double grossTotal, String discount, String salesTax,
+            double netTotal, double amountPaid, String shift,
+            boolean isCredit, boolean isReturn, double profit) 
+	{
+		Connection connection = DatabaseConnection.connect();
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				"INSERT INTO bills (customerName, billDate, grossTotal, discount, " +
+				       "salesTax, netTotal, amountPaid, shift, isCredit, isReturn, profit) " +
+				       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+				
+				preparedStatement.setString(1, customerName);
+				preparedStatement.setString(2, billDate);
+				preparedStatement.setDouble(3, grossTotal);
+				preparedStatement.setString(4, discount);
+				preparedStatement.setString(5, salesTax);
+				preparedStatement.setDouble(6, netTotal);
+				preparedStatement.setDouble(7, amountPaid);
+				preparedStatement.setString(8, shift);
+				preparedStatement.setInt(9, isCredit ? 1 : 0);
+				preparedStatement.setInt(10, isReturn ? 1 : 0);
+				preparedStatement.setDouble(11, profit);
+				
+				preparedStatement.executeUpdate();
+				
+				} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				connection.close();
+			} 
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public String fetchTodaySales()
 	{
 		String todaySales = "0";
@@ -142,7 +185,7 @@ public class BillsRepo
 						resultSet.getInt("id"),
 						count,
 						resultSet.getString("customerName"),
-						resultSet.getInt("invoiceNum"),
+						resultSet.getInt("id"),
 						resultSet.getObject("billDate").toString(),
 						resultSet.getDouble("grossTotal"),
 						resultSet.getString("discount"),
