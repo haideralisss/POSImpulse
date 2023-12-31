@@ -87,7 +87,7 @@
             </FlowPane>
             <AnchorPane layoutX="-1.0" layoutY="691.0" prefHeight="58.0" prefWidth="290.0" style="-fx-background-color: #16123f;">
                <children>
-                  <Label layoutX="30.0" layoutY="15.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Haider Ali" textFill="WHITE">
+                  <Label fx:id="fullNameLabel" layoutX="30.0" layoutY="15.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Username" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -95,6 +95,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
+                  <ImageView fx:id="logoutIcon" fitHeight="15.0" fitWidth="23.0" layoutX="254.0" layoutY="21.0" onMouseClicked="#logout" onMouseEntered="#logoutHover" onMouseExited="#logoutHoverLeave" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/whiteLogoutIcon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
                </children></AnchorPane>
          </children>
       </AnchorPane>

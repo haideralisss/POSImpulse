@@ -67,7 +67,7 @@ public class DataGridController implements Initializable
 	@SuppressWarnings("exports")
 	public AnchorPane anchorPane;
 	
-	@SuppressWarnings({ "exports", "unchecked" })
+	@SuppressWarnings("exports")
 	@FXML
 	public JFXTextField searchBar;
 	

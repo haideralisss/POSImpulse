@@ -18,8 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+import application.models.entities.Accounts;
 import application.models.repositories.*;
+import application.screens.sidebar.SideBarController;
 
 public class LoginController implements Initializable {
 	
@@ -31,8 +32,12 @@ public class LoginController implements Initializable {
 	@FXML
 	public ImageView imageView;
 	
+	@SuppressWarnings("unused")
 	private Stage stage;
+	
+	@SuppressWarnings("unused")
 	private Scene scene;
+	
 	@SuppressWarnings("unused")
 	private Parent root;
 	
@@ -48,14 +53,21 @@ public class LoginController implements Initializable {
 	@SuppressWarnings("exports")
 	public void loginUser(ActionEvent e) throws IOException
 	{
-		if(accountsRepo.verifyUser(username.getText(), password.getText()))
+		Accounts account = accountsRepo.verifyUser(username.getText(), password.getText());
+		if(account != null)
 		{
-			Parent root = FXMLLoader.load(getClass().getResource("/application/screens/sidebar/SideBar.fxml"));
-			stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.show();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/sidebar/SideBar.fxml"));
+		    Parent root = loader.load();
+
+		    SideBarController sbController = loader.getController();
+		    sbController.setAccount(account);
+
+		    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    Scene scene = new Scene(root);
+
+		    stage.setScene(scene);
+		    stage.centerOnScreen();
+		    stage.show();
 		}
 		else
 		{
@@ -75,7 +87,4 @@ public class LoginController implements Initializable {
 		accountsRepo = new AccountsRepo();
 		imageView.setImage(myImage);
 	}
-	
-	
-
 }

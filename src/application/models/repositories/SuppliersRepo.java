@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import application.models.entities.Companies;
 import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 
@@ -177,6 +176,7 @@ public class SuppliersRepo {
                     while (resultSet.next()) 
                     {
                         Suppliers supplier = new Suppliers(
+                        		resultSet.getInt("id"),
                         		count,
                                 resultSet.getString("name"),
                                 resultSet.getString("contact"),

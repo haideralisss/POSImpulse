@@ -175,24 +175,32 @@ public class AccountsRepo {
 	    return getAllAccounts();
 	}
 	
-	public boolean verifyUser(String username, String password) 
-	{
-	    boolean checkFlag = true;
+	public Accounts verifyUser(String username, String password) 
+	{   
+	    Accounts account = null;
+	    
 	    Connection connection = DatabaseConnection.connect();
 		try
 		{
-	        String query = "SELECT username, password FROM accounts WHERE username=? AND password=?";
+	        String query = "SELECT * FROM accounts WHERE username=? AND password=?";
 	        PreparedStatement statement = connection.prepareStatement(query);
 	        
 	        statement.setString(1, username);
 	        statement.setString(2, password);
 	        
 	        ResultSet resultSet = statement.executeQuery();
-	        
-	        if (!resultSet.isBeforeFirst() && resultSet.getRow() == 0) 
-	        {
-	            checkFlag = false;
-	        }
+			while(resultSet.next())
+			{
+				account = new Accounts(
+						resultSet.getInt("id"),
+						0,
+						resultSet.getString("username"),
+						resultSet.getString("fullname"),
+						resultSet.getString("phone"),
+						resultSet.getString("password"),
+						resultSet.getBoolean("isAdmin")
+					);
+			}
 	    } 
 	    catch (SQLException e) 
 	    {
@@ -204,6 +212,6 @@ public class AccountsRepo {
 	            e.printStackTrace();
 	        }
 	    }
-	    return checkFlag;
+	    return account;
 	}
 }

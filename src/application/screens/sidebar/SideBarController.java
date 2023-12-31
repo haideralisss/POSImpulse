@@ -9,12 +9,22 @@ import java.util.ResourceBundle;
 
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
+import application.models.entities.Accounts;
+import application.screens.profile.ProfileController;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class SideBarController implements Initializable 
 {
@@ -26,7 +36,23 @@ public class SideBarController implements Initializable
 	@FXML
 	public Label topBarLabel;
 	
+	@SuppressWarnings("exports")
+	@FXML
+	public Label fullNameLabel;
+	
+	@SuppressWarnings("exports")
+	@FXML
+	public ImageView logoutIcon;
+	
 	public DataGridController dgController;
+	
+	Accounts currentAccount;
+	
+	public void setAccount(Accounts account)
+	{
+		currentAccount = account;
+		this.fullNameLabel.setText(account.getFullName());
+	}
 	
 	public void dashboardPage() throws IOException
 	{
@@ -177,12 +203,17 @@ public class SideBarController implements Initializable
 			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
 		    nextAnchorPane.toFront();
 			
-			DataGridController dgController;
-			
 			if(!path.contains("reports") && !path.contains("dashboard") && !path.contains("profile"))
 			{
+				DataGridController dgController;
 				dgController = loader.getController();
 				dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
+			}
+			else if(path.contains("profile"))
+			{
+				ProfileController profileController;
+				profileController = loader.getController();
+				profileController.setAccount(currentAccount);
 			}
 		}
 		catch(IOException e)
@@ -195,5 +226,30 @@ public class SideBarController implements Initializable
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
 		changePage("screens/dashboard/Dashboard.fxml", null);
+	}
+	
+	@SuppressWarnings("exports")
+	public void logout(MouseEvent e) throws IOException
+	{
+		this.currentAccount = null;
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/login/Login.fxml"));
+	    Parent root = loader.load();
+	    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+	    Scene scene = new Scene(root);
+
+	    stage.setScene(scene);
+	    stage.centerOnScreen();
+	    stage.show();
+	}
+	
+	public void logoutHover()
+	{
+		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/redLogoutIcon.png"));
+	}
+	
+	public void logoutHoverLeave()
+	{
+		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/whiteLogoutIcon.png"));
 	}
 }

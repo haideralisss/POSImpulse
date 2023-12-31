@@ -2,17 +2,30 @@ package application.screens.profile;
 
 import java.io.IOException;
 
+import application.models.entities.Accounts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class ProfileDetailsController {
 	
 	@FXML
     private AnchorPane profileAnchorPane;
+	
+	@FXML
+	private Label userNameLabel, fullNameLabel, phoneLabel;
 
-    public void initializeProfileAnchorPane(@SuppressWarnings("exports") AnchorPane profileAnchorPane) {
+	private Accounts currentAccount;
+	
+	@SuppressWarnings("exports")
+    public void initializeProfileAnchorPane(AnchorPane profileAnchorPane, Accounts account) {
         this.profileAnchorPane = profileAnchorPane;
+        this.currentAccount = account;
+        
+        userNameLabel.setText(currentAccount.getUserName());
+        fullNameLabel.setText(currentAccount.getFullName());
+        phoneLabel.setText(currentAccount.getPhone());
     }
 	
 	public void GoToChangePassword()
@@ -23,7 +36,7 @@ public class ProfileDetailsController {
             AnchorPane initialContent = (AnchorPane) loader.load();
             
             ChangePasswordController changePasswordController = loader.getController();
-            changePasswordController.initializeProfileAnchorPane(profileAnchorPane);
+            changePasswordController.initializeProfileAnchorPane(profileAnchorPane, currentAccount);
             
             profileAnchorPane.getChildren().add(initialContent);
             AnchorPane.setLeftAnchor(initialContent, 0.0);
