@@ -57,7 +57,7 @@
                </font>
             </Label>
             <Line endX="154.0" layoutX="115.0" layoutY="97.0" startX="-100.0" strokeWidth="0.2" />
-            <JFXTextField layoutX="24.0" layoutY="138.0" prefHeight="25.0" prefWidth="168.0">
+            <JFXTextField fx:id="customerName" layoutX="24.0" layoutY="138.0" prefHeight="25.0" prefWidth="168.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -83,12 +83,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="205.0" layoutY="224.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="discount" layoutX="205.0" layoutY="224.0" onKeyReleased="#changeDiscount" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXTextField layoutX="205.0" layoutY="261.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="salesTax" layoutX="205.0" layoutY="261.0" onKeyReleased="#changeSalesTax" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
@@ -104,12 +104,12 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="390.0" text="Rs. 500" textFill="#01a811">
+            <Label fx:id="grossTotalLabel" layoutX="46.0" layoutY="390.0" text="Rs. 0" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="175.0" layoutY="390.0" text="Rs. 500" textFill="#01a811">
+            <Label fx:id="netTotalLabel" layoutX="175.0" layoutY="390.0" text="Rs. 0" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

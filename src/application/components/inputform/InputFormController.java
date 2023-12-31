@@ -294,7 +294,7 @@ public class InputFormController {
             } else if (field.getType() == Boolean.TYPE) {
                 field.set(object, (Boolean) value);
             } else if (field.getType() == LocalDate.class) {
-                LocalDate dateValue = LocalDate.parse((String) value);
+                LocalDate dateValue = (LocalDate) value;
                 field.set(object, dateValue);
             } else if (field.getType() == Double.TYPE) {
                 field.set(object, (Double) value);
@@ -325,7 +325,7 @@ public class InputFormController {
         } else if (attribute.getType().equals("password")) {
             return ((JFXPasswordField) inputComponent).getText();
         } else if (attribute.getType().equals("date")) {
-            return ((DatePicker) inputComponent).getEditor().getText();
+            return ((DatePicker) inputComponent).getValue().toString();
         }
         return null;
     }
