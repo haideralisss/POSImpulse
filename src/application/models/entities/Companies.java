@@ -110,6 +110,7 @@ public class Companies {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
+	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Companies> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
         title = Title;
@@ -142,6 +143,7 @@ public class Companies {
 		return number;
 	}
 	
+	@SuppressWarnings("exports")
 	public HBox getOperations()
 	{
 		return operations;

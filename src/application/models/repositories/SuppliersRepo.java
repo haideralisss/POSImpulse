@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import application.models.entities.Companies;
-import application.models.entities.Products;
 import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 

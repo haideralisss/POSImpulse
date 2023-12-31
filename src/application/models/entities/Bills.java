@@ -158,6 +158,7 @@ public class Bills
 		operations.setAlignment(Pos.CENTER);
 	}
 	
+	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Bills> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
         //title = Title;
@@ -262,6 +263,7 @@ public class Bills
 		return number;
 	}
 	
+	@SuppressWarnings("exports")
 	public HBox getOperations()
 	{
 		return operations;

@@ -114,6 +114,7 @@ public class Expenses {
 		operations.setAlignment(Pos.CENTER);
 	}
 	
+	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Expenses> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
         title = Title;
@@ -147,6 +148,7 @@ public class Expenses {
 		return number;
 	}
 	
+	@SuppressWarnings("exports")
 	public HBox getOperations()
 	{
 		return operations;

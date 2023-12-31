@@ -130,6 +130,7 @@ public class Stock
 		return unitCost;
 	}
 	
+	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Stock> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
         title = Title;
@@ -163,6 +164,7 @@ public class Stock
 		return number;
 	}
 	
+	@SuppressWarnings("exports")
 	public HBox getOperations()
 	{
 		return operations;

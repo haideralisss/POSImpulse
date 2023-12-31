@@ -28,4 +28,5 @@ module POSImpulse {
 	exports application.screens.purchases;
 	exports application.screens.billing;
 	exports application.screens.reports;
+	exports application.models.entities;
 }
