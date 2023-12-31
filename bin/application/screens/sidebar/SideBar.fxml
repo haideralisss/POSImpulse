@@ -87,13 +87,13 @@
             </FlowPane>
             <AnchorPane layoutX="-1.0" layoutY="691.0" prefHeight="58.0" prefWidth="290.0" style="-fx-background-color: #16123f;">
                <children>
-                  <Label fx:id="fullNameLabel" layoutX="24.0" layoutY="15.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Username" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  <Label fx:id="fullNameLabel" layoutX="24.0" layoutY="18.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Username" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Label>
                   <ImageView fx:id="logoutIcon" fitHeight="15.0" fitWidth="23.0" layoutX="254.0" layoutY="21.0" onMouseClicked="#logout" onMouseEntered="#logoutHover" onMouseExited="#logoutHoverLeave" pickOnBounds="true" preserveRatio="true">
                      <image>

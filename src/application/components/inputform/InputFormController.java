@@ -69,10 +69,10 @@ public class InputFormController {
 	
 	List<Attribute> attributes;
 	private Map<String, Node> inputComponents = new HashMap<>();
-	
 	private Object updateObject;
-	
 	private Accounts currentAccount;
+	private int productId, companyId;
+	private String productName, companyName;
 	
 	@SuppressWarnings("exports")
 	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane, Object obj, Accounts currentAccount)
@@ -134,6 +134,7 @@ public class InputFormController {
 									listView.setOnMouseClicked(e -> {
 							            Companies selectedItem = listView.getSelectionModel().getSelectedItem();
 							            textField.setText(selectedItem.getName());
+							            companyId = selectedItem.getNumber();
 							            listView.setStyle("visibility: hidden;");
 							        });
 								}
@@ -150,7 +151,7 @@ public class InputFormController {
 						
 					}
 					else if(attribute.getAttribute().equals("Product Name"))
-					{
+					{	
 						ListView<Products> listView = new ListView<>();
 					    listView.setPrefSize(200, 150);
 					    vBox.getChildren().add(listView);
@@ -185,6 +186,7 @@ public class InputFormController {
 									listView.setOnMouseClicked(e -> {
 										Products selectedItem = listView.getSelectionModel().getSelectedItem();
 							            textField.setText(selectedItem.getName());
+							            productId = selectedItem.getNumber();
 							            listView.setStyle("visibility: hidden;");
 							        });
 								}
@@ -246,6 +248,10 @@ public class InputFormController {
 		if(obj != null)
 		{
 			this.heading.setText("Updation Form");
+			if(this.title.getText() == "Products")       	
+	        	companyName = ((Products) obj).getCompanyName();
+	        else if(this.title.getText() == "Stock")
+	        	productName = ((Stock) obj).getProductName();
 	        populateFieldsFromObject(obj);
 	        this.updateObject = obj;
 		}
@@ -278,13 +284,13 @@ public class InputFormController {
         return null;
     }
     
-    private void setValueByReflection(Object object, String fieldName, Object value) {
+    private void setValueByReflection(Object object, String fieldName, Object value, String attribute) {
         try {
             Field field = object.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
         	
             if (field.getType() == String.class) {
-                field.set(object, (String) value);
+            	field.set(object, (String) value);
             } else if (field.getType() == Boolean.TYPE) {
                 field.set(object, (Boolean) value);
             } else if (field.getType() == LocalDate.class) {
@@ -293,7 +299,12 @@ public class InputFormController {
             } else if (field.getType() == Double.TYPE) {
                 field.set(object, (Double) value);
             } else if (field.getType() == Integer.TYPE) {
-            	 field.set(object, Integer.parseInt((String) value));
+            	if(attribute == "Product Name")
+            		field.set(object, productId);
+            	else if(attribute == "Company Name")
+            		field.set(object, companyId);
+            	else
+            		field.set(object, Integer.parseInt((String) value));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -339,7 +350,17 @@ public class InputFormController {
     
     private void setComponentValue(Attribute attribute, Node inputComponent, Object value) {
         if (attribute.getType().equals("text")) {
-            ((JFXTextField) inputComponent).setText(value != null ? value.toString() : "");
+        	if(attribute.getAttribute() == "Product Name")
+        	{
+        		System.out.println(productName);
+        		((JFXTextField) inputComponent).setText(productName);
+        	}
+        	else if(attribute.getAttribute() == "Company Name")
+        	{
+        		((JFXTextField) inputComponent).setText(companyName);
+        	}
+        	else
+        		((JFXTextField) inputComponent).setText(value != null ? value.toString() : "");
         } else if (attribute.getType().equals("checkbox")) {
             ((JFXCheckBox) inputComponent).setSelected((Boolean) value);
         } else if (attribute.getType().equals("password")) {
@@ -348,6 +369,7 @@ public class InputFormController {
             ((DatePicker) inputComponent).getEditor().setText(value != null ? value.toString() : "");
         }
     }
+    
     public void SubmitEvent() 
     {
         Object entityInstance = null;
@@ -381,7 +403,7 @@ public class InputFormController {
         		Node inputComponent = inputComponents.get(attribute.getDbAttribute());
         		if (inputComponent != null) {
         			Object value = getComponentValue(attribute, inputComponent);
-        			setValueByReflection(entityInstance, attribute.getDbAttribute(), value);
+        			setValueByReflection(entityInstance, attribute.getDbAttribute(), value, attribute.getAttribute());
         			
         			if (value == null || (value instanceof String && ((String) value).isEmpty())) {
                         Alert alert = new Alert(AlertType.ERROR);

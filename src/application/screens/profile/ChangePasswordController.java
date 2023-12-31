@@ -37,6 +37,12 @@ public class ChangePasswordController {
 	@SuppressWarnings("exports")
 	public void changePassword(ActionEvent e) throws IOException
 	{
+		if(oldPasswordTextBox.getText() == "" || newPasswordTextBox.getText() == "" || confirmNewPasswordTextBox.getText() == "")
+		{
+			showErrorMessage("Empty Fields!", "Please make sure that you have entered something in all of the fields.");
+			return;
+		}
+		
 		if(newPasswordTextBox.getText().equals(confirmNewPasswordTextBox.getText()))
 		{
 			if(newPasswordTextBox.getText().equals(oldPasswordTextBox.getText()))
