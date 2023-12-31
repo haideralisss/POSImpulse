@@ -12,7 +12,6 @@ import application.components.datagrid.DataGridController;
 import application.models.entities.Accounts;
 import application.screens.profile.ProfileController;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -245,11 +244,11 @@ public class SideBarController implements Initializable
 	
 	public void logoutHover()
 	{
-		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/redLogoutIcon.png"));
+		logoutIcon.setImage(new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/redLogoutIcon.png"));
 	}
 	
 	public void logoutHoverLeave()
 	{
-		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/whiteLogoutIcon.png"));
+		logoutIcon.setImage(new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/whiteLogoutIcon.png"));
 	}
 }
