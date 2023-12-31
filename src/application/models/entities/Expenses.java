@@ -83,7 +83,7 @@ public class Expenses {
 				
 				InputFormController ifController;
 				ifController = loader.getController();
-				ifController.SetupInputForm(title, attributes, anchorPane, this);
+				ifController.SetupInputForm(title, attributes, anchorPane, this, null);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

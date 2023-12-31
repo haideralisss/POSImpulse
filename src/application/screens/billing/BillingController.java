@@ -12,21 +12,12 @@ import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
 import application.models.entities.Products;
 import application.models.repositories.ProductsRepo;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -40,7 +31,6 @@ public class BillingController implements Initializable
 	@FXML
 	VBox CartVBox;
 	
-	@SuppressWarnings("exports")
 	@FXML
 	public ListView<Products> productSearchBar;
 	
@@ -103,7 +93,7 @@ public class BillingController implements Initializable
 			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
 		    nextAnchorPane.toFront();
 		    DataGridController dgController = loader.getController();
-			dgController.SetupDataGrid("Billing", attributes, anchorPane);
+			dgController.SetupDataGrid("Billing", attributes, anchorPane, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	

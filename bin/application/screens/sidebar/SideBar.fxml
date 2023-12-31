@@ -31,17 +31,17 @@
       </AnchorPane>
       <AnchorPane prefHeight="746.0" prefWidth="279.0" style="-fx-background-color: #02182B;">
          <children>
-            <Label layoutX="69.0" layoutY="31.0" text="POS" textFill="WHITE">
+            <Label layoutX="74.0" layoutY="31.0" text="POS" textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="27.0" />
                </font>
             </Label>
-            <Label layoutX="121.0" layoutY="31.0" text="Impulse" textFill="#d7263d">
+            <Label layoutX="126.0" layoutY="31.0" text="Impulse" textFill="#d7263d">
                <font>
                   <Font name="Calibri Bold" size="27.0" />
                </font>
             </Label>
-            <FlowPane layoutX="14.0" layoutY="86.0" prefHeight="559.0" prefWidth="251.0" vgap="10.0">
+            <FlowPane fx:id="sidebarFlowPane" alignment="CENTER" columnHalignment="CENTER" layoutX="19.0" layoutY="86.0" prefHeight="559.0" prefWidth="251.0" rowValignment="BOTTOM" vgap="10.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#dashboardPage" prefHeight="48.0" prefWidth="251.0" styleClass="sideBarButtons" stylesheets="@sidebar.css" text="Dashboard">
                      <cursor>
@@ -79,7 +79,7 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button mnemonicParsing="false" onAction="#adminpanelPage" prefHeight="48.0" prefWidth="251.0" styleClass="sideBarButtons" stylesheets="@sidebar.css" text="Admin Panel">
+                  <Button fx:id="adminPanelButton" mnemonicParsing="false" onAction="#adminpanelPage" prefHeight="48.0" prefWidth="251.0" styleClass="sideBarButtons" stylesheets="@sidebar.css" text="Admin Panel">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -87,7 +87,7 @@
             </FlowPane>
             <AnchorPane layoutX="-1.0" layoutY="691.0" prefHeight="58.0" prefWidth="290.0" style="-fx-background-color: #16123f;">
                <children>
-                  <Label fx:id="fullNameLabel" layoutX="30.0" layoutY="15.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Username" textFill="WHITE">
+                  <Label fx:id="fullNameLabel" layoutX="24.0" layoutY="15.0" onMouseClicked="#profilePage" styleClass="usernameLabel" stylesheets="@sidebar.css" text="Username" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>

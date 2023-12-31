@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +34,8 @@ public class Accounts {
 	private static String title;
 	private static List<Attribute> attributes;
 	private static AnchorPane anchorPane;
+	
+	private static Accounts currentAccount;
 	
 	public Accounts()
 	{
@@ -73,17 +76,28 @@ public class Accounts {
 		editHBox.setCursor(Cursor.HAND);
 		editHBox.setOnMouseClicked(event -> {
 			try {
-				anchorPane.getChildren().clear();
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/components/inputform/InputForm.fxml"));
-				AnchorPane nextAnchorPane;
-				nextAnchorPane = (AnchorPane) loader.load();
-				anchorPane.getChildren().add(nextAnchorPane);
-				AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
-			    nextAnchorPane.toFront();
-				
-				InputFormController ifController;
-				ifController = loader.getController();
-				ifController.SetupInputForm(title, attributes, anchorPane, this);
+				if(this.id == currentAccount.getId())
+				{
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Authorization Error");
+					alert.setHeaderText("Unauthorized Access!");
+					alert.setContentText("You cannot update your own account!");
+					alert.show();
+				}
+				else
+				{
+					anchorPane.getChildren().clear();
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/components/inputform/InputForm.fxml"));
+					AnchorPane nextAnchorPane;
+					nextAnchorPane = (AnchorPane) loader.load();
+					anchorPane.getChildren().add(nextAnchorPane);
+					AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+				    nextAnchorPane.toFront();
+					
+					InputFormController ifController;
+					ifController = loader.getController();
+					ifController.SetupInputForm(title, attributes, anchorPane, this, currentAccount);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -94,20 +108,31 @@ public class Accounts {
 		delHBox.setAlignment(Pos.CENTER);
 		delHBox.setCursor(Cursor.HAND);
 		delHBox.setOnMouseClicked(event -> {
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		    alert.setTitle("Confirmation Dialog");
-		    alert.setHeaderText("Delete Account");
-		    alert.setContentText("Are you sure you want to delete this account?");
-
-		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
-
-		    Optional<ButtonType> result = alert.showAndWait();
-		    if (result.isPresent() && result.get() == confirmButton) {
-		        AccountsRepo accountsRepo = new AccountsRepo();
-		        dataGridTable.setItems(FXCollections.observableArrayList(accountsRepo.deleteAccount(this.id)));
-		    }
+			if(this.id == currentAccount.getId())
+			{
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Authorization Error");
+				alert.setHeaderText("Unauthorized Access!");
+				alert.setContentText("You cannot delete your own account!");
+				alert.show();
+			}
+			else
+			{
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			    alert.setTitle("Confirmation Dialog");
+			    alert.setHeaderText("Delete Account");
+			    alert.setContentText("Are you sure you want to delete this account?");
+	
+			    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+			    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+			    alert.getButtonTypes().setAll(confirmButton, cancelButton);
+	
+			    Optional<ButtonType> result = alert.showAndWait();
+			    if (result.isPresent() && result.get() == confirmButton) {
+			        AccountsRepo accountsRepo = new AccountsRepo();
+			        dataGridTable.setItems(FXCollections.observableArrayList(accountsRepo.deleteAccount(this.id)));
+			    }
+			}
 		});
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
@@ -115,11 +140,12 @@ public class Accounts {
 	}
 	
 	@SuppressWarnings("exports")
-	public static void setDataGridTable(TableView<Accounts> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
+	public static void setDataGridTable(TableView<Accounts> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE, Accounts account) {
         dataGridTable = table;
         title = Title;
         attributes = Attributes;
         anchorPane = AnchorPANE;
+        currentAccount = account;
     }
 	
 	public String getUserName()

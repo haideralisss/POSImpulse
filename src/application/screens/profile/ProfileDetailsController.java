@@ -23,7 +23,6 @@ public class ProfileDetailsController {
         this.profileAnchorPane = profileAnchorPane;
         this.currentAccount = account;
         
-        userNameLabel.setText(currentAccount.getUserName());
         fullNameLabel.setText(currentAccount.getFullName());
         phoneLabel.setText(currentAccount.getPhone());
     }

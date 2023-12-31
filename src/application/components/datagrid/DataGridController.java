@@ -77,6 +77,8 @@ public class DataGridController implements Initializable
 	
 	List<Attribute> attributes;
 	
+	private Accounts currentAccount;
+	
 	BillsRepo billsRepo = new BillsRepo();
 	PurchasesRepo purchasesRepo = new PurchasesRepo();
 	CompaniesRepo companiesRepo = new CompaniesRepo();
@@ -100,8 +102,9 @@ public class DataGridController implements Initializable
 	}
 	
 	@SuppressWarnings({ "unchecked", "exports" })
-	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
+	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane, Accounts currentAccount)
 	{
+		this.currentAccount = currentAccount;
 		this.anchorPane = anchorPane;
 		this.title.setText(title);
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
@@ -234,7 +237,7 @@ public class DataGridController implements Initializable
 		}
 		else if(title.getText() == "Accounts")
 		{
-			Accounts.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
+			Accounts.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane, currentAccount);
 			AccountsRepo accountsRepo = new AccountsRepo();
 	        accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
 	        dataGridTable.setItems(accountsList);
@@ -254,7 +257,7 @@ public class DataGridController implements Initializable
 			
 			InputFormController ifController;
 			ifController = loader.getController();
-			ifController.SetupInputForm(title.getText(), attributes, anchorPane, null);
+			ifController.SetupInputForm(title.getText(), attributes, anchorPane, null, currentAccount);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

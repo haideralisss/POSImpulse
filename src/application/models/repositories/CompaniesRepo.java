@@ -213,7 +213,6 @@ public class CompaniesRepo {
 	{
         ArrayList<Companies> searchData = new ArrayList<>();
         Connection connection = DatabaseConnection.connect();
-        int count = 1;
         try
         {
             String query = "SELECT * FROM companies WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
@@ -234,7 +233,6 @@ public class CompaniesRepo {
                                 resultSet.getString("address")
                         );
                         searchData.add(company);
-                        count++;
                     }
                 }
             }

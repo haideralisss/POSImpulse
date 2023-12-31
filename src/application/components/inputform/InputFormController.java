@@ -72,9 +72,12 @@ public class InputFormController {
 	
 	private Object updateObject;
 	
+	private Accounts currentAccount;
+	
 	@SuppressWarnings("exports")
-	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane, Object obj)
+	public void SetupInputForm(String title, List<Attribute> attributes, AnchorPane anchorPane, Object obj, Accounts currentAccount)
 	{
+		this.currentAccount = currentAccount;
 		this.title.setText(title);
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
@@ -259,7 +262,7 @@ public class InputFormController {
 			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
 		    nextAnchorPane.toFront();
 		    DataGridController dgController = loader.getController();
-			dgController.SetupDataGrid((title.getText() == "Admin Panel" ? "Accounts" : title.getText()), attributes, anchorPane);
+			dgController.SetupDataGrid((title.getText() == "Admin Panel" ? "Accounts" : title.getText()), attributes, anchorPane, currentAccount);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
