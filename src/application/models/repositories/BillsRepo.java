@@ -21,47 +21,53 @@ public class BillsRepo
 		
 	}
 	
-	public void insertBill(String customerName, String billDate,
-            double grossTotal, String discount, String salesTax,
-            double netTotal, double amountPaid, String shift,
-            boolean isCredit, boolean isReturn, double profit) 
-	{
-		Connection connection = DatabaseConnection.connect();
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"INSERT INTO bills (customerName, billDate, grossTotal, discount, " +
-				       "salesTax, netTotal, amountPaid, shift, isCredit, isReturn, profit) " +
-				       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-				
-				preparedStatement.setString(1, customerName);
-				preparedStatement.setString(2, billDate);
-				preparedStatement.setDouble(3, grossTotal);
-				preparedStatement.setString(4, discount);
-				preparedStatement.setString(5, salesTax);
-				preparedStatement.setDouble(6, netTotal);
-				preparedStatement.setDouble(7, amountPaid);
-				preparedStatement.setString(8, shift);
-				preparedStatement.setInt(9, isCredit ? 1 : 0);
-				preparedStatement.setInt(10, isReturn ? 1 : 0);
-				preparedStatement.setDouble(11, profit);
-				
-				preparedStatement.executeUpdate();
-				
-				} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try 
-			{
-				connection.close();
-			} 
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
+	public int insertBill(String customerName, String billDate,
+	        double grossTotal, String discount, String salesTax,
+	        double netTotal, double amountPaid, String shift,
+	        boolean isCredit, boolean isReturn, double profit) {
+	    Connection connection = DatabaseConnection.connect();
+	    int generatedId = -1; // Default value indicating failure
+	    
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(
+	            "INSERT INTO bills (customerName, billDate, grossTotal, discount, " +
+	                   "salesTax, netTotal, amountPaid, shift, isCredit, isReturn, profit) " +
+	                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+
+	        preparedStatement.setString(1, customerName);
+	        preparedStatement.setString(2, billDate);
+	        preparedStatement.setDouble(3, grossTotal);
+	        preparedStatement.setString(4, discount);
+	        preparedStatement.setString(5, salesTax);
+	        preparedStatement.setDouble(6, netTotal);
+	        preparedStatement.setDouble(7, amountPaid);
+	        preparedStatement.setString(8, shift);
+	        preparedStatement.setInt(9, isCredit ? 1 : 0);
+	        preparedStatement.setInt(10, isReturn ? 1 : 0);
+	        preparedStatement.setDouble(11, profit);
+
+	        int affectedRows = preparedStatement.executeUpdate();
+
+	        if (affectedRows > 0) {
+	            // Retrieve the last inserted ROWID
+	            try (Statement statement = connection.createStatement();
+	                 ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid()")) {
+	                if (resultSet.next()) {
+	                    generatedId = resultSet.getInt(1);
+	                }
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return generatedId;
 	}
 	
 	public String fetchTodaySales()

@@ -120,7 +120,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="amountCollected" layoutX="206.0" layoutY="487.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="amountCollected" layoutX="206.0" layoutY="487.0" onKeyReleased="#calculateNewBalance" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
@@ -150,7 +150,7 @@
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <Label layoutX="206.0" layoutY="531.0" text="Rs. 0">
+            <Label fx:id="balance" layoutX="206.0" layoutY="531.0" text="Rs. 0">
                <font>
                   <Font size="14.0" />
                </font>

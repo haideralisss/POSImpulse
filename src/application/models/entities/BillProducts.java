@@ -1,7 +1,7 @@
 package application.models.entities;
 
-public class BillProducts {
-	
+public class BillProducts 
+{	
 	private int productId, billId, quantity;
 	private double price, netTotal;
 	private String discount;
