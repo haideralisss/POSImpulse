@@ -95,8 +95,9 @@ public class DataGridController implements Initializable
 	ObservableList<Accounts> accountsList;
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		datePicker.setStyle("visibility: visible");
+	public void initialize(URL arg0, ResourceBundle arg1) 
+	{
+		
 	}
 	
 	@SuppressWarnings({ "unchecked", "exports" })
@@ -138,7 +139,14 @@ public class DataGridController implements Initializable
         dataGridTable.getColumns().add(endCol);
 		
 		category.setValue(category.getItems().get(0));
-		
+		if(category.getValue().equals("Date"))
+		{
+			datePicker.setStyle("visibility: visible");
+		}
+		else
+		{
+			datePicker.setStyle("visibility: hidden");
+		}
 		SetUpButtons();
 		SetUpTable();
 		dataGridTable.setSelectionModel(null);

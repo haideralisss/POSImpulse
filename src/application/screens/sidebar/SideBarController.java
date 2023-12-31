@@ -80,8 +80,8 @@ public class SideBarController implements Initializable
 		topBarLabel.setText("Companies");
 		List<Attribute> list = Arrays.asList(
                 new Attribute("Name", "text", "name", "text", true, false, true),
-                new Attribute("Contact", "text", "contact", "text", true, false, true),
-                new Attribute("Address", "text", "address", "text", true, false, true)
+                new Attribute("Contact", "text", "contact", "text", false, false, true),
+                new Attribute("Address", "text", "address", "text", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -91,8 +91,8 @@ public class SideBarController implements Initializable
 		topBarLabel.setText("Suppliers");
 		List<Attribute> list = Arrays.asList(
                 new Attribute("Name", "text", "name", "text", true, false, true),
-                new Attribute("Contact", "text", "contact", "text", true, false, true),
-                new Attribute("Address", "text", "address", "text", true, false, true)
+                new Attribute("Contact", "text", "contact", "text", false, false, true),
+                new Attribute("Address", "text", "address", "text", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -106,7 +106,7 @@ public class SideBarController implements Initializable
                 new Attribute("Purchase Price", "text", "purchasePrice", "real", false, false, true),
                 new Attribute("Retail Price", "text", "retailPrice", "real", false, false, true),
                 new Attribute("Company Name", "text", "companyId", "integer", false, true, true),
-                new Attribute("Company Name", "text", "companyName", "text", true, false, false)
+                new Attribute("Company Name", "text", "companyName", "text", false, false, false)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}

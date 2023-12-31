@@ -272,6 +272,7 @@ public class ExpensesRepo {
             String query = "SELECT * FROM expenses WHERE expenseDate= ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
+            System.out.println(DateFormatter.formatDate(date));
             preparedStatement.setString(1, DateFormatter.formatDate(date));
 
             ResultSet resultSet = preparedStatement.executeQuery();
