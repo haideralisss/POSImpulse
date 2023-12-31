@@ -214,4 +214,46 @@ public class AccountsRepo {
 	    }
 	    return account;
 	}
+	
+	public boolean changePassword(int id, String oldPassword, String newPassword) 
+	{
+	    Connection connection = DatabaseConnection.connect();
+	    try 
+	    {
+	        String verifyQuery = "SELECT * FROM accounts WHERE id = ? AND password = ?";
+	        PreparedStatement verifyStatement = connection.prepareStatement(verifyQuery);
+	        verifyStatement.setInt(1, id);
+	        verifyStatement.setString(2, oldPassword);
+
+	        ResultSet verifyResultSet = verifyStatement.executeQuery();
+	        if (verifyResultSet.next()) 
+	        {
+	            String updateQuery = "UPDATE accounts SET password = ? WHERE id = ?";
+	            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+	            updateStatement.setString(1, newPassword);
+	            updateStatement.setInt(2, id);
+
+	            updateStatement.executeUpdate();
+	            return true;
+	        } else 
+	        {
+	            return false;
+	        }
+	    } 
+	    catch (SQLException e) 
+	    {
+	        e.printStackTrace();
+	    } 
+	    finally 
+	    {
+	        try 
+	        {
+	            connection.close();
+	        } 
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
 }
