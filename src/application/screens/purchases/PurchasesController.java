@@ -79,7 +79,6 @@ public class PurchasesController implements Initializable
 		cartRow.getChildren().add(pci.getBonus());
 		cartRow.getChildren().add(pci.getBatchNum());
 		cartRow.getChildren().add(pci.getNetTotal());
-		cartRow.getChildren().add(pci.getExpiryDate());
 		cartRow.setAlignment(Pos.CENTER_LEFT);
 		cartRow.getChildren().add(pci.getDelButton());
 		
