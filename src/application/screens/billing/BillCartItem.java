@@ -1,7 +1,10 @@
 package application.screens.billing;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -23,11 +26,19 @@ public class BillCartItem
     
     @SuppressWarnings("exports")
 	public ImageView delButton;
+    
+    @SuppressWarnings("exports")
+	public JFXCheckBox isReturn;
+    
+    double purchasePrice, retailPrice;
+    int stockId, packSize, quantity, totalQuantity, newQuantity;
 
     private double originalValueOfGrossTotal, originalValueOfNetTotal;
 
     @SuppressWarnings("exports")
-	public BillCartItem(String name, String stock, Label grossTotalLabel, Label netTotalLabel, List<BillCartItem> list) 
+	public BillCartItem(String name, String stock, Label grossTotalLabel, Label netTotalLabel, 
+			List<BillCartItem> list, int stockId, double unitCost, int totalQuantity, int packSize, double purchasePrice, 
+			double retailPrice, JFXCheckBox isReturn) 
     {
         nameStockBox = new VBox();
         Label productNameLabel = new Label(name);
@@ -44,6 +55,11 @@ public class BillCartItem
         qty = new JFXTextField();
         disc = new JFXTextField();
         netTotal = new Label("Rs. 0");
+        
+        price.setText(String.valueOf(unitCost));
+        price.setDisable(true);
+        
+        this.isReturn = isReturn;
 
         price.setOnKeyReleased(event -> recalculateTotals(grossTotalLabel, netTotalLabel, list));
         qty.setOnKeyReleased(event -> recalculateTotals(grossTotalLabel, netTotalLabel, list));
@@ -57,6 +73,12 @@ public class BillCartItem
 
         originalValueOfGrossTotal = 0;
         originalValueOfNetTotal = 0;
+        
+        this.stockId = stockId;
+        this.totalQuantity = totalQuantity;
+        this.purchasePrice = purchasePrice;
+        this.retailPrice = retailPrice;
+        this.packSize = packSize;
 
         nameStockBox.getStyleClass().add("nameStockBox");
         price.getStyleClass().add("cartRowInput");
@@ -74,32 +96,53 @@ public class BillCartItem
         double qtyValue = qty.getText().isEmpty() ? 0 : Double.parseDouble(qty.getText());
 
         double totalValue = priceValue * qtyValue;
-
-        if (disc.getText().contains("%") && disc.getText().length() > 0) 
+        
+        quantity = qty.getText().isEmpty() ? 0 : Integer.parseInt(qty.getText());
+        if(isReturn.isSelected())
         {
-            double discount = getNumberOnly(disc.getText()) / 100;
-            totalValue -= totalValue * discount;
+        	newQuantity = totalQuantity + quantity;
         }
-        else if (!disc.getText().contains("%") && disc.getText().length() > 0) 
+        else
         {
-            totalValue -= Double.parseDouble(disc.getText());
-        }
-
-        double gValue = totalValue - originalValueOfGrossTotal;
-        double nValue = totalValue - originalValueOfNetTotal;
-
-        for (BillCartItem item : list) 
-        {
-            gValue += item.originalValueOfGrossTotal;
-            nValue += item.originalValueOfNetTotal;
+        	newQuantity = totalQuantity - quantity;
         }
 
-        grossTotalLabel.setText("Rs. " + gValue);
-        netTotalLabel.setText("Rs. " + nValue);
-        netTotal.setText("Rs. " + totalValue);
+        if(totalValue >= 0)
+        {
+        	if (disc.getText().contains("%") && disc.getText().length() > 0) 
+            {
+                double discount = getNumberOnly(disc.getText()) / 100;
+                totalValue -= totalValue * discount;
+            }
+            else if (!disc.getText().contains("%") && disc.getText().length() > 0) 
+            {
+                totalValue -= Double.parseDouble(disc.getText());
+            }
 
-        originalValueOfGrossTotal = totalValue;
-        originalValueOfNetTotal = totalValue;
+            double gValue = totalValue - originalValueOfGrossTotal;
+            double nValue = totalValue - originalValueOfNetTotal;
+
+            for (BillCartItem item : list) 
+            {
+                gValue += item.originalValueOfGrossTotal;
+                nValue += item.originalValueOfNetTotal;
+            }
+
+            grossTotalLabel.setText("Rs. " + gValue);
+            netTotalLabel.setText("Rs. " + nValue);
+            netTotal.setText("Rs. " + totalValue);
+
+            originalValueOfGrossTotal = totalValue;
+            originalValueOfNetTotal = totalValue;
+        }
+        else
+        {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Error in calculating values!");
+        	alert.setContentText("Total values being calculated are less than 0. We cannot edit the Gross Total and Net Total.");
+        	alert.show();
+        }
     }
 
 
@@ -144,5 +187,35 @@ public class BillCartItem
 	public ImageView getDelButton() 
     {
         return delButton;
+    }
+    
+    public double getProductQuantity()
+    {
+    	return quantity;
+    }
+    
+    public int getStockId()
+    {
+    	return stockId;
+    }
+    
+    public int getNewQuantity()
+    {
+    	return newQuantity;
+    }
+    
+    public int getPackSize()
+    {
+    	return packSize;
+    }
+    
+    public double getPurcahsePrice()
+    {
+    	return purchasePrice;
+    }
+
+    public double getRetailPrice()
+    {
+    	return retailPrice;
     }
 }
