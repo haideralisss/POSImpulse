@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,9 +14,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="694.0" prefWidth="1002.0" stylesheets="@purchases.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
+<AnchorPane prefHeight="694.4" prefWidth="990.4" stylesheets="@purchases.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.screens.purchases.PurchasesController">
    <children>
-      <AnchorPane layoutX="17.0" layoutY="9.0" prefHeight="62.0" prefWidth="678.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 3;">
+      <AnchorPane layoutX="8.0" layoutY="9.0" prefHeight="62.0" prefWidth="678.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 3;">
          <children>
             <Pane layoutX="16.0" layoutY="13.0" prefHeight="37.0" prefWidth="476.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 20;">
                <children>
@@ -24,7 +25,7 @@
                         <Image url="@../../assets/greySearchIcon.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField focusColor="#405aa800" layoutX="50.0" layoutY="6.0" prefHeight="25.0" prefWidth="327.0" promptText="Search a product..." unFocusColor="#4d4d4d00" />
+                  <JFXTextField fx:id="productSearchField" focusColor="#405aa800" layoutX="50.0" layoutY="6.0" onKeyReleased="#searchProduct" prefHeight="25.0" prefWidth="327.0" promptText="Search a product..." unFocusColor="#4d4d4d00" />
                   <JFXButton layoutX="386.0" layoutY="5.0" prefHeight="4.0" prefWidth="81.0" style="-fx-background-radius: 30; -fx-border-radius: 30;" styleClass="blueButton" stylesheets="@../../components/datagrid/datagrid.css" text="Search">
                      <font>
                         <Font name="System Bold" size="11.0" />
@@ -39,7 +40,7 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="709.0" layoutY="8.0" prefHeight="622.0" prefWidth="282.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 0;">
+      <AnchorPane layoutX="698.0" layoutY="8.0" prefHeight="669.0" prefWidth="282.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0); -fx-background-radius: 0;">
          <children>
             <Label layoutX="24.0" layoutY="21.0" text="Loose">
                <font>
@@ -57,7 +58,7 @@
                </font>
             </Label>
             <Line endX="154.0" layoutX="115.0" layoutY="96.0" startX="-100.0" strokeWidth="0.2" />
-            <JFXTextField layoutX="24.0" layoutY="137.0" prefHeight="25.0" prefWidth="168.0">
+            <JFXTextField fx:id="supplierTextField" layoutX="24.0" layoutY="137.0" onKeyReleased="#searchSupplier" prefHeight="25.0" prefWidth="168.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -121,50 +122,51 @@
                </font>
             </JFXTextField>
             <Line endX="154.0" layoutX="115.0" layoutY="414.0" startX="-100.0" strokeWidth="0.2" />
-            <Label layoutX="47.0" layoutY="430.0" text="Gross Total">
+            <Label layoutX="47.0" layoutY="443.0" text="Gross Total">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="182.0" layoutY="430.0" text="Net Total">
+            <Label layoutX="182.0" layoutY="443.0" text="Net Total">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="445.0" text="Rs. 500" textFill="#01a811">
+            <Label layoutX="46.0" layoutY="458.0" text="Rs. 500" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="175.0" layoutY="445.0" text="Rs. 500" textFill="#01a811">
+            <Label layoutX="175.0" layoutY="458.0" text="Rs. 500" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Line endX="154.0" layoutX="115.0" layoutY="486.0" startX="-100.0" strokeWidth="0.2" />
-            <Label layoutX="26.0" layoutY="505.0" text="Amount Paid">
+            <Line endX="154.0" layoutX="115.0" layoutY="514.0" startX="-100.0" strokeWidth="0.2" />
+            <Label layoutX="26.0" layoutY="553.0" text="Amount Paid">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="206.0" layoutY="499.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField layoutX="206.0" layoutY="547.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXButton layoutX="25.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save">
+            <JFXButton layoutX="25.0" layoutY="613.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="147.0" layoutY="565.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save &amp; Print">
+            <JFXButton layoutX="147.0" layoutY="613.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save &amp; Print">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </JFXButton>
+            <ListView fx:id="supplierSearchBar" layoutX="24.0" layoutY="167.0" prefHeight="130.0" prefWidth="168.0" />
          </children>
       </AnchorPane>
-      <VBox fx:id="CartVBox" layoutX="17.0" layoutY="85.0" minHeight="37.0" prefWidth="678.0">
+      <VBox fx:id="CartVBox" layoutX="8.0" layoutY="85.0" minHeight="37.0" prefWidth="678.0">
          <children>
             <Pane prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
                <children>
@@ -217,5 +219,6 @@
             </Pane>
          </children>
       </VBox>
+      <ListView fx:id="productSearchBar" layoutX="73.0" layoutY="60.0" prefHeight="237.0" prefWidth="327.0" />
    </children>
 </AnchorPane>
