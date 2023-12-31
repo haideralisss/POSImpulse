@@ -18,11 +18,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 public class SideBarController implements Initializable 
@@ -43,6 +45,14 @@ public class SideBarController implements Initializable
 	@FXML
 	public ImageView logoutIcon;
 	
+	@SuppressWarnings("exports")
+	@FXML
+	public Button adminPanelButton;
+	
+	@SuppressWarnings("exports")
+	@FXML
+	public FlowPane sidebarFlowPane;
+	
 	public DataGridController dgController;
 	
 	Accounts currentAccount;
@@ -51,6 +61,9 @@ public class SideBarController implements Initializable
 	{
 		currentAccount = account;
 		this.fullNameLabel.setText(account.getFullName());
+		
+		if(currentAccount.getIsAdmin().equals("No"))
+			sidebarFlowPane.getChildren().remove(adminPanelButton);
 	}
 	
 	public void dashboardPage() throws IOException
@@ -206,7 +219,7 @@ public class SideBarController implements Initializable
 			{
 				DataGridController dgController;
 				dgController = loader.getController();
-				dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane);
+				dgController.SetupDataGrid((topBarLabel.getText() == "Admin Panel" ? "Accounts" : topBarLabel.getText()), list, anchorPane, currentAccount);
 			}
 			else if(path.contains("profile"))
 			{

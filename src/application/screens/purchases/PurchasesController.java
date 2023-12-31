@@ -34,11 +34,9 @@ public class PurchasesController implements Initializable
 	@FXML
 	VBox CartVBox;
 	
-	@SuppressWarnings("exports")
 	@FXML
 	public ListView<Suppliers> supplierSearchBar;
 	
-	@SuppressWarnings("exports")
 	@FXML
 	public ListView<Products> productSearchBar;
 	
@@ -113,7 +111,7 @@ public class PurchasesController implements Initializable
 			AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
 		    nextAnchorPane.toFront();
 		    DataGridController dgController = loader.getController();
-			dgController.SetupDataGrid("Purchases", attributes, anchorPane);
+			dgController.SetupDataGrid("Purchases", attributes, anchorPane, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
