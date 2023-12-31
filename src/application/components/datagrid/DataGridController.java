@@ -45,29 +45,37 @@ import javafx.scene.layout.FlowPane;
 
 public class DataGridController implements Initializable
 {
+	@SuppressWarnings("exports")
 	@FXML
 	public Label title;
 	
+	@SuppressWarnings("exports")
 	@FXML
 	public FlowPane buttonsFlowPane;
 	
+	@SuppressWarnings({ "exports", "rawtypes" })
 	@FXML
 	public TableView dataGridTable;
 	
 	@FXML 
 	public ComboBox<String> category;
 	
+	@SuppressWarnings("exports")
 	@FXML
 	public ImageView titleIcon;
 	
+	@SuppressWarnings("exports")
+	public AnchorPane anchorPane;
+	
+	@SuppressWarnings({ "exports", "unchecked" })
 	@FXML
 	public JFXTextField searchBar;
 	
+	@SuppressWarnings("exports")
 	@FXML
 	public DatePicker datePicker;
 	
 	List<Attribute> attributes;
-	public AnchorPane anchorPane;
 	
 	BillsRepo billsRepo = new BillsRepo();
 	PurchasesRepo purchasesRepo = new PurchasesRepo();
@@ -91,15 +99,12 @@ public class DataGridController implements Initializable
 		datePicker.setStyle("visibility: visible");
 	}
 	
+	@SuppressWarnings({ "unchecked", "exports" })
 	public void SetupDataGrid(String title, List<Attribute> attributes, AnchorPane anchorPane)
 	{
 		this.anchorPane = anchorPane;
 		this.title.setText(title);
 		titleIcon.setImage(new Image(getClass().getResource("/assets/" + title.toLowerCase() + "Icon.png").toExternalForm()));
-		
-		SetUpButtons();
-		SetUpTable();
-		dataGridTable.setSelectionModel(null);
 		
 		TableColumn<String, String> firstCol = new TableColumn<>("#");
 		firstCol.setCellValueFactory(new PropertyValueFactory<>("Number"));
@@ -133,6 +138,10 @@ public class DataGridController implements Initializable
         dataGridTable.getColumns().add(endCol);
 		
 		category.setValue(category.getItems().get(0));
+		
+		SetUpButtons();
+		SetUpTable();
+		dataGridTable.setSelectionModel(null);
 	}
 	
 	public void SetUpButtons()
@@ -171,52 +180,61 @@ public class DataGridController implements Initializable
 		buttonsFlowPane.getChildren().add(addBtn);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void SetUpTable()
 	{	
 		if(title.getText() == "Billing")
 		{
+			Bills.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			BillsRepo billsRepo = new BillsRepo();
 	        billsList = FXCollections.observableArrayList(billsRepo.getAllBills());
 	        dataGridTable.setItems(billsList);
 		}
 		else if(title.getText() == "Purchases")
 		{
+			Purchases.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			PurchasesRepo purchasesRepo = new PurchasesRepo();
 	        purchasesList = FXCollections.observableArrayList(purchasesRepo.getAllPurchases());
 	        dataGridTable.setItems(purchasesList);
 		}
 		else if(title.getText() == "Companies")
 		{
+			Companies.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			CompaniesRepo companiesRepo = new CompaniesRepo();
 	        companiesList = FXCollections.observableArrayList(companiesRepo.getAllCompanies());
 	        dataGridTable.setItems(companiesList);
 		}
 		else if(title.getText() == "Suppliers")
 		{
+			Suppliers.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			SuppliersRepo suppliersRepo = new SuppliersRepo();
 	        suppliersList = FXCollections.observableArrayList(suppliersRepo.getAllSuppliers());
 	        dataGridTable.setItems(suppliersList);
 		}
 		else if(title.getText() == "Products")
 		{
+			Products.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			ProductsRepo productsRepo = new ProductsRepo();
 			productsList = FXCollections.observableArrayList(productsRepo.getAllProducts());
 	        dataGridTable.setItems(productsList);
 		}
 		else if(title.getText() == "Stock")
 		{
+			Stock.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			StockRepo stockRepo = new StockRepo();
 	        stockList = FXCollections.observableArrayList(stockRepo.getAllStock());
 	        dataGridTable.setItems(stockList);
 		}
 		else if(title.getText() == "Expenses")
 		{
+			Expenses.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			ExpensesRepo expensesRepo = new ExpensesRepo();
 	        expensesList = FXCollections.observableArrayList(expensesRepo.getAllExpenses());
 	        dataGridTable.setItems(expensesList);
 		}
 		else if(title.getText() == "Accounts")
 		{
+			Accounts.setDataGridTable(dataGridTable, title.getText(), attributes, anchorPane);
 			AccountsRepo accountsRepo = new AccountsRepo();
 	        accountsList = FXCollections.observableArrayList(accountsRepo.getAllAccounts());
 	        dataGridTable.setItems(accountsList);
@@ -236,7 +254,7 @@ public class DataGridController implements Initializable
 			
 			InputFormController ifController;
 			ifController = loader.getController();
-			ifController.SetupInputForm(title.getText(), attributes, anchorPane);
+			ifController.SetupInputForm(title.getText(), attributes, anchorPane, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -273,6 +291,7 @@ public class DataGridController implements Initializable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void categoryChange()
 	{
 		if(category.getValue().equals("Date"))
@@ -317,6 +336,7 @@ public class DataGridController implements Initializable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchBillsByInvoiceNumber(String invoiceNumber)
 	{
 		ArrayList<Bills> list = new ArrayList<>();
@@ -325,6 +345,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(billsList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchPurchasesByInvoiceNumber(String invoiceNumber)
 	{
 		ArrayList<Purchases> list = new ArrayList<>();
@@ -333,6 +354,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(purchasesList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchCompaniesByName(String companyName)
 	{
 		ArrayList<Companies> list = new ArrayList<>();
@@ -341,6 +363,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(companiesList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchSuppliersByName(String supplierName)
 	{
 		ArrayList<Suppliers> list = new ArrayList<>();
@@ -349,6 +372,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(suppliersList);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void fetchProductsByName(String productName)
 	{
 		ArrayList<Products> list = new ArrayList<>();
@@ -357,6 +381,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(productsList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchExpenseByName(String expenseName)
 	{
 		ArrayList<Expenses> list = new ArrayList<>();
@@ -365,6 +390,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(expensesList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchStockByProductName(String expenseName)
 	{
 		ArrayList<Stock> list = new ArrayList<>();
@@ -373,6 +399,7 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(stockList);
 	}
 	
+	@SuppressWarnings({ "unchecked" })
 	public void fetchDataFromDatabase()
 	{
 		if(title.getText().equals("Billing"))
@@ -475,6 +502,7 @@ public class DataGridController implements Initializable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fetchDataByDate()
 	{
 		if(title.getText().equals("Billing"))

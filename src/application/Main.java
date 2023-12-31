@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 
 
 public class Main extends Application {
+	@SuppressWarnings("exports")
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/sidebar/SideBar.fxml"));

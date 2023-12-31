@@ -5,24 +5,28 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import application.models.entities.Bills;
 import application.models.entities.Expenses;
-import application.models.entities.Products;
-import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 import application.utils.backendUtils.NumberFormatter;
 
-public class ExpensesRepo 
-{
+public class ExpensesRepo {
+	
+	public ExpensesRepo()
+	{
 
+	}
+
+	@SuppressWarnings("deprecation")
 	public String fetchMonthExpenses() 
 	{
 		String monthExpenses = "0";
 		double totalAmount = 0;
+
 		Connection conn = DatabaseConnection.connect();
         try
         {
@@ -83,6 +87,7 @@ public class ExpensesRepo
 			while(resultSet.next())
 			{
 				expensesList.add(new Expenses(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getObject("expenseDate").toString(),
 						resultSet.getString("name"),
@@ -117,6 +122,7 @@ public class ExpensesRepo
 			while(resultSet.next())
 			{
 				expense = new Expenses(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getObject("expenseDate").toString(),
 						resultSet.getString("name"),
@@ -143,7 +149,7 @@ public class ExpensesRepo
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses VALUES (?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO expenses (expenseDate, name, description, amount) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setObject(1, expense.getExpenseDate());
 			statement.setString(2, expense.getName());
 			statement.setString(3, expense.getDescription());
@@ -225,6 +231,7 @@ public class ExpensesRepo
                     while (resultSet.next()) 
                     {
                         Expenses expense = new Expenses(
+                        		resultSet.getInt("id"),
                         		count,
                                 resultSet.getString("expenseDate"),
                                 resultSet.getString("name"),
@@ -272,6 +279,7 @@ public class ExpensesRepo
             while (resultSet.next()) 
             {
             	Expenses expense = new Expenses(
+            			resultSet.getInt("id"),
                 		count,
                         resultSet.getString("expenseDate"),
                         resultSet.getString("name"),

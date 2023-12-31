@@ -5,22 +5,27 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.time.format.DateTimeFormatter;
 
 import application.utils.backendUtils.DatabaseConnection;
 import application.models.entities.Bills;
-import application.models.entities.Products;
 import application.utils.backendUtils.*;
 
 public class BillsRepo 
 {
 	
+	public BillsRepo()
+	{
+		
+	}
+	
 	public String fetchTodaySales()
 	{
 		String todaySales = "0";
 		double totalAmount = 0.0;
+		
 		Connection conn = DatabaseConnection.connect();
 	    try
 	    {
@@ -62,13 +67,15 @@ public class BillsRepo
 	    return todaySales;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String fetchMonthSales() 
 	{
 		String monthSales = "0";
         double totalAmount = 0.0;
-        Connection conn = DatabaseConnection.connect();
-        try
-        {
+        
+        Connection connection = DatabaseConnection.connect();
+		try
+		{
             // Get the current date
             java.util.Date now = new java.util.Date();
 
@@ -86,7 +93,7 @@ public class BillsRepo
                     "FROM bills " +
                     "WHERE billDate >= ? AND billDate <= ? AND isCredit != 1";
 
-            try (PreparedStatement statement = conn.prepareStatement(query)) 
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
             {
                 statement.setString(1, DateFormatter.formatSqlDate(sqlFirstDayOfMonth));
                 statement.setString(2, DateFormatter.formatSqlDate(sqlLastDayOfMonth));
@@ -109,7 +116,7 @@ public class BillsRepo
 	    {
 	    	try 
 	    	{
-				conn.close();
+				connection.close();
 			} 
 	    	catch (SQLException e) 
 	    	{
@@ -122,6 +129,7 @@ public class BillsRepo
 	public ArrayList<Bills> getAllBills()
 	{
 		ArrayList<Bills> billsList = new ArrayList<Bills>();
+		
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
@@ -131,6 +139,7 @@ public class BillsRepo
 			while(resultSet.next())
 			{
 				billsList.add(new Bills(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("customerName"),
 						resultSet.getInt("invoiceNum"),
@@ -166,6 +175,7 @@ public class BillsRepo
 	public Bills getBill(int id) 
 	{
 		Bills bill = null;
+		
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
@@ -176,6 +186,7 @@ public class BillsRepo
 			while(resultSet.next())
 			{
 				bill = new Bills(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("customerName"),
 						resultSet.getInt("invoiceNum"),
@@ -213,7 +224,7 @@ public class BillsRepo
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO bills (customerName, invoiceNum, billDate, grossTotal, discount, salesTax, netTotal, amountPaid, shift, isCredit, isReturn, profit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, bill.getCustomerName());
 			statement.setInt(2, bill.getInvoiceNum());
 			statement.setObject(3, bill.getBillDate());
@@ -224,7 +235,7 @@ public class BillsRepo
 			statement.setDouble(8, bill.getAmountPaid());
 			statement.setString(9, bill.getShift());
 			statement.setBoolean(10, bill.getIsCredit());
-			statement.setBoolean(11, bill.getIsReturn());
+			statement.setBoolean(11, (bill.getIsReturn() == "Yes" ? true : false));
 			statement.setDouble(12, bill.getProfit());
 			statement.executeUpdate();
 		}
@@ -260,7 +271,7 @@ public class BillsRepo
 			statement.setDouble(8, updatedBill.getAmountPaid());
 			statement.setString(9, updatedBill.getShift());
 			statement.setBoolean(10, updatedBill.getIsCredit());
-			statement.setBoolean(11, updatedBill.getIsReturn());
+			statement.setBoolean(11, (updatedBill.getIsReturn() == "Yes" ? true : false));
 			statement.setDouble(12, updatedBill.getProfit());
 			statement.setInt(13, id);
 	        statement.executeUpdate();
@@ -280,12 +291,11 @@ public class BillsRepo
 	    return getAllBills();
 	}
 
-	public ArrayList<Bills> deleteBills(int id) 
+	public ArrayList<Bills> deleteBill(int id) 
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
 		{
-	    	
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM bills WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -306,13 +316,14 @@ public class BillsRepo
 	    return getAllBills();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public ArrayList<Bills> fetchMonthSalesReport() 
 	{
 		Connection connection = DatabaseConnection.connect();
         ArrayList<Bills> monthSalesList = new ArrayList<>();
-        Connection conn = DatabaseConnection.connect();
-        try
-        {
+        
+		try
+		{
         	java.util.Date now = new java.util.Date();
 
             // Set current month's first and last day
@@ -322,7 +333,7 @@ public class BillsRepo
             Date sqlFirstDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-01");
             Date sqlLastDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-31");
         	
-             PreparedStatement preparedStatement = conn.prepareStatement(
+             PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT strftime('%Y-%m-%d', billDate) AS date, " +
                              "SUM(CASE WHEN isReturn = 0 THEN amountPaid ELSE 0 END) AS totalAmount, " +
                              "SUM(CASE WHEN isReturn = 1 THEN amountPaid ELSE 0 END) AS totalSubtractedAmount " +
@@ -357,7 +368,7 @@ public class BillsRepo
 	    {
 	    	try 
 	    	{
-				conn.close();
+				connection.close();
 			} 
 	    	catch (SQLException e) 
 	    	{
@@ -367,6 +378,7 @@ public class BillsRepo
         return monthSalesList;
     }
 	
+	@SuppressWarnings("deprecation")
 	public ArrayList<Bills> fetchDailyProfit() 
 	{
         ArrayList<Bills> dailyProfit = new ArrayList<>();
@@ -445,6 +457,7 @@ public class BillsRepo
                     while (resultSet.next())
                     {
                         Bills bill = new Bills(
+                        		resultSet.getInt("id"),
                         		count,
                         		resultSet.getString("customerName"),
                         		resultSet.getInt("invoiceNum"),
@@ -500,6 +513,7 @@ public class BillsRepo
             while (resultSet.next()) 
             {
             	Bills bill = new Bills(
+            			resultSet.getInt("id"),
                 		count,
                 		resultSet.getString("customerName"),
                 		resultSet.getInt("invoiceNum"),

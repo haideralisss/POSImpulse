@@ -1,27 +1,30 @@
 package application.models.repositories;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Products;
-import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
-import application.utils.backendUtils.DateFormatter;
-import application.utils.backendUtils.NumberFormatter;
 
-public class ProductsRepo 
-{
+
+public class ProductsRepo {
+	
+	public ProductsRepo()
+	{
+
+	}
 	
 	public ArrayList<Products> getAllProducts()
 	{
 		ArrayList<Products> productsList = new ArrayList<Products>();
 		Connection connection = DatabaseConnection.connect();
-	    try
-	    {
+
+		try
+		{
 			String query = "SELECT p.*, c.name AS companyName FROM products p " +
                     "INNER JOIN companies c ON p.companyId = c.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -30,6 +33,7 @@ public class ProductsRepo
 			while(resultSet.next())
 			{
 				productsList.add(new Products(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getString("name"),
 						resultSet.getInt("packSize"),
@@ -57,9 +61,10 @@ public class ProductsRepo
 	public Products getProduct(int id)
 	{
 	    Products product = null;
-		Connection connection = DatabaseConnection.connect();
-	    try
-	    {
+
+	    Connection connection = DatabaseConnection.connect();
+		try
+		{
 	        String query = "SELECT p.*, c.name AS companyName FROM products p " +
 	                       "INNER JOIN companies c ON p.companyId = c.id " +
 	                       "WHERE p.id = ?";
@@ -70,6 +75,7 @@ public class ProductsRepo
 	        {
 	            product = new Products(
 	                    resultSet.getInt("id"),
+	                    0,
 	                    resultSet.getString("name"),
 	                    resultSet.getInt("packSize"),
 	                    resultSet.getDouble("purchasePrice"),
@@ -94,8 +100,8 @@ public class ProductsRepo
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?, ?, ?)");
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO products (name, packSize, purchasePrice, retailPrice, companyId) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, product.getName());
 			statement.setInt(2, product.getPackSize());
 			statement.setDouble(3, product.getPurchasePrice());
@@ -120,7 +126,7 @@ public class ProductsRepo
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE products SET name = ?, packSize = ?, purchasePrice = ?, retailPrice = ?, companyId = ? WHERE id = ?");
 	        statement.setString(1, updatedProduct.getName());
@@ -146,10 +152,9 @@ public class ProductsRepo
 
 	public ArrayList<Products> deleteProduct(int id) 
 	{
-
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -190,6 +195,7 @@ public class ProductsRepo
                     while (resultSet.next()) 
                     {
                         Products product = new Products(
+                        		resultSet.getInt("id"),
                         		count,
                                 resultSet.getString("name"),
                                 resultSet.getInt("packSize"),
@@ -239,6 +245,7 @@ public class ProductsRepo
                     while (resultSet.next()) 
                     {
                         Products product = new Products(
+                        		1,
                         		resultSet.getInt("id"),
                                 resultSet.getString("name"),
                                 resultSet.getInt("packSize"),

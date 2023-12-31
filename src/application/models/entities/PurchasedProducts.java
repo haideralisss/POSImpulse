@@ -1,10 +1,5 @@
 package application.models.entities;
 
-import javafx.geometry.Pos;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-
 public class PurchasedProducts {
 	
 	private int productId, purchaseId, quantity, bonus;

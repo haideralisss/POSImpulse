@@ -38,17 +38,17 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Billing");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "text", "billDate", "Date", true, false, true),
-                new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
-                new Attribute("Customer Name", "text", "customerName", "String", true, true, true),
-                new Attribute("Gross Total", "text", "grossTotal", "Number", false, true, true),
-                new Attribute("Discount", "text", "discount", "Number", false, true, true),
-                new Attribute("Sales Tax", "text", "salesTax", "Number", false, true, true),
-                new Attribute("Net Total", "text", "netTotal", "Number", false, false, false),
-                new Attribute("Amount Paid", "text", "amountPaid", "Number", false, false, true),
-                new Attribute("Credit", "checkbox", "isCredit", "Boolean", false, true, true),
-                new Attribute("Return", "checkbox", "isReturn", "Boolean", false, false, true),
-                new Attribute("Shift", "text", "shift", "String", false, false, true)
+                new Attribute("Date", "text", "billDate", "date", true, false, true),
+                new Attribute("Invoice No.", "text", "invoiceNum", "integer", true, false, true),
+                new Attribute("Customer Name", "text", "customerName", "text", true, true, true),
+                new Attribute("Gross Total", "text", "grossTotal", "real", false, true, true),
+                new Attribute("Discount", "text", "discount", "text", false, true, true),
+                new Attribute("Sales Tax", "text", "salesTax", "text", false, true, true),
+                new Attribute("Net Total", "text", "netTotal", "real", false, false, false),
+                new Attribute("Amount Paid", "text", "amountPaid", "real", false, false, true),
+                new Attribute("Credit", "checkbox", "isCredit", "numeric", false, true, true),
+                new Attribute("Return", "checkbox", "isReturn", "numeric", false, false, true),
+                new Attribute("Shift", "text", "shift", "text", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -57,18 +57,19 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Purchases");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "date", "purchaseDate", "Date", true, false, true),
-                new Attribute("Invoice No.", "text", "invoiceNum", "Number", true, false, true),
-                new Attribute("Supplier Name", "text", "supplierName", "Number", false, false, true),
-                new Attribute("Gross Total", "text", "grossTotal", "Number", false, true, true),
-                new Attribute("Discount", "text", "discount", "Number", false, true, true),
-                new Attribute("Sales Taxes", "text", "salesTax", "Number", false, true, true),
-                new Attribute("Other Charges", "text", "otherCharges", "Number", false, true, true),
-                new Attribute("Net Total", "text", "netTotal", "Number", false, false, false),
-                new Attribute("Amount Paid", "text", "amountPaid", "Number", false, false, true),
-                new Attribute("Loose", "checkbox", "isLoose", "Boolean", false, true, true),
-                new Attribute("Return", "checkbox", "isReturn", "Boolean", false, false, true),
-                new Attribute("Shift", "text", "shift", "String", false, false, true)
+                new Attribute("Date", "date", "purchaseDate", "date", true, false, true),
+                new Attribute("Invoice No.", "text", "invoiceNum", "text", true, false, true),
+                new Attribute("Supplier Name", "text", "supplierId", "integer", false, true, true),
+                new Attribute("Supplier Name", "text", "supplierName", "text", true, false, false),
+                new Attribute("Gross Total", "text", "grossTotal", "real", false, true, true),
+                new Attribute("Discount", "text", "discount", "text", false, true, true),
+                new Attribute("Sales Taxes", "text", "salesTax", "text", false, true, true),
+                new Attribute("Other Charges", "text", "otherCharges", "real", false, true, true),
+                new Attribute("Net Total", "text", "netTotal", "real", false, false, false),
+                new Attribute("Amount Paid", "text", "amountPaid", "real", false, false, true),
+                new Attribute("Loose", "checkbox", "isLoose", "numeric", false, true, true),
+                new Attribute("Return", "checkbox", "isReturn", "numeric", false, false, true),
+                new Attribute("Shift", "text", "shift", "text", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 		
@@ -78,9 +79,9 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Companies");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Contact", "text", "contact", "String", false, false, true),
-                new Attribute("Address", "text", "address", "String", false, false, true)
+                new Attribute("Name", "text", "name", "text", true, false, true),
+                new Attribute("Contact", "text", "contact", "text", true, false, true),
+                new Attribute("Address", "text", "address", "text", true, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -89,9 +90,9 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Suppliers");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Contact", "text", "contact", "String", false, false, true),
-                new Attribute("Address", "text", "address", "String", false, false, true)
+                new Attribute("Name", "text", "name", "text", true, false, true),
+                new Attribute("Contact", "text", "contact", "text", true, false, true),
+                new Attribute("Address", "text", "address", "text", true, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -100,11 +101,12 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Products");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Pack Size", "text", "packSize", "Number", false, false, true),
-                new Attribute("Purchase Price", "text", "purchasePrice", "Number", false, false, true),
-                new Attribute("Retail Price", "text", "retailPrice", "Number", false, false, true),
-                new Attribute("Company Name", "text", "companyName", "Number", false, false, true, true, "companyName", "companies")
+                new Attribute("Name", "text", "name", "text", true, false, true),
+                new Attribute("Pack Size", "text", "packSize", "integer", false, false, true),
+                new Attribute("Purchase Price", "text", "purchasePrice", "real", false, false, true),
+                new Attribute("Retail Price", "text", "retailPrice", "real", false, false, true),
+                new Attribute("Company Name", "text", "companyId", "integer", false, true, true),
+                new Attribute("Company Name", "text", "companyName", "text", true, false, false)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -113,10 +115,11 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Stock");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Product Name", "text", "productName", "String", true, false, true, true, "productId", "products"),
-                new Attribute("Quantity", "text", "totalQuantity", "Number", false, false, true),
-                new Attribute("Unit Cost", "text", "unitCost", "Number", false, false, true),
-                new Attribute("Total Quantity", "text", "totalQuantity", "Number", false, false, false)
+				new Attribute("Product Name", "text", "productId", "integer", false, true, true),
+                new Attribute("Product Name", "text", "productName", "text", true, false, false),
+                new Attribute("Quantity", "text", "totalQuantity", "integer", false, false, true),
+                new Attribute("Unit Cost", "text", "unitCost", "real", false, false, true),
+                new Attribute("Total Price", "text", "totalPrice", "real", false, false, false)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -125,10 +128,10 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Expenses");
 		List<Attribute> list = Arrays.asList(
-                new Attribute("Date", "date", "expenseDate", "Date", true, false, true),
-                new Attribute("Name", "text", "name", "String", true, false, true),
-                new Attribute("Description", "text", "description", "String", false, false, true),
-                new Attribute("Amount", "text", "amount", "Number", false, false, true)
+                new Attribute("Date", "date", "expenseDate", "date", true, false, true),
+                new Attribute("Name", "text", "name", "text", true, false, true),
+                new Attribute("Description", "text", "description", "text", false, false, true),
+                new Attribute("Amount", "text", "amount", "real", false, false, true)
         );
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}
@@ -143,11 +146,11 @@ public class SideBarController implements Initializable
 	{
 		topBarLabel.setText("Admin Panel");
 		List<Attribute> list = Arrays.asList(
-				new Attribute("Username", "text", "userName", "String", true, false, true),
-				new Attribute("Full Name", "text", "fullName", "String", true, false, true),
-				new Attribute("Phone", "text", "phone", "String", true, false, true),
-				new Attribute("Password", "password", "password", "String", false, true, true),
-				new Attribute("Admin", "checkbox", "isAdmin", "Boolean", false, false, true)
+				new Attribute("Username", "text", "userName", "text", true, false, true),
+				new Attribute("Full Name", "text", "fullName", "text", true, false, true),
+				new Attribute("Phone", "text", "phone", "text", true, false, true),
+				new Attribute("Password", "password", "password", "text", false, true, true),
+				new Attribute("Admin", "checkbox", "isAdmin", "numeric", false, false, true)
 		);
 		changePage("components/datagrid/DataGrid.fxml", list);
 	}

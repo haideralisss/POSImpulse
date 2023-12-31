@@ -4,29 +4,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import application.models.entities.Bills;
-import application.models.entities.Companies;
 import application.models.entities.Purchases;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.DateFormatter;
 
 public class PurchasesRepo {
 	
-private Connection connection;
-	
 	public PurchasesRepo()
 	{
-		connection = DatabaseConnection.connect();
+
 	}
 	
 	public ArrayList<Purchases> getAllPurchases()
 	{
 		ArrayList<Purchases> purchasesList = new ArrayList<Purchases>();
-	    try
-	    {
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -35,6 +33,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				purchasesList.add(new Purchases(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getInt("supplierId"),
 						resultSet.getString("supplierName"),
@@ -68,8 +67,9 @@ private Connection connection;
 	
 	public Purchases getPurchase(int id) {
 		Purchases purchase = null;
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT p.*, s.name AS supplierName FROM purchases p " +
                     "INNER JOIN suppliers s ON p.supplierId = s.id WHERE id = ?";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -78,6 +78,7 @@ private Connection connection;
 			while(resultSet.next())
 			{
 				purchase = new Purchases(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getInt("supplierId"),
 						resultSet.getString("supplierName"),
@@ -110,9 +111,10 @@ private Connection connection;
 	
 	public ArrayList<Purchases> addPurchase(Purchases purchase)
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases (supplierId, purchaseDate, invoiceNum, grossTotal, salesTax, discount, otherCharges, netTotal, isReturn, isLoose, shift, amountPaid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, purchase.getSupplierId());
 			statement.setObject(2, purchase.getPurchaseDate());
 			statement.setString(3, purchase.getInvoiceNum());
@@ -121,7 +123,7 @@ private Connection connection;
 			statement.setString(6, purchase.getDiscount());
 			statement.setDouble(7, purchase.getOtherCharges());
 			statement.setDouble(8, purchase.getNetTotal());
-			statement.setBoolean(9, purchase.getIsReturn());
+			statement.setBoolean(9, (purchase.getIsReturn() == "Yes" ? true : false));
 			statement.setBoolean(10, purchase.getIsLoose());
 			statement.setString(11, purchase.getShift());
 			statement.setDouble(12, purchase.getAmountPaid());
@@ -142,8 +144,9 @@ private Connection connection;
 	
 	public ArrayList<Purchases> updatePurchase(int id, Purchases updatedPurchase) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE purchases SET supplierId = ?, purchaseDate = ?, invoiceNum = ?, grossTotal = ?, salesTax = ?, discount = ?, otherCharges = ?, netTotal = ?, isReturn = ?, isLoose = ?, shift = ?, amountPaid = ? WHERE id = ?");
 	        statement.setInt(1, updatedPurchase.getSupplierId());
@@ -154,7 +157,7 @@ private Connection connection;
 			statement.setString(6, updatedPurchase.getDiscount());
 			statement.setDouble(7, updatedPurchase.getOtherCharges());
 			statement.setDouble(8, updatedPurchase.getNetTotal());
-			statement.setBoolean(9, updatedPurchase.getIsReturn());
+			statement.setBoolean(9, (updatedPurchase.getIsReturn() == "Yes" ? true : false));
 			statement.setBoolean(10, updatedPurchase.getIsLoose());
 			statement.setString(11, updatedPurchase.getShift());
 			statement.setDouble(12, updatedPurchase.getAmountPaid());
@@ -174,10 +177,11 @@ private Connection connection;
 	    return getAllPurchases();
 	}
 
-	public ArrayList<Purchases> deletePurchases(int id) 
+	public ArrayList<Purchases> deletePurchase(int id) 
 	{
+		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM purchases WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -203,8 +207,7 @@ private Connection connection;
         int count = 1;
         try
         {
-        	String query = "SELECT p.id, p.purchaseDate, p.invoiceNum, p.grossTotal, p.discount, p.salesTax, " +
-                    "p.otherCharges, p.netTotal, p.amountPaid, p.isReturn, p.isLoose, p.shift, " +
+        	String query = "SELECT p.*" +
                     "s.name AS supplierName " +
                     "FROM purchases p " +
                     "JOIN suppliers s ON p.supplierId = s.id " +
@@ -219,20 +222,21 @@ private Connection connection;
                     while (resultSet.next())
                     {
                     	Purchases purchase = new Purchases(
-                    	        count,
-                    	        1,
-                    	        resultSet.getString("supplierName"),
-                    	        resultSet.getString("purchaseDate"),
-                    	        resultSet.getString("invoiceNum"),
-                    	        resultSet.getDouble("grossTotal"),
-                    	        resultSet.getString("salesTax"),
-                    	        resultSet.getString("discount"),
-                    	        resultSet.getDouble("otherCharges"),
-                    	        resultSet.getDouble("netTotal"),
-                    	        resultSet.getBoolean("isReturn"),
-                    	        resultSet.getBoolean("isLoose"),
-                    	        resultSet.getString("shift"),
-                    	        resultSet.getDouble("amountPaid")
+        						resultSet.getInt("id"),
+        						count,
+        						resultSet.getInt("supplierId"),
+        						resultSet.getString("supplierName"),
+        						resultSet.getObject("purchaseDate").toString(),
+        						resultSet.getString("invoiceNum"),
+        						resultSet.getDouble("grossTotal"),
+        						resultSet.getString("salesTax"),
+        						resultSet.getString("discount"),
+        						resultSet.getDouble("otherCharges"),
+        						resultSet.getDouble("netTotal"),
+        						resultSet.getBoolean("isReturn"),
+        						resultSet.getBoolean("isLoose"),
+        						resultSet.getString("shift"),
+        						resultSet.getDouble("amountPaid")
                     	);
                         searchData.add(purchase);
                         count++;
@@ -265,8 +269,7 @@ private Connection connection;
 		int count = 1;
         try
         {
-        	String query = "SELECT p.id, p.purchaseDate, p.invoiceNum, p.grossTotal, p.discount, p.salesTax, " +
-                    "p.otherCharges, p.netTotal, p.isReturn, p.isLoose, p.shift, p.amountPaid, " +
+        	String query = "SELECT p.*, " +
                     "s.name AS supplierName " +
                     "FROM purchases p " +
                     "JOIN suppliers s ON p.supplierId = s.id " +
@@ -280,20 +283,21 @@ private Connection connection;
             while (resultSet.next()) 
             {
             	Purchases purchase = new Purchases(
-            			count,
-            	        1,
-            	        resultSet.getString("supplierName"),
-            	        resultSet.getString("purchaseDate"),
-            	        resultSet.getString("invoiceNum"),
-            	        resultSet.getDouble("grossTotal"),
-            	        resultSet.getString("salesTax"),
-            	        resultSet.getString("discount"),
-            	        resultSet.getDouble("otherCharges"),
-            	        resultSet.getDouble("netTotal"),
-            	        resultSet.getBoolean("isReturn"),
-            	        resultSet.getBoolean("isLoose"),
-            	        resultSet.getString("shift"),
-            	        resultSet.getDouble("amountPaid")
+						resultSet.getInt("id"),
+						count,
+						resultSet.getInt("supplierId"),
+						resultSet.getString("supplierName"),
+						resultSet.getObject("purchaseDate").toString(),
+						resultSet.getString("invoiceNum"),
+						resultSet.getDouble("grossTotal"),
+						resultSet.getString("salesTax"),
+						resultSet.getString("discount"),
+						resultSet.getDouble("otherCharges"),
+						resultSet.getDouble("netTotal"),
+						resultSet.getBoolean("isReturn"),
+						resultSet.getBoolean("isLoose"),
+						resultSet.getString("shift"),
+						resultSet.getDouble("amountPaid")
                 );
             	searchData.add(purchase);
             }

@@ -11,7 +11,7 @@ public class ProfileDetailsController {
 	@FXML
     private AnchorPane profileAnchorPane;
 
-    public void initializeProfileAnchorPane(AnchorPane profileAnchorPane) {
+    public void initializeProfileAnchorPane(@SuppressWarnings("exports") AnchorPane profileAnchorPane) {
         this.profileAnchorPane = profileAnchorPane;
     }
 	

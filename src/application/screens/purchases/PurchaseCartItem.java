@@ -8,16 +8,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 public class PurchaseCartItem {
 	
+	@SuppressWarnings("exports")
 	public VBox nameStockBox;
+	@SuppressWarnings("exports")
 	public JFXTextField price, qty, disc, salesTax, bonus, batchNum, purchasePrice, retailPrice;
+	@SuppressWarnings("exports")
 	public Label netTotal;
+	@SuppressWarnings("exports")
 	public ImageView delButton;
+	@SuppressWarnings("exports")
 	public DatePicker expiryDate;
 	
 	public PurchaseCartItem(String name, String stock)
@@ -73,61 +75,73 @@ public class PurchaseCartItem {
 		purchasePrice.getStyleClass().add("purchasePriceInput");
 	}
 	
+	@SuppressWarnings("exports")
 	public VBox getNameStockBox()
 	{
 		return nameStockBox;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getPrice()
 	{
 		return price;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getQty()
 	{
 		return qty;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getDisc()
 	{
 		return disc;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getSalesTax()
 	{
 		return salesTax;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getBonus()
 	{
 		return bonus;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getBatchNum()
 	{
 		return batchNum;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getPurchasePrice()
 	{
 		return purchasePrice;
 	}
 	
+	@SuppressWarnings("exports")
 	public DatePicker getExpiryDate()
 	{
 		return expiryDate;
 	}
 	
+	@SuppressWarnings("exports")
 	public JFXTextField getRetailPrice()
 	{
 		return retailPrice;
 	}
 	
+	@SuppressWarnings("exports")
 	public Label getNetTotal()
 	{
 		return netTotal;
 	}
 	
+	@SuppressWarnings("exports")
 	public ImageView getDelButton()
 	{
 		return delButton;

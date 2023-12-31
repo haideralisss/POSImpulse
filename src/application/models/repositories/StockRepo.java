@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.models.entities.Stock;
-import application.models.entities.Suppliers;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.NumberFormatter;
 
-public class StockRepo 
-{
+public class StockRepo {
+	
+	public StockRepo()
+	{
+
+	}
+	
 	public String fetchStockWorth() 
 	{
 		String stockWorth = "0";
@@ -102,7 +106,7 @@ public class StockRepo
 		ArrayList<Stock> stockList = new ArrayList<Stock>();
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -111,6 +115,7 @@ public class StockRepo
 			while(resultSet.next())
 			{
 				stockList.add(new Stock(
+						resultSet.getInt("id"),
 						count,
 						resultSet.getInt("productId"),
 						resultSet.getString("productName"),
@@ -138,7 +143,7 @@ public class StockRepo
 		Stock stock = null;
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 			String query = "SELECT s.*, p.name AS productName FROM stock s " +
                     "INNER JOIN products p ON s.productId = p.id " +
 					"WHERE id = ?";
@@ -148,6 +153,7 @@ public class StockRepo
 			while(resultSet.next())
 			{
 				stock = new Stock(
+						resultSet.getInt("id"),
 						0,
 						resultSet.getInt("productId"),
 						resultSet.getString("productName"),
@@ -173,8 +179,8 @@ public class StockRepo
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock VALUES (?, ?, ?)");
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO stock (productId, unitCost, totalQuantity) VALUES (?, ?, ?)");
 			statement.setInt(1, stock.getProductId());
 			statement.setDouble(2, stock.getUnitCost());
 			statement.setInt(3, stock.getTotalQuantity());
@@ -197,7 +203,7 @@ public class StockRepo
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement(
 	                "UPDATE stock SET productId = ?, unitCost = ?, totalQuantity = ? WHERE id = ?");
 	        statement.setInt(1, updatedStock.getProductId());
@@ -223,7 +229,7 @@ public class StockRepo
 	{
 		Connection connection = DatabaseConnection.connect();
 		try
-	    {
+		{
 	        PreparedStatement statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
 	        statement.setInt(1, id);
 
@@ -262,7 +268,7 @@ public class StockRepo
         			}
         		}
         	}
-            String query = "SELECT s.id, p.name AS productId, s.unitCost, s.totalQuantity " +
+            String query = "SELECT s.* " +
                     "FROM stock s " +
                     "JOIN products p ON s.productId = p.id " +
                     "WHERE s.productId = ?";
@@ -276,11 +282,12 @@ public class StockRepo
                     while(resultSet.next()) 
                     {
                     	Stock stock = new Stock(
-                    			count,
-                                1,
-                                resultSet.getString("productId"),
-                                resultSet.getDouble("unitCost"),
-                                resultSet.getInt("totalQuantity")
+                    			resultSet.getInt("id"),
+        						count,
+        						resultSet.getInt("productId"),
+        						resultSet.getString("productName"),
+        						resultSet.getDouble("unitCost"),
+        						resultSet.getInt("totalQuantity")
                         );
                     	searchData.add(stock);
                     	count++;
