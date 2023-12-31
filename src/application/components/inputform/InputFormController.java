@@ -13,7 +13,15 @@ import com.jfoenix.controls.JFXTextField;
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
 import application.models.entities.Accounts;
+import application.models.entities.Bills;
+import application.models.entities.Companies;
+import application.models.entities.Products;
 import application.models.repositories.AccountsRepo;
+import application.models.repositories.BillsRepo;
+import application.models.repositories.CompaniesRepo;
+import application.models.repositories.ProductsRepo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,6 +29,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -73,6 +83,107 @@ public class InputFormController {
 					textField.getStyleClass().add("inputField");
 					textField.setPromptText(attribute.getAttribute());
 					vBox.getChildren().add(textField);
+					if(attribute.getAttribute().equals("Company Name"))
+					{
+						ListView<Companies> listView = new ListView<>();
+					    listView.setPrefSize(200, 150);
+					    vBox.getChildren().add(listView);
+					    listView.setStyle("visibility: hidden;");
+						textField.setOnKeyReleased(event -> {
+							if(textField.getText().length() > 0)
+							{
+								CompaniesRepo companiesRepo = new CompaniesRepo();
+								ObservableList<Companies> items = null;
+								for(Companies company : companiesRepo.fetchIdByCompanyName(textField.getText()))
+								{
+									items = FXCollections.observableArrayList(
+							                company
+							        );
+								}
+								if(items != null && items.size() > 0)
+								{
+									listView.setStyle("visibility: visible;");
+									listView.setItems(items);
+									listView.setCellFactory(param -> new ListCell<>() {
+										@Override
+							            protected void updateItem(Companies item, boolean empty) {
+							                super.updateItem(item, empty);
+							                if (empty || item == null) {
+							                    setText(null);
+							                } else {
+							                    setText(item.getName());
+							                }
+							            }
+									});
+									
+									listView.setOnMouseClicked(e -> {
+							            Companies selectedItem = listView.getSelectionModel().getSelectedItem();
+							            textField.setText(selectedItem.getName());
+							            listView.setStyle("visibility: hidden;");
+							        });
+								}
+								else
+								{
+								    listView.setStyle("visibility: hidden;");
+								}
+							}
+							else
+							{
+							    listView.setStyle("visibility: hidden;");
+							}
+						});
+						
+					}
+					else if(attribute.getAttribute().equals("Product Name"))
+					{
+						ListView<Products> listView = new ListView<>();
+					    listView.setPrefSize(200, 150);
+					    vBox.getChildren().add(listView);
+					    listView.setStyle("visibility: hidden;");
+						textField.setOnKeyReleased(event -> {
+							if(textField.getText().length() > 0)
+							{
+								ProductsRepo productsRepo = new ProductsRepo();
+								ObservableList<Products> items = null;
+								for(Products product : productsRepo.fetchIdProductName(textField.getText()))
+								{
+									items = FXCollections.observableArrayList(
+							                product
+							        );
+								}
+								if(items != null && items.size() > 0)
+								{
+									listView.setStyle("visibility: visible;");
+									listView.setItems(items);
+									listView.setCellFactory(param -> new ListCell<>() {
+										@Override
+							            protected void updateItem(Products item, boolean empty) {
+							                super.updateItem(item, empty);
+							                if (empty || item == null) {
+							                    setText(null);
+							                } else {
+							                    setText(item.getName());
+							                }
+							            }
+									});
+									
+									listView.setOnMouseClicked(e -> {
+										Products selectedItem = listView.getSelectionModel().getSelectedItem();
+							            textField.setText(selectedItem.getName());
+							            listView.setStyle("visibility: hidden;");
+							        });
+								}
+								else
+								{
+								    listView.setStyle("visibility: hidden;");
+								}
+							}
+							else
+							{
+							    listView.setStyle("visibility: hidden;");
+							}
+						});
+					}
 					inputFlowPane.getChildren().add(vBox);	
 				}
 				else if(attribute.getType() == "checkbox")
@@ -125,8 +236,9 @@ public class InputFormController {
 		    nextAnchorPane.toFront();
 		    DataGridController dgController = loader.getController();
 			dgController.SetupDataGrid((title.getText() == "Admin Panel" ? "Accounts" : title.getText()), attributes, anchorPane);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}	
 	}
@@ -195,7 +307,8 @@ public class InputFormController {
         return null;
     }
 	
-    public void SubmitEvent() {
+    public void SubmitEvent() 
+    {
         Object entityInstance = null;
 
         if (title.getText().equals("Accounts")) {

@@ -221,4 +221,52 @@ public class ProductsRepo
 	    }
         return searchData;
     }
+	
+	public ArrayList<Products> fetchIdProductName(String productName) 
+	{
+        ArrayList<Products> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        try
+        {
+        	String query = "SELECT * from products WHERE name LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + productName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Products product = new Products(
+                        		resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getInt("packSize"),
+                                resultSet.getDouble("purchasePrice"),
+                                resultSet.getDouble("retailPrice"),
+                                1,
+                                "Nothing"
+                        );
+                        searchData.add(product);
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	            e.printStackTrace();
+	        }
+	    }
+        return searchData;
+    }
 }
