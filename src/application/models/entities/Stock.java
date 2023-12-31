@@ -54,12 +54,12 @@ public class Stock
 		HBox delHBox = new HBox();
 		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
 		delButton.setFitWidth(15);
 		delButton.setFitHeight(15);
 		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+		Image editIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);

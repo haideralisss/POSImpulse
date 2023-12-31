@@ -257,11 +257,11 @@ public class SideBarController implements Initializable
 	
 	public void logoutHover()
 	{
-		logoutIcon.setImage(new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/redLogoutIcon.png"));
+		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/redLogoutIcon.png"));
 	}
 	
 	public void logoutHoverLeave()
 	{
-		logoutIcon.setImage(new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/whiteLogoutIcon.png"));
+		logoutIcon.setImage(new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/whiteLogoutIcon.png"));
 	}
 }

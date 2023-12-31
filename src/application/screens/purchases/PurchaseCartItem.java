@@ -2,7 +2,6 @@ package application.screens.purchases;
 
 import com.jfoenix.controls.JFXTextField;
 
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,8 +18,6 @@ public class PurchaseCartItem {
 	public Label netTotal;
 	@SuppressWarnings("exports")
 	public ImageView delButton;
-	@SuppressWarnings("exports")
-	public DatePicker expiryDate;
 	
 	public PurchaseCartItem(String name, String stock)
 	{
@@ -43,7 +40,6 @@ public class PurchaseCartItem {
 		batchNum = new JFXTextField();
 		purchasePrice = new JFXTextField();
 		retailPrice = new JFXTextField();
-		expiryDate = new DatePicker();
 		netTotal = new Label("Rs. 0");
 		
 		delButton = new ImageView();
@@ -64,7 +60,6 @@ public class PurchaseCartItem {
 		bonus.getStyleClass().add("bonusInput");
 		batchNum.getStyleClass().add("cartRowInput");
 		batchNum.getStyleClass().add("batchNumInput");
-		expiryDate.getStyleClass().add("expiryDateInput");
 		netTotal.getStyleClass().add("netTotalLabel");
 		delButton.getStyleClass().add("delButtonIcon");
 		retailPrice.getStyleClass().add("cartRowInput");
@@ -121,12 +116,6 @@ public class PurchaseCartItem {
 	public JFXTextField getPurchasePrice()
 	{
 		return purchasePrice;
-	}
-	
-	@SuppressWarnings("exports")
-	public DatePicker getExpiryDate()
-	{
-		return expiryDate;
 	}
 	
 	@SuppressWarnings("exports")
