@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.models.entities.BillProducts;
 import javafx.scene.control.Label;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -70,10 +71,11 @@ public class BillCartItem
         disc.setOnKeyReleased(event -> recalculateTotals(grossTotalLabel, netTotalLabel, list));
 
         delButton = new ImageView();
-        Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+        Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
         delButton.setImage(delIcon);
         delButton.setFitWidth(15);
         delButton.setFitHeight(15);
+        delButton.setCursor(Cursor.HAND);
 
         originalValueOfGrossTotal = 0;
         originalValueOfNetTotal = 0;
@@ -117,12 +119,6 @@ public class BillCartItem
         
         netTotal.setText("Rs. " + billProduct.getNetTotal());
 
-        delButton = new ImageView();
-        Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
-        delButton.setImage(delIcon);
-        delButton.setFitWidth(15);
-        delButton.setFitHeight(15);
-
         originalValueOfGrossTotal = 0;
         originalValueOfNetTotal = 0;
 
@@ -133,7 +129,6 @@ public class BillCartItem
         disc.getStyleClass().add("cartRowInput");
         disc.getStyleClass().add("discInput");
         netTotal.getStyleClass().add("netTotalLabel");
-        delButton.getStyleClass().add("delButtonIcon");
     }
 
     private void recalculateTotals(Label grossTotalLabel, Label netTotalLabel, List<BillCartItem> list) 

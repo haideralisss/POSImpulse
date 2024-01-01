@@ -158,7 +158,7 @@
          </children></AnchorPane>
       <VBox fx:id="CartVBox" layoutX="7.0" layoutY="86.0" minHeight="37.0" prefWidth="678.0">
          <children>
-            <Pane prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
+            <Pane fx:id="cartHeader" prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
                <children>
                   <Label layoutX="28.0" layoutY="9.0" text="Item" textFill="WHITE">
                      <font>

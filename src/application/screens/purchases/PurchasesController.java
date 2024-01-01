@@ -84,7 +84,7 @@ public class PurchasesController implements Initializable
 	PurchasedProductsRepo purchasedProductsRepo;
 	Purchases purchases;
 	Stock stock;
-	int i = 1;
+	int i;
 	
 	private int supplierId;
 	private int cNetTotal = 0;
@@ -94,6 +94,7 @@ public class PurchasesController implements Initializable
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
+		i = 1;
 		supplierRepo = new SuppliersRepo();
 		productsRepo = new ProductsRepo();
 		productsRepo = new ProductsRepo();

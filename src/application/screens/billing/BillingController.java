@@ -33,6 +33,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class BillingController implements Initializable
@@ -43,6 +44,9 @@ public class BillingController implements Initializable
 	
 	@FXML
 	VBox CartVBox;
+	
+	@FXML
+	Pane cartHeader;
 	
 	@FXML
 	public ListView<Products> productSearchBar;
@@ -69,18 +73,16 @@ public class BillingController implements Initializable
 	Bills bills;
 	Stock stock;
 	
+	int i;
+	
 	private double profit;
 	
 	ArrayList<BillCartItem> billProducts = new ArrayList<>();
-	
-	public void setBillingScreen(AnchorPane anchorPane)
-	{
-		
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1)
 	{
+		i = 1;
 		productsRepo = new ProductsRepo();
 		billsRepo = new BillsRepo();
 		billsProductsRepo = new BillProductsRepo();
@@ -89,6 +91,7 @@ public class BillingController implements Initializable
 		bills = new Bills();
 		stock = new Stock();
 		productSearchBar.setStyle("visibility: hidden;");
+		cartHeader.setStyle("visibility: hidden;");
 		customerName.setText("Cash Sale");
 		
 	}
@@ -102,6 +105,7 @@ public class BillingController implements Initializable
 		this.attributes = attributes;
 		if(isView)
 		{
+			cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
 			customerName.setText(customerNameValue);
 		}
 		discount.setText(discountValue);
@@ -119,7 +123,10 @@ public class BillingController implements Initializable
 			for(BillProducts billProduct : billsProductsRepo.fetchBillProducts(String.valueOf(billId)))
 			{
 				FlowPane cartRow = new FlowPane();
-				cartRow.getStyleClass().add("oddCartRow");
+				if(i % 2 == 0)
+					cartRow.getStyleClass().add("evenCartRow");
+				else
+					cartRow.getStyleClass().add("oddCartRow");
 				BillCartItem bci = new BillCartItem(billProduct);
 				cartRow.getStyleClass().add("cartRowWidth");
 				cartRow.getChildren().add(bci.getNameStockBox());
@@ -128,8 +135,8 @@ public class BillingController implements Initializable
 				cartRow.getChildren().add(bci.getDisc());
 				cartRow.getChildren().add(bci.getNetTotal());
 				cartRow.setAlignment(Pos.CENTER_LEFT);
-				cartRow.getChildren().add(bci.getDelButton());
 				CartVBox.getChildren().add(cartRow);
+				i++;
 			}
 		}
 	}
@@ -177,7 +184,10 @@ public class BillingController implements Initializable
 				productSearchBar.setOnMouseClicked(e -> {
 					product = productSearchBar.getSelectionModel().getSelectedItem();
 					FlowPane cartRow = new FlowPane();
-					cartRow.getStyleClass().add("oddCartRow");
+					if(billProducts.size() % 2 == 0)
+						cartRow.getStyleClass().add("evenCartRow");
+					else
+						cartRow.getStyleClass().add("oddCartRow");
 					stock = stockRepo.fetchStockByProductId(String.valueOf(product.getId()));
 					if(stock == null || stock.getTotalQuantity() <= 0)
 					{
@@ -202,6 +212,16 @@ public class BillingController implements Initializable
 						cartRow.getChildren().add(bci.getDelButton());
 						CartVBox.getChildren().add(cartRow);
 						billProducts.add(bci);
+						
+						bci.getDelButton().setOnMouseClicked(event -> {
+							billProducts.remove(bci);
+					        CartVBox.getChildren().remove(cartRow);
+					        if(billProducts.size() == 0)
+								cartHeader.setStyle("visibility: hidden; -fx-background-color: #02182B;");
+					    });
+						
+						if(billProducts.size() != 0)
+							cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
 						productSearchBar.setStyle("visibility: hidden;");
 					}
 		        });

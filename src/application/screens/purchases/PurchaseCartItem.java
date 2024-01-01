@@ -81,7 +81,7 @@ public class PurchaseCartItem {
         batchNum.setOnKeyReleased(event -> recalculateTotals(grossTotalLabel, netTotalLabel, list, isLoose.isSelected(), packSize));
 		
 		delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+		Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
 		delButton.setImage(delIcon);
 		delButton.setFitWidth(15);
 		delButton.setFitHeight(15);
