@@ -497,7 +497,7 @@ public class BillsRepo
         int count = 1;
         try
         {
-            String query = "SELECT * FROM bills WHERE invoiceNum = ? LIMIT 10";
+            String query = "SELECT * FROM bills WHERE id = ? LIMIT 10";
 
             try (PreparedStatement statement = conn.prepareStatement(query)) 
             {
@@ -511,7 +511,7 @@ public class BillsRepo
                         		resultSet.getInt("id"),
                         		count,
                         		resultSet.getString("customerName"),
-                        		resultSet.getInt("invoiceNum"),
+                        		resultSet.getInt("id"),
                         		resultSet.getString("billDate"),
                         		resultSet.getDouble("grossTotal"),
                         		resultSet.getString("discount"),
@@ -567,7 +567,7 @@ public class BillsRepo
             			resultSet.getInt("id"),
                 		count,
                 		resultSet.getString("customerName"),
-                		resultSet.getInt("invoiceNum"),
+                		resultSet.getInt("id"),
                 		resultSet.getString("billDate"),
                 		resultSet.getDouble("grossTotal"),
                 		resultSet.getString("discount"),

@@ -98,7 +98,7 @@ public class SideBarController implements Initializable
                 new Attribute("Date", "date", "purchaseDate", "date", true, false, true),
                 new Attribute("Invoice No.", "text", "invoiceNum", "text", true, false, true),
                 new Attribute("Supplier Name", "text", "supplierId", "integer", false, true, true),
-                new Attribute("Supplier Name", "text", "supplierName", "text", true, false, false),
+                new Attribute("Supplier Name", "text", "supplierName", "text", false, false, false),
                 new Attribute("Gross Total", "text", "grossTotal", "real", false, true, true),
                 new Attribute("Discount", "text", "discount", "text", false, true, true),
                 new Attribute("Sales Taxes", "text", "salesTax", "text", false, true, true),
@@ -185,8 +185,8 @@ public class SideBarController implements Initializable
 		topBarLabel.setText("Admin Panel");
 		List<Attribute> list = Arrays.asList(
 				new Attribute("Username", "text", "userName", "text", true, false, true),
-				new Attribute("Full Name", "text", "fullName", "text", true, false, true),
-				new Attribute("Phone", "text", "phone", "text", true, false, true),
+				new Attribute("Full Name", "text", "fullName", "text", false, false, true),
+				new Attribute("Phone", "text", "phone", "text", false, false, true),
 				new Attribute("Password", "password", "password", "text", false, true, true),
 				new Attribute("Admin", "checkbox", "isAdmin", "numeric", false, false, true)
 		);

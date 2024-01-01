@@ -251,53 +251,64 @@ public class PurchasesController implements Initializable
 				
 				productSearchBar.setOnMouseClicked(e -> {
 					product = productSearchBar.getSelectionModel().getSelectedItem();
-					AnchorPane cartRow = new AnchorPane();
-					FlowPane cartRowFooter = new FlowPane();
-					cartRowFooter.getStyleClass().add("cartRowFooter");
-					if(purchaseProducts.size() % 2 == 0)
-						cartRow.getStyleClass().add("evenCartRow");
-					else
-						cartRow.getStyleClass().add("oddCartRow");
-					stock = stockRepo.fetchStockByProductId(String.valueOf(product.getId()));
-					if(isReturn.isSelected() && (stock == null || stock.getTotalQuantity() <= 0))
+					if(product == null)
 					{
 						Alert alert = new Alert(AlertType.ERROR);
-			        	alert.setTitle("Error");
-			        	alert.setHeaderText("Stock Unavailable");
-			        	alert.setContentText("Stock for " + product.getName() + " is unavailable");
-			        	alert.show();
+						alert.setTitle("Error");
+						alert.setHeaderText("Wrong product selected!");
+						alert.setContentText("Please choose the right product!");
+						alert.show();
 					}
 					else
 					{
-						PurchaseCartItem pci = new PurchaseCartItem(product.getName(), product.getId(), String.valueOf(stock != null ? stock.getTotalQuantity() : 0), 
-								grossTotalLabel, netTotalLabel, purchaseProducts, stock != null ? stock.getId() : 0, stock != null ? stock.getUnitCost() : 0, 
-								(stock != null ? stock.getTotalQuantity() : 0), product.getPackSize(), product.getPurchasePrice(), 
-								product.getRetailPrice(), isReturn, isLoose);
-						cartRow.getStyleClass().add("cartRowWidth");
-						cartRow.getChildren().add(pci.getNameStockBox());
-						cartRow.getChildren().add(pci.getPrice());
-						cartRow.getChildren().add(pci.getQty());
-						cartRow.getChildren().add(pci.getDisc());
-						cartRow.getChildren().add(pci.getSalesTax());
-						cartRow.getChildren().add(pci.getBonus());
-						cartRow.getChildren().add(pci.getBatchNum());
-						cartRow.getChildren().add(pci.getNetTotal());
-						cartRow.getChildren().add(pci.getDelButton());
-						CartVBox.getChildren().add(cartRow);
-						purchaseProducts.add(pci);
-						
-						pci.getDelButton().setOnMouseClicked(event -> {
-							purchaseProducts.remove(pci);
-					        CartVBox.getChildren().remove(cartRow);
-					        CartVBox.getChildren().remove(cartRowFooter);
-					        if(purchaseProducts.size() == 0)
-								cartHeader.setStyle("visibility: hidden; -fx-background-color: #02182B;");
-					    });
-						
-						if(purchaseProducts.size() != 0)
-							cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
-						
-						productSearchBar.setStyle("visibility: hidden;");
+						AnchorPane cartRow = new AnchorPane();
+						FlowPane cartRowFooter = new FlowPane();
+						cartRowFooter.getStyleClass().add("cartRowFooter");
+						if(purchaseProducts.size() % 2 == 0)
+							cartRow.getStyleClass().add("evenCartRow");
+						else
+							cartRow.getStyleClass().add("oddCartRow");
+						stock = stockRepo.fetchStockByProductId(String.valueOf(product.getId()));
+						if(isReturn.isSelected() && (stock == null || stock.getTotalQuantity() <= 0))
+						{
+							Alert alert = new Alert(AlertType.ERROR);
+				        	alert.setTitle("Error");
+				        	alert.setHeaderText("Stock Unavailable");
+				        	alert.setContentText("Stock for " + product.getName() + " is unavailable");
+				        	alert.show();
+						}
+						else
+						{
+							PurchaseCartItem pci = new PurchaseCartItem(product.getName(), product.getId(), String.valueOf(stock != null ? stock.getTotalQuantity() : 0), 
+									grossTotalLabel, netTotalLabel, purchaseProducts, stock != null ? stock.getId() : 0, stock != null ? stock.getUnitCost() : 0, 
+									(stock != null ? stock.getTotalQuantity() : 0), product.getPackSize(), product.getPurchasePrice(), 
+									product.getRetailPrice(), isReturn, isLoose);
+							cartRow.getStyleClass().add("cartRowWidth");
+							cartRow.getChildren().add(pci.getNameStockBox());
+							cartRow.getChildren().add(pci.getPrice());
+							cartRow.getChildren().add(pci.getQty());
+							cartRow.getChildren().add(pci.getDisc());
+							cartRow.getChildren().add(pci.getSalesTax());
+							cartRow.getChildren().add(pci.getBonus());
+							cartRow.getChildren().add(pci.getBatchNum());
+							cartRow.getChildren().add(pci.getNetTotal());
+							cartRow.getChildren().add(pci.getDelButton());
+							CartVBox.getChildren().add(cartRow);
+							purchaseProducts.add(pci);
+							
+							pci.getDelButton().setOnMouseClicked(event -> {
+								purchaseProducts.remove(pci);
+						        CartVBox.getChildren().remove(cartRow);
+						        CartVBox.getChildren().remove(cartRowFooter);
+						        if(purchaseProducts.size() == 0)
+									cartHeader.setStyle("visibility: hidden; -fx-background-color: #02182B;");
+						    });
+							
+							if(purchaseProducts.size() != 0)
+								cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
+							
+							productSearchBar.setStyle("visibility: hidden;");
+						}
 					}
 		        });
 			}

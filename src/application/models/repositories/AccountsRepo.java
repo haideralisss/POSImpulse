@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import application.models.entities.Accounts;
+import application.models.entities.Companies;
 import application.utils.backendUtils.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -45,12 +46,20 @@ public class AccountsRepo {
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 		} finally {
 			try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 		return accountsList;
@@ -80,12 +89,20 @@ public class AccountsRepo {
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 		} finally {
 			try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 		return account;
@@ -109,16 +126,20 @@ public class AccountsRepo {
 		}
 		catch(SQLException e)
 		{
-			System.out.println(account.getPhone() + account.getIsAdmin());
-			Alert errorAlert = new Alert(AlertType.ERROR);
-			errorAlert.setTitle("Error");
-			errorAlert.setContentText(e.getLocalizedMessage());
-			errorAlert.showAndWait();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 		} finally {
 			try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 		return getAllAccounts();
@@ -141,12 +162,20 @@ public class AccountsRepo {
 	    } 
 	    catch (SQLException e)
 	    {
-	        e.printStackTrace();
+	    	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 	    } finally {
 	    	try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 	    return getAllAccounts();
@@ -164,12 +193,20 @@ public class AccountsRepo {
 	    }
 	    catch (SQLException e)
 	    {
-	        e.printStackTrace();
+	    	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 	    } finally {
 	    	try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 	    return getAllAccounts();
@@ -204,12 +241,20 @@ public class AccountsRepo {
 	    } 
 	    catch (SQLException e) 
 	    {
-	        e.printStackTrace();
+	    	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 	    } finally {
 	        try {
 	            connection.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 	    return account;
@@ -242,7 +287,11 @@ public class AccountsRepo {
 	    } 
 	    catch (SQLException e) 
 	    {
-	        e.printStackTrace();
+	    	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
 	    } 
 	    finally 
 	    {
@@ -251,9 +300,71 @@ public class AccountsRepo {
 	            connection.close();
 	        } 
 	        catch (SQLException e) {
-	            e.printStackTrace();
+	        	Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
 	        }
 	    }
 	    return false;
 	}
+	
+	public ArrayList<Accounts> fetchByAccountName(String userName) 
+	{
+        ArrayList<Accounts> searchData = new ArrayList<>();
+        Connection connection = DatabaseConnection.connect();
+        int count = 1;
+        try
+        {
+            String query = "SELECT * FROM accounts WHERE userName LIKE ? COLLATE NOCASE LIMIT 10";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) 
+            {
+                statement.setString(1, "%" + userName + "%");
+
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
+                        Accounts account = new Accounts(
+                        		resultSet.getInt("id"),
+                        		count,
+                                resultSet.getString("userName"),
+                                resultSet.getString("fullName"),
+                                resultSet.getString("phone"),
+                                resultSet.getString("password"),
+                                resultSet.getBoolean("isAdmin")
+                        );
+                        searchData.add(account);
+                        count++;
+                    }
+                }
+            }
+        } 
+        catch (SQLException e)
+        {
+        	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Database Server Issue!");
+			alert.setContentText("Failed to perform the action!" + " - " + e.getMessage());
+			alert.show();
+        }
+        finally 
+		{
+	    	try 
+	    	{
+	            connection.close();
+	        } 
+	    	catch (SQLException e) 
+	    	{
+	    		Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Database Connection error!");
+				alert.setContentText("Failed to close the connection!" + " - " + e.getMessage());
+				alert.show();
+	        }
+	    }
+        return searchData;
+    }
 }

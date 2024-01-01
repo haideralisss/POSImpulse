@@ -133,68 +133,85 @@ public class BillCartItem
 
     private void recalculateTotals(Label grossTotalLabel, Label netTotalLabel, List<BillCartItem> list) 
     {
-        double priceValue = price.getText().isEmpty() ? 0 : Double.parseDouble(price.getText());
-        double qtyValue = qty.getText().isEmpty() ? 0 : Double.parseDouble(qty.getText());
-
-        if((qtyValue > totalQuantity) && (!this.isReturn.isSelected()))
+        try
         {
-        	Alert alert = new Alert(AlertType.ERROR);
-        	alert.setTitle("Error");
-        	alert.setHeaderText("Error in while entering quantity!");
-        	alert.setContentText("Your entered quantity is greater than stock available. Please enter the correct quantity");
-        	alert.show();
-        	qty.setText("");
-        }
-        else
-        {
-        	double totalValue = priceValue * qtyValue;
-            
-            quantity = qty.getText().isEmpty() ? 0 : Integer.parseInt(qty.getText());
-            if(isReturn.isSelected())
-            {
-            	newQuantity = totalQuantity + quantity;
-            }
-            else
-            {
-            	newQuantity = totalQuantity - quantity;
-            }
+        	double priceValue = price.getText().isEmpty() ? 0 : Double.parseDouble(price.getText());
+            double qtyValue = qty.getText().isEmpty() ? 0 : Double.parseDouble(qty.getText());
 
-            if(totalValue >= 0)
-            {
-            	if (disc.getText().contains("%") && disc.getText().length() > 0) 
-                {
-                    double discount = getNumberOnly(disc.getText()) / 100;
-                    totalValue -= totalValue * discount;
-                }
-                else if (!disc.getText().contains("%") && disc.getText().length() > 0) 
-                {
-                    totalValue -= Double.parseDouble(disc.getText());
-                }
-
-                double gValue = totalValue - originalValueOfGrossTotal;
-                double nValue = totalValue - originalValueOfNetTotal;
-
-                for (BillCartItem item : list) 
-                {
-                    gValue += item.originalValueOfGrossTotal;
-                    nValue += item.originalValueOfNetTotal;
-                }
-
-                grossTotalLabel.setText("Rs. " + gValue);
-                netTotalLabel.setText("Rs. " + nValue);
-                netTotal.setText("Rs. " + totalValue);
-
-                originalValueOfGrossTotal = totalValue;
-                originalValueOfNetTotal = totalValue;
-            }
-            else
+            if((qtyValue > totalQuantity) && (!this.isReturn.isSelected()))
             {
             	Alert alert = new Alert(AlertType.ERROR);
             	alert.setTitle("Error");
-            	alert.setHeaderText("Error in calculating values!");
-            	alert.setContentText("Total values being calculated are less than 0. We cannot edit the Gross Total and Net Total.");
+            	alert.setHeaderText("Error in while entering quantity!");
+            	alert.setContentText("Your entered quantity is greater than stock available. Please enter the correct quantity");
             	alert.show();
+            	qty.setText("");
             }
+            else
+            {
+            	double totalValue = priceValue * qtyValue;
+                
+                quantity = qty.getText().isEmpty() ? 0 : Integer.parseInt(qty.getText());
+                if(isReturn.isSelected())
+                {
+                	newQuantity = totalQuantity + quantity;
+                }
+                else
+                {
+                	newQuantity = totalQuantity - quantity;
+                }
+
+                if(totalValue >= 0)
+                {
+                	if (disc.getText().contains("%") && disc.getText().length() > 0) 
+                    {
+                        double discount = getNumberOnly(disc.getText()) / 100;
+                        totalValue -= totalValue * discount;
+                    }
+                    else if (!disc.getText().contains("%") && disc.getText().length() > 0) 
+                    {
+                        totalValue -= Double.parseDouble(disc.getText());
+                    }
+
+                    double gValue = totalValue - originalValueOfGrossTotal;
+                    double nValue = totalValue - originalValueOfNetTotal;
+
+                    for (BillCartItem item : list) 
+                    {
+                        gValue += item.originalValueOfGrossTotal;
+                        nValue += item.originalValueOfNetTotal;
+                    }
+
+                    grossTotalLabel.setText("Rs. " + gValue);
+                    netTotalLabel.setText("Rs. " + nValue);
+                    netTotal.setText("Rs. " + totalValue);
+
+                    originalValueOfGrossTotal = totalValue;
+                    originalValueOfNetTotal = totalValue;
+                }
+                else
+                {
+                	Alert alert = new Alert(AlertType.ERROR);
+                	alert.setTitle("Error");
+                	alert.setHeaderText("Error in calculating values!");
+                	alert.setContentText("Total values being calculated are less than 0. We cannot edit the Gross Total and Net Total.");
+                	alert.show();
+                }
+            }
+        }
+        catch(Exception e)
+        {
+        	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Input error!");
+			alert.setContentText("Please check the input format!" + " - " + e.getMessage());
+			alert.show();
+        }
+        finally
+        {
+	        qty.setText("");
+	        disc.setText("");
+	        netTotal.setText("");
         }
     }
 

@@ -154,7 +154,11 @@ public class BillingController implements Initializable
 		    DataGridController dgController = loader.getController();
 			dgController.SetupDataGrid("Billing", attributes, anchorPane, null);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Error while cancelling bill!");
+			alert.setContentText(e.getMessage());
+			alert.show();
 		}	
 	}
 	
@@ -183,46 +187,57 @@ public class BillingController implements Initializable
 				
 				productSearchBar.setOnMouseClicked(e -> {
 					product = productSearchBar.getSelectionModel().getSelectedItem();
-					FlowPane cartRow = new FlowPane();
-					if(billProducts.size() % 2 == 0)
-						cartRow.getStyleClass().add("evenCartRow");
-					else
-						cartRow.getStyleClass().add("oddCartRow");
-					stock = stockRepo.fetchStockByProductId(String.valueOf(product.getId()));
-					if(stock == null || stock.getTotalQuantity() <= 0)
+					if(product == null)
 					{
 						Alert alert = new Alert(AlertType.ERROR);
-			        	alert.setTitle("Error");
-			        	alert.setHeaderText("Stock Unavailable");
-			        	alert.setContentText("Stock for " + product.getName() + " is unavailable");
-			        	alert.show();
+						alert.setTitle("Error");
+						alert.setHeaderText("Wrong product selected!");
+						alert.setContentText("Please choose the right product!");
+						alert.show();
 					}
 					else
 					{
-						BillCartItem bci = new BillCartItem(product.getName(), product.getId(), String.valueOf(stock.getTotalQuantity()), 
-								grossTotalLabel, netTotalLabel, billProducts, stock.getId(), stock.getUnitCost(), stock.getTotalQuantity(), 
-								product.getPackSize(), product.getPurchasePrice(), product.getRetailPrice(), isReturn);
-						cartRow.getStyleClass().add("cartRowWidth");
-						cartRow.getChildren().add(bci.getNameStockBox());
-						cartRow.getChildren().add(bci.getPrice());
-						cartRow.getChildren().add(bci.getQty());
-						cartRow.getChildren().add(bci.getDisc());
-						cartRow.getChildren().add(bci.getNetTotal());
-						cartRow.setAlignment(Pos.CENTER_LEFT);
-						cartRow.getChildren().add(bci.getDelButton());
-						CartVBox.getChildren().add(cartRow);
-						billProducts.add(bci);
-						
-						bci.getDelButton().setOnMouseClicked(event -> {
-							billProducts.remove(bci);
-					        CartVBox.getChildren().remove(cartRow);
-					        if(billProducts.size() == 0)
-								cartHeader.setStyle("visibility: hidden; -fx-background-color: #02182B;");
-					    });
-						
-						if(billProducts.size() != 0)
-							cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
-						productSearchBar.setStyle("visibility: hidden;");
+						FlowPane cartRow = new FlowPane();
+						if(billProducts.size() % 2 == 0)
+							cartRow.getStyleClass().add("evenCartRow");
+						else
+							cartRow.getStyleClass().add("oddCartRow");
+						stock = stockRepo.fetchStockByProductId(String.valueOf(product.getId()));
+						if(stock == null || stock.getTotalQuantity() <= 0)
+						{
+							Alert alert = new Alert(AlertType.ERROR);
+				        	alert.setTitle("Error");
+				        	alert.setHeaderText("Stock Unavailable");
+				        	alert.setContentText("Stock for " + product.getName() + " is unavailable");
+				        	alert.show();
+						}
+						else
+						{
+							BillCartItem bci = new BillCartItem(product.getName(), product.getId(), String.valueOf(stock.getTotalQuantity()), 
+									grossTotalLabel, netTotalLabel, billProducts, stock.getId(), stock.getUnitCost(), stock.getTotalQuantity(), 
+									product.getPackSize(), product.getPurchasePrice(), product.getRetailPrice(), isReturn);
+							cartRow.getStyleClass().add("cartRowWidth");
+							cartRow.getChildren().add(bci.getNameStockBox());
+							cartRow.getChildren().add(bci.getPrice());
+							cartRow.getChildren().add(bci.getQty());
+							cartRow.getChildren().add(bci.getDisc());
+							cartRow.getChildren().add(bci.getNetTotal());
+							cartRow.setAlignment(Pos.CENTER_LEFT);
+							cartRow.getChildren().add(bci.getDelButton());
+							CartVBox.getChildren().add(cartRow);
+							billProducts.add(bci);
+							
+							bci.getDelButton().setOnMouseClicked(event -> {
+								billProducts.remove(bci);
+						        CartVBox.getChildren().remove(cartRow);
+						        if(billProducts.size() == 0)
+									cartHeader.setStyle("visibility: hidden; -fx-background-color: #02182B;");
+						    });
+							
+							if(billProducts.size() != 0)
+								cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
+							productSearchBar.setStyle("visibility: hidden;");
+						}
 					}
 		        });
 			}

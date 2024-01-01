@@ -32,11 +32,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -79,13 +81,14 @@ public class DataGridController implements Initializable
 	
 	private Accounts currentAccount;
 	
-	BillsRepo billsRepo = new BillsRepo();
-	PurchasesRepo purchasesRepo = new PurchasesRepo();
-	CompaniesRepo companiesRepo = new CompaniesRepo();
-	SuppliersRepo suppliersRepo = new SuppliersRepo();
-	ProductsRepo productsRepo = new ProductsRepo();
-	StockRepo stockRepo = new StockRepo();
-	ExpensesRepo expensesRepo = new ExpensesRepo();
+	BillsRepo billsRepo;
+	PurchasesRepo purchasesRepo;
+	CompaniesRepo companiesRepo;
+	SuppliersRepo suppliersRepo;
+	ProductsRepo productsRepo;
+	StockRepo stockRepo;
+	ExpensesRepo expensesRepo;
+	AccountsRepo accountsRepo;
 
 	ObservableList<Bills> billsList;
 	ObservableList<Purchases> purchasesList;
@@ -99,7 +102,14 @@ public class DataGridController implements Initializable
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
-		
+		billsRepo = new BillsRepo();
+		purchasesRepo = new PurchasesRepo();
+		companiesRepo = new CompaniesRepo();
+		suppliersRepo = new SuppliersRepo();
+		productsRepo = new ProductsRepo();
+		stockRepo = new StockRepo();
+		expensesRepo = new ExpensesRepo();
+		accountsRepo = new AccountsRepo();
 	}
 	
 	@SuppressWarnings({ "unchecked", "exports" })
@@ -410,106 +420,140 @@ public class DataGridController implements Initializable
 		dataGridTable.setItems(stockList);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void fetchAccountsByUserName(String userName)
+	{
+		ArrayList<Accounts> list = new ArrayList<>();
+		list = accountsRepo.fetchByAccountName(userName);
+		ObservableList<Accounts> accountsListNew = FXCollections.observableArrayList(list);
+		dataGridTable.setItems(accountsListNew);
+	}
+	
 	@SuppressWarnings({ "unchecked" })
 	public void fetchDataFromDatabase()
 	{
-		if(title.getText().equals("Billing"))
+		try
 		{
-			if(searchBar.getText().length() > 0)
+			if(title.getText().equals("Billing"))
 			{
-				if(category.getValue().contains("Invoice No."))
+				if(searchBar.getText().length() > 0)
 				{
-					fetchBillsByInvoiceNumber(searchBar.getText());
+					if(category.getValue().contains("Invoice No."))
+					{
+						fetchBillsByInvoiceNumber(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(billsList);
 				}
 			}
-			else
+			else if(title.getText().equals("Purchases"))
 			{
-				dataGridTable.setItems(billsList);
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Invoice No."))
+					{
+						fetchPurchasesByInvoiceNumber(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(purchasesList);
+				}
+			}
+			else if(title.getText().equals("Companies"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Name"))
+					{
+						fetchCompaniesByName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(companiesList);
+				}
+			}
+			else if(title.getText().equals("Suppliers"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Name"))
+					{
+						fetchSuppliersByName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(suppliersList);
+				}
+			}
+			else if(title.getText().equals("Products"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Name"))
+					{
+						fetchProductsByName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(productsList);
+				}
+			}
+			else if(title.getText().equals("Expenses"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Name"))
+					{
+						fetchExpenseByName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(expensesList);
+				}
+			}
+			else if(title.getText().equals("Stock"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Product Name"))
+					{
+						fetchStockByProductName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(stockList);
+				}
+			}
+			else if(title.getText().equals("Accounts"))
+			{
+				if(searchBar.getText().length() > 0)
+				{
+					if(category.getValue().contains("Username"))
+					{
+						fetchAccountsByUserName(searchBar.getText());
+					}
+				}
+				else
+				{
+					dataGridTable.setItems(accountsList);
+				}
 			}
 		}
-		else if(title.getText().equals("Purchases"))
+		catch(Exception e)
 		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Invoice No."))
-				{
-					fetchPurchasesByInvoiceNumber(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(purchasesList);
-			}
-		}
-		else if(title.getText().equals("Companies"))
-		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Name"))
-				{
-					fetchCompaniesByName(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(companiesList);
-			}
-		}
-		else if(title.getText().equals("Suppliers"))
-		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Name"))
-				{
-					fetchSuppliersByName(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(suppliersList);
-			}
-		}
-		else if(title.getText().equals("Products"))
-		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Name"))
-				{
-					fetchProductsByName(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(productsList);
-			}
-		}
-		else if(title.getText().equals("Expenses"))
-		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Name"))
-				{
-					fetchExpenseByName(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(expensesList);
-			}
-		}
-		else if(title.getText().equals("Stock"))
-		{
-			if(searchBar.getText().length() > 0)
-			{
-				if(category.getValue().contains("Product Name"))
-				{
-					fetchStockByProductName(searchBar.getText());
-				}
-			}
-			else
-			{
-				dataGridTable.setItems(stockList);
-			}
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Input error!");
+			alert.setContentText("Please check the input format!" + " - " + e.getMessage());
+			alert.show();
 		}
 	}
 	

@@ -224,7 +224,7 @@ return generatedId;
         int count = 1;
         try
         {
-        	String query = "SELECT p.*" +
+        	String query = "SELECT p.*, " +
                     "s.name AS supplierName " +
                     "FROM purchases p " +
                     "JOIN suppliers s ON p.supplierId = s.id " +
