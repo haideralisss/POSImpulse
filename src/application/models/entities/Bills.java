@@ -122,11 +122,6 @@ public class Bills
 		this.profit = profit;
 		
 		HBox editHBox = new HBox();
-//		ImageView editButton = new ImageView();
-//		Image editIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
-//		editButton.setImage(editIcon);
-//		editButton.setFitWidth(15);
-//		editButton.setFitHeight(15);
 		Button button = new Button();
 		button.setText("View");
 		button.setMinWidth(50);

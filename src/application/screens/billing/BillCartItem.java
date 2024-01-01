@@ -100,12 +100,6 @@ public class BillCartItem
         nameStockBox = new VBox();
         Label productNameLabel = new Label(billProduct.getProductId());
         nameStockBox.getChildren().add(productNameLabel);
-//        Label stockHeading = new Label("Stock: ");
-//        stockHeading.setStyle("-fx-font-weight: bold");
-//        HBox stockHBox = new HBox();
-//        stockHBox.getChildren().add(stockHeading);
-//        stockHBox.getChildren().add(stockLabel);
-//        nameStockBox.getChildren().add(stockHBox);
 
         price = new JFXTextField();
         qty = new JFXTextField();

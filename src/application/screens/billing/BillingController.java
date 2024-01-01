@@ -254,7 +254,8 @@ public class BillingController implements Initializable
 	        {
 	            nValue += Double.parseDouble(salesTax.getText());
 	        }
-	    } else 
+	    } 
+	    else 
 	    {
 	        nValue = gValue;
 

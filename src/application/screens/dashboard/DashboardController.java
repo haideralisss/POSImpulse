@@ -44,8 +44,7 @@ public class DashboardController implements Initializable
 	@SuppressWarnings("exports")
 	@FXML
 	public Label dataGridHeading1, dataGridHeading2, sales, expenses, 
-	todaySalesLabel, monthSalesLabel, stockWorthLabel, 
-	monthExpensesLabel;
+	todaySalesLabel, monthSalesLabel, stockWorthLabel, monthExpensesLabel;
 	
 	CategoryAxis xAxis = new CategoryAxis();
     NumberAxis yAxis = new NumberAxis();
