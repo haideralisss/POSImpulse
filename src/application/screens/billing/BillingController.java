@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
+import application.models.entities.Accounts;
 import application.models.entities.BillProducts;
 import application.models.entities.Bills;
 import application.models.entities.Products;
@@ -72,6 +73,7 @@ public class BillingController implements Initializable
 	Products product;
 	Bills bills;
 	Stock stock;
+	Accounts currentAccount;
 	
 	int i;
 	
@@ -90,6 +92,7 @@ public class BillingController implements Initializable
 		product = new Products();
 		bills = new Bills();
 		stock = new Stock();
+		currentAccount = new Accounts();
 		productSearchBar.setStyle("visibility: hidden;");
 		cartHeader.setStyle("visibility: hidden;");
 		customerName.setText("Cash Sale");
@@ -99,27 +102,26 @@ public class BillingController implements Initializable
 	@SuppressWarnings("exports")
 	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes, String customerNameValue,
 			String discountValue, String salesTaxValue, double grossTotalValue, double netTotalValue, double amountPaidValue,
-			boolean isCreditValue, boolean isReturnValue, boolean isView, int billId)
+			boolean isCreditValue, boolean isReturnValue, boolean isView, int billId, Accounts currentAcccount)
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
+		
 		if(isView)
 		{
+			discount.setText(discountValue);
+			salesTax.setText(salesTaxValue);
+			grossTotalLabel.setText("Rs. " + grossTotalValue);
+			netTotalLabel.setText("Rs. " + netTotalValue);
+			amountPaid.setText(String.valueOf(amountPaidValue));
+			isCredit.setSelected(isCreditValue);
+			isReturn.setSelected(isReturnValue);
+			saveBillButton.setDisable(isView);
+			savenPrintBillButton.setDisable(isView);
+			productSearchField.setDisable(isView);
+			
 			cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
 			customerName.setText(customerNameValue);
-		}
-		discount.setText(discountValue);
-		salesTax.setText(salesTaxValue);
-		grossTotalLabel.setText("Rs. " + grossTotalValue);
-		netTotalLabel.setText("Rs. " + netTotalValue);
-		amountPaid.setText(String.valueOf(amountPaidValue));
-		isCredit.setSelected(isCreditValue);
-		isReturn.setSelected(isReturnValue);
-		saveBillButton.setDisable(isView);
-		savenPrintBillButton.setDisable(isView);
-		productSearchField.setDisable(isView);
-		if(isView)
-		{
 			for(BillProducts billProduct : billsProductsRepo.fetchBillProducts(String.valueOf(billId)))
 			{
 				FlowPane cartRow = new FlowPane();
@@ -138,6 +140,10 @@ public class BillingController implements Initializable
 				CartVBox.getChildren().add(cartRow);
 				i++;
 			}
+		}
+		else
+		{
+			this.currentAccount = currentAcccount;
 		}
 	}
 	
@@ -372,7 +378,7 @@ public class BillingController implements Initializable
 
 	public void saveBill()
 	{
-		if(amountPaid.getText().isEmpty() || amountPaid.getText().contains("0.0") || amountPaid.getText().contains("0"))
+		if(amountPaid.getText().isEmpty() || Double.parseDouble(amountPaid.getText()) == 0.0 || Integer.parseInt(amountPaid.getText()) == 0)
 		{
 			Alert alert = new Alert(AlertType.ERROR);
         	alert.setTitle("Error");
@@ -402,7 +408,7 @@ public class BillingController implements Initializable
 			calculateProfit();
 			key = billsRepo.insertBill(customerName.getText(), LocalDate.now().toString(), getNumberOnly(grossTotalLabel.getText()), 
 					discount.getText(), salesTax.getText(), getNumberOnly(netTotalLabel.getText()), getNumberOnly(amountPaid.getText()),
-					"haider", isCredit.isSelected(), isReturn.isSelected(), profit);
+					currentAccount.getUserName(), isCredit.isSelected(), isReturn.isSelected(), profit);
 			stockRepo.updateStocksAfterBill(billProducts);
 			billsProductsRepo.addNewBillProducts(billProducts, String.valueOf(key), String.valueOf(getNumberOnly(netTotalLabel.getText())));
 			CancelBill();

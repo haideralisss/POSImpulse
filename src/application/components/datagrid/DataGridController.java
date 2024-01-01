@@ -297,13 +297,13 @@ public class DataGridController implements Initializable
 		    {
 		    	BillingController bController;
 				bController = loader.getController();
-				bController.SetRoute(anchorPane, attributes, null, null, null, 0, 0, 0, false, false, false, 0);
+				bController.SetRoute(anchorPane, attributes, null, null, null, 0, 0, 0, false, false, false, 0, currentAccount);
 		    }
 		    else if(title.getText() == "Purchases")
 		    {
 		    	PurchasesController pController;
 				pController = loader.getController();
-				pController.SetRoute(anchorPane, attributes, 0, 0, null, null, null, null, null, null, null, null, false, false, false);
+				pController.SetRoute(anchorPane, attributes, 0, 0, null, null, null, null, null, null, null, null, false, false, false, currentAccount);
 		    }
 		} 
 		catch (IOException e) 

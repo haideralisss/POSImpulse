@@ -206,10 +206,7 @@ public class BillCartItem
 			alert.setHeaderText("Input error!");
 			alert.setContentText("Please check the input format!" + " - " + e.getMessage());
 			alert.show();
-        }
-        finally
-        {
-	        qty.setText("");
+			qty.setText("");
 	        disc.setText("");
 	        netTotal.setText("");
         }

@@ -58,12 +58,12 @@ public class Bills
 		HBox delHBox = new HBox();
 		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+		Image delIcon = new Image(getClass().getResource("/assets/deleteIcon.png").toExternalForm());
 		delButton.setImage(delIcon);
 		delButton.setFitWidth(15);
 		delButton.setFitHeight(15);
 		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/eyeIcon.png");
+		Image editIcon = new Image(getClass().getResource("/assets/editIcon.png").toExternalForm());
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
@@ -152,7 +152,7 @@ public class Bills
 			    billingController = loader.getController();
 			    billingController.SetRoute(nextAnchorPane, attributes, this.customerName, this.discount,
 			    		this.salesTax, this.grossTotal , this.netTotal, this.amountPaid, this.isCredit,
-			    		this.isReturn, true, this.id);
+			    		this.isReturn, true, this.id, null);
 			}
 			catch (IOException e)
 			{

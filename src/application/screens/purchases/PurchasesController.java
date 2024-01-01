@@ -19,6 +19,7 @@ import application.models.repositories.PurchasesRepo;
 import application.models.repositories.StockRepo;
 import application.models.repositories.SuppliersRepo;
 import application.screens.billing.BillCartItem;
+import application.models.entities.Accounts;
 import application.models.entities.Products;
 import application.models.entities.PurchasedProducts;
 import application.models.entities.Purchases;
@@ -84,6 +85,7 @@ public class PurchasesController implements Initializable
 	PurchasedProductsRepo purchasedProductsRepo;
 	Purchases purchases;
 	Stock stock;
+	Accounts currentAccount;
 	int i;
 	
 	private int supplierId;
@@ -95,6 +97,7 @@ public class PurchasesController implements Initializable
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
 		i = 1;
+		supplierId = 0;
 		supplierRepo = new SuppliersRepo();
 		productsRepo = new ProductsRepo();
 		productsRepo = new ProductsRepo();
@@ -104,6 +107,7 @@ public class PurchasesController implements Initializable
 		product = new Products();
 		purchases = new Purchases();
 		stock = new Stock();
+		currentAccount = new Accounts();
 		supplierSearchBar.setStyle("visibility: hidden");
 		productSearchBar.setStyle("visibility: hidden;");
 		cartHeader.setStyle("visibility: hidden;");
@@ -119,52 +123,56 @@ public class PurchasesController implements Initializable
 	@SuppressWarnings("exports")
 	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes, int supplierId, int purchaseId,  String invoiceNumVal, String dateVal,
 			String discountVal, String salesTaxVal, String otherChargesVal, String grossTotalVal, String netTotalVal, String amountPaidVal, 
-			boolean isLooseVal, boolean isReturnVal, boolean isView)
+			boolean isLooseVal, boolean isReturnVal, boolean isView, Accounts currentAccount)
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
-		invoiceNum.setText(invoiceNumVal);
-		purchaseDate.setValue(LocalDate.parse(dateVal));
-		discount.setText(discountVal);
-		salesTax.setText(salesTaxVal);
-		otherCharges.setText(otherChargesVal);
-		grossTotalLabel.setText("Rs. " + grossTotalVal);
-		netTotalLabel.setText("Rs. " + netTotalVal);
-		amountPaid.setText(amountPaidVal);
-		supplierTextField.setText(supplierRepo.getSupplier(supplierId).getName());
-		isLoose.setSelected(isLooseVal);
-		isReturn.setSelected(isReturnVal);
-		
-		saveBillButton.setDisable(isView);
-		savenPrintBillButton.setDisable(isView);
 		
 		if(isView)
 		{
+			invoiceNum.setText(invoiceNumVal);
+			purchaseDate.setValue(LocalDate.parse(dateVal));
+			discount.setText(discountVal);
+			salesTax.setText(salesTaxVal);
+			otherCharges.setText(otherChargesVal);
+			grossTotalLabel.setText("Rs. " + grossTotalVal);
+			netTotalLabel.setText("Rs. " + netTotalVal);
+			amountPaid.setText(amountPaidVal);
+			supplierTextField.setText(supplierRepo.getSupplier(supplierId).getName());
+			isLoose.setSelected(isLooseVal);
+			isReturn.setSelected(isReturnVal);
+			
+			saveBillButton.setDisable(isView);
+			savenPrintBillButton.setDisable(isView);
 			cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
+			
+			for(PurchasedProducts product : purchasedProductsRepo.getPurchasedProductFromPurchaseId(purchaseId))
+			{
+				AnchorPane cartRow = new AnchorPane();
+				FlowPane cartRowFooter = new FlowPane();
+				cartRowFooter.getStyleClass().add("cartRowFooter");
+				if(i % 2 == 0)
+					cartRow.getStyleClass().add("evenCartRow");
+				else
+					cartRow.getStyleClass().add("oddCartRow");	
+				PurchaseCartItem pci = new PurchaseCartItem(product);
+				cartRow.getStyleClass().add("cartRowWidth");
+				cartRow.getChildren().add(pci.getNameStockBox());
+				cartRow.getChildren().add(pci.getPrice());
+				cartRow.getChildren().add(pci.getQty());
+				cartRow.getChildren().add(pci.getDisc());
+				cartRow.getChildren().add(pci.getSalesTax());
+				cartRow.getChildren().add(pci.getBonus());
+				cartRow.getChildren().add(pci.getBatchNum());
+				cartRow.getChildren().add(pci.getNetTotal());
+				cartRow.getChildren().add(pci.getDelButton());
+				CartVBox.getChildren().add(cartRow);
+				i++;
+			}
 		}
-		
-		for(PurchasedProducts product : purchasedProductsRepo.getPurchasedProductFromPurchaseId(purchaseId))
+		else
 		{
-			AnchorPane cartRow = new AnchorPane();
-			FlowPane cartRowFooter = new FlowPane();
-			cartRowFooter.getStyleClass().add("cartRowFooter");
-			if(i % 2 == 0)
-				cartRow.getStyleClass().add("evenCartRow");
-			else
-				cartRow.getStyleClass().add("oddCartRow");	
-			PurchaseCartItem pci = new PurchaseCartItem(product);
-			cartRow.getStyleClass().add("cartRowWidth");
-			cartRow.getChildren().add(pci.getNameStockBox());
-			cartRow.getChildren().add(pci.getPrice());
-			cartRow.getChildren().add(pci.getQty());
-			cartRow.getChildren().add(pci.getDisc());
-			cartRow.getChildren().add(pci.getSalesTax());
-			cartRow.getChildren().add(pci.getBonus());
-			cartRow.getChildren().add(pci.getBatchNum());
-			cartRow.getChildren().add(pci.getNetTotal());
-			cartRow.getChildren().add(pci.getDelButton());
-			CartVBox.getChildren().add(cartRow);
-			i++;
+			this.currentAccount = currentAccount;
 		}
 	}
 	
@@ -415,6 +423,18 @@ public class PurchasesController implements Initializable
 	    }
 	}
 	
+	public boolean checkQuantityField()
+	{
+		for(PurchaseCartItem item : purchaseProducts)
+		{
+			if(item.getQty().getText().isEmpty())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public double getNumberOnly(String str) 
 	{
 	    str = str.replace("Rs.", "");
@@ -424,11 +444,63 @@ public class PurchasesController implements Initializable
 
 	public void savePurchase()
 	{
-		int purchaseId = purchasesRepo.addPurchase(supplierId, LocalDate.now().toString(), invoiceNum.getText(), getNumberOnly(grossTotalLabel.getText()), 
-				salesTax.getText(), discount.getText(), Double.valueOf(otherCharges.getText() != "" ? otherCharges.getText() : "0"), 
-				getNumberOnly(netTotalLabel.getText()), isReturn.isSelected(), isLoose.isSelected(), "haider", Double.valueOf(amountPaid.getText()));
-		purchasedProductsRepo.addPurchasedProduct(purchaseProducts, String.valueOf(purchaseId));
-		stockRepo.updateStocksAfterPurchase(purchaseProducts);
-		CancelPurchase();
+		if(amountPaid.getText().isEmpty() || Double.parseDouble(amountPaid.getText()) == 0.0 || Integer.parseInt(amountPaid.getText()) == 0)
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Error in amount paid field!");
+        	alert.setContentText("Amount paid is either not entered or it's value is zero!");
+        	alert.show();
+		}
+		else if (purchaseProducts.size() <= 0)
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("No item found in the cart!");
+        	alert.setContentText("Please enter some items in the cart first!");
+        	alert.show();
+		}
+		else if(!checkQuantityField())
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Quantity Field is empty!");
+        	alert.setContentText("Please check the quantity of every product as one of the quantity is not entered for a product.");
+        	alert.show();
+		}
+		else if(supplierId == 0 || supplierId == -1)
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Supplier not selected!");
+        	alert.setContentText("Please enter the supplier.");
+        	alert.show();
+		}
+		else if(invoiceNum.getText().isEmpty())
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Invoice number not entered!");
+        	alert.setContentText("Please enter the invoice number.");
+        	alert.show();
+		}
+		else if(purchaseDate.getValue() == null)
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Date not entered!");
+        	alert.setContentText("Please enter the invoice date.");
+        	alert.show();
+		}
+		else
+		{
+			int purchaseId = purchasesRepo.addPurchase(supplierId, LocalDate.now().toString(), invoiceNum.getText(), getNumberOnly(grossTotalLabel.getText()), 
+					salesTax.getText(), discount.getText(), Double.valueOf(otherCharges.getText() != "" ? otherCharges.getText() : "0"), 
+					getNumberOnly(netTotalLabel.getText()), isReturn.isSelected(), isLoose.isSelected(), currentAccount.getUserName(), 
+					Double.valueOf(amountPaid.getText()));
+			purchasedProductsRepo.addPurchasedProduct(purchaseProducts, String.valueOf(purchaseId));
+			stockRepo.updateStocksAfterPurchase(purchaseProducts);
+			CancelPurchase();
+		}
 	}
 }

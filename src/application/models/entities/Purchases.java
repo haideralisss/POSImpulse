@@ -88,7 +88,7 @@ public class Purchases {
 			    purchaseController = loader.getController();
 			    purchaseController.SetRoute(nextAnchorPane, attributes, supplierId, id, invoiceNum, purchaseDate, discount, salesTax,
 			    		String.valueOf(otherCharges), String.valueOf(grossTotal), String.valueOf(netTotal), String.valueOf(amountPaid),
-			    		isLoose, isReturn, true);
+			    		isLoose, isReturn, true, null);
 			}
 			catch (IOException e)
 			{

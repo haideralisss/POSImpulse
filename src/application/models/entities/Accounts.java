@@ -57,12 +57,12 @@ public class Accounts {
 		HBox delHBox = new HBox();
 		HBox editHBox = new HBox();
 		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+		Image delIcon = new Image(getClass().getResource("/assets/deleteIcon.png").toExternalForm());
 		delButton.setImage(delIcon);
 		delButton.setFitWidth(15);
 		delButton.setFitHeight(15);
 		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
+		Image editIcon = new Image(getClass().getResource("/assets/editIcon.png").toExternalForm());
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
