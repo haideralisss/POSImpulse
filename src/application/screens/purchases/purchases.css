@@ -29,45 +29,47 @@
 }
 
 .nameStockBox {
-	-fx-padding: 0 32 0 40;
+	-fx-padding: 16 51 0 16;
 }
 
 .cartRowInput {
-	-fx-pref-width: 38px;
+	-fx-pref-width: 42px;
+	-fx-padding: 22 0 0 0;
+}
+
+.priceInput {
+	-fx-translate-x: 118px;
 }
 
 .qtyInput {
-	-fx-translate-x: 20px;	
+	-fx-translate-x: 185px;
 }
 
 .discInput {
-	-fx-translate-x: 37px;	
+	-fx-translate-x: 248px;	
 }
 
 .salesTaxInput {
-	-fx-translate-x: 66px;	
+	-fx-translate-x: 324px;
 }
 
 .bonusInput {
-	-fx-translate-x: 97px;	
+	-fx-translate-x: 403px;
 }
 
 .batchNumInput {
-	-fx-translate-x: 126px;	
-}
-
-.expiryDateInput {
-	-fx-translate-x: 194px;
-	-fx-pref-width: 90px;	
+	-fx-translate-x: 482px;	
 }
 
 .netTotalLabel {
-	-fx-translate-x: 170px;	
+	-fx-padding: 22 0 0 0;
 	-fx-font-size: 14px;
+	-fx-translate-x: 575px;
 }
 
 .delButtonIcon {
-	-fx-translate-x: 205px;
+	-fx-translate-y: 22px;
+	-fx-translate-x: 645px;
 }
 
 .cartRowFooter {

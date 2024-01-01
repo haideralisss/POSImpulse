@@ -14,7 +14,7 @@ public class Main extends Application {
 	@SuppressWarnings("exports")
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/sidebar/SideBar.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/login/Login.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		

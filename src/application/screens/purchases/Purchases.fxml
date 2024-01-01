@@ -63,12 +63,12 @@
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXCheckBox layoutX="242.0" layoutY="21.0" prefHeight="21.0" prefWidth="0.0" text=" ">
+            <JFXCheckBox fx:id="isLoose" layoutX="242.0" layoutY="21.0" prefHeight="21.0" prefWidth="0.0" text=" ">
                <font>
                   <Font />
                </font>
             </JFXCheckBox>
-            <JFXCheckBox layoutX="242.0" layoutY="57.0" prefHeight="21.0" prefWidth="0.0" text=" ">
+            <JFXCheckBox fx:id="isReturn" layoutX="242.0" layoutY="57.0" prefHeight="21.0" prefWidth="0.0" text=" ">
                <font>
                   <Font size="10.0" />
                </font>
@@ -84,12 +84,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="24.0" layoutY="231.0" prefHeight="27.0" prefWidth="106.0">
+            <JFXTextField fx:id="invoiceNum" layoutX="24.0" layoutY="231.0" prefHeight="27.0" prefWidth="106.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <DatePicker layoutX="146.0" layoutY="235.0" prefHeight="25.0" prefWidth="117.0" />
+            <DatePicker fx:id="purchaseDate" layoutX="146.0" layoutY="235.0" prefHeight="25.0" prefWidth="117.0" />
             <Line endX="154.0" layoutX="115.0" layoutY="281.0" startX="-100.0" strokeWidth="0.2" />
             <Label layoutX="24.0" layoutY="298.0" text="Discount">
                <font>
@@ -106,17 +106,17 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="205.0" layoutY="292.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="discount" layoutX="205.0" layoutY="292.0" onKeyReleased="#changeDiscount" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXTextField layoutX="205.0" layoutY="329.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="salesTax" layoutX="205.0" layoutY="329.0" onKeyReleased="#changeSalesTax" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXTextField layoutX="205.0" layoutY="366.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="otherCharges" layoutX="205.0" layoutY="366.0" onKeyReleased="#changeOtherCharges" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
@@ -132,12 +132,12 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="458.0" text="Rs. 500" textFill="#01a811">
+            <Label fx:id="grossTotalLabel" layoutX="54.0" layoutY="458.0" text="Rs. 0" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="175.0" layoutY="458.0" text="Rs. 500" textFill="#01a811">
+            <Label fx:id="netTotalLabel" layoutX="185.0" layoutY="458.0" text="Rs. 0" textFill="#01a811">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -148,12 +148,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField layoutX="206.0" layoutY="547.0" prefHeight="27.0" prefWidth="55.0">
+            <JFXTextField fx:id="amountPaid" layoutX="206.0" layoutY="547.0" prefHeight="27.0" prefWidth="55.0">
                <font>
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXButton layoutX="25.0" layoutY="613.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save">
+            <JFXButton layoutX="25.0" layoutY="613.0" onAction="#savePurchase" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@purchases.css" text="Save">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -168,7 +168,7 @@
       </AnchorPane>
       <VBox fx:id="CartVBox" layoutX="8.0" layoutY="85.0" minHeight="37.0" prefWidth="678.0">
          <children>
-            <Pane prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
+            <Pane fx:id="cartHeader" prefHeight="35.0" prefWidth="678.0" style="-fx-background-color: #02182B;">
                <children>
                   <Label layoutX="15.0" layoutY="9.0" text="Item" textFill="WHITE">
                      <font>
