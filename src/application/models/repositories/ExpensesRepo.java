@@ -32,12 +32,12 @@ public class ExpensesRepo {
         {
         	java.util.Date now = new java.util.Date();
 
-            // Set current month's first and last day
-            int currentMonth = now.getMonth() + 1; // SQLite months are 1-based
-            int currentYear = now.getYear() + 1900; // Adjust for year offset
+            int currentMonth = now.getMonth() + 1;
+            int currentYear = now.getYear() + 1900;
 
             Date sqlFirstDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-01");
             Date sqlLastDayOfMonth = Date.valueOf(currentYear + "-" + currentMonth + "-31");
+            
             String sqlQuery = "SELECT SUM(amount) AS totalAmount FROM expenses " +
                               "WHERE expenseDate>= ? AND expenseDate<= ?";
 

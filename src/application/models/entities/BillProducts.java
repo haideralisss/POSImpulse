@@ -1,12 +1,12 @@
 package application.models.entities;
 
-public class BillProducts {
-	
-	private int productId, billId, quantity;
+public class BillProducts 
+{	
+	private int billId, quantity;
 	private double price, netTotal;
-	private String discount;
+	private String discount, productId;
 	
-	public BillProducts(int billId, int productId, int quantity, double price, String discount, double netTotal)
+	public BillProducts(int billId, String productId, int quantity, double price, String discount, double netTotal)
 	{
 		this.billId = billId;
 		this.productId = productId;
@@ -20,7 +20,7 @@ public class BillProducts {
         return billId;
     }
 
-    public int getProductId() {
+    public String getProductId() {
         return productId;
     }
 

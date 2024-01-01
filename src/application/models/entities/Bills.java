@@ -1,14 +1,18 @@
 package application.models.entities;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import application.components.datagrid.Attribute;
 import application.models.repositories.BillsRepo;
+import application.screens.billing.BillingController;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
@@ -30,9 +34,9 @@ public class Bills
 	private HBox operations;
 	
 	private static TableView<Bills> dataGridTable;
-	//private static String title;
-	//private static List<Attribute> attributes;
-	//private static AnchorPane anchorPane;
+	private static String title;
+	private static List<Attribute> attributes;
+	private static AnchorPane anchorPane;
 	
 	public Bills()
 	{
@@ -59,7 +63,7 @@ public class Bills
 		delButton.setFitWidth(15);
 		delButton.setFitHeight(15);
 		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
+		Image editIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/eyeIcon.png");
 		editButton.setImage(editIcon);
 		editButton.setFitWidth(15);
 		editButton.setFitHeight(15);
@@ -117,41 +121,43 @@ public class Bills
 		this.isReturn = isReturn;
 		this.profit = profit;
 		
-		HBox delHBox = new HBox();
-		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
-		delButton.setImage(delIcon);
-		delButton.setFitWidth(15);
-		delButton.setFitHeight(15);
-		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
-		editButton.setImage(editIcon);
-		editButton.setFitWidth(15);
-		editButton.setFitHeight(15);
+		HBox editHBox = new HBox();
+		Button button = new Button();
+		button.setText("View");
+		button.setMinWidth(50);
+		button.setMaxWidth(50);
+		button.setMaxHeight(15);
+		button.setStyle("-fx-background-color: #385cfc; -fx-text-fill: #fff; -fx-font-size: 10px;  -fx-border-radius: 5;"
+				+ "    -fx-background-radius: 5;"
+				+ "    -fx-cursor: hand;");
 		operations = new HBox();
-		operations.getChildren().add(editButton);
-		operations.getChildren().add(delHBox);
+		operations.getChildren().add(editHBox);
 		
-		delHBox.getChildren().add(delButton);
-		delHBox.setMaxWidth(Double.MAX_VALUE);
-		delHBox.setAlignment(Pos.CENTER);
-		delHBox.setCursor(Cursor.HAND);
-		delHBox.setOnMouseClicked(event -> {
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		    alert.setTitle("Confirmation Dialog");
-		    alert.setHeaderText("Delete Bill");
-		    alert.setContentText("Are you sure you want to delete this bill?");
-
-		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
-
-		    Optional<ButtonType> result = alert.showAndWait();
-		    if (result.isPresent() && result.get() == confirmButton) {
-		        BillsRepo billsRepo = new BillsRepo();
-		        billsRepo.deleteBill(this.id);
-		        dataGridTable.setItems(FXCollections.observableArrayList(billsRepo.deleteBill(this.id)));
-		    }
+		editHBox.setMaxWidth(Double.MAX_VALUE);
+		editHBox.setAlignment(Pos.CENTER);
+		editHBox.getChildren().add(button);
+		editHBox.setCursor(Cursor.HAND);
+		button.setOnAction(event -> {
+			try
+			{
+				anchorPane.getChildren().clear();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/billing/Billing.fxml"));
+				AnchorPane nextAnchorPane;
+				nextAnchorPane = (AnchorPane) loader.load();
+				anchorPane.getChildren().add(nextAnchorPane);
+				AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+			    nextAnchorPane.toFront();
+			    
+			    BillingController billingController;
+			    billingController = loader.getController();
+			    billingController.SetRoute(nextAnchorPane, attributes, this.customerName, this.discount,
+			    		this.salesTax, this.grossTotal , this.netTotal, this.amountPaid, this.isCredit,
+			    		this.isReturn, true, this.id);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		});
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
@@ -161,9 +167,9 @@ public class Bills
 	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Bills> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
-        //title = Title;
-        //attributes = Attributes;
-        //anchorPane = AnchorPANE;
+        title = Title;
+        attributes = Attributes;
+        anchorPane = AnchorPANE;
     }
 	
 	public void setStringData(String customerName, String billDate, String discount, String salesTax, String shift) 
