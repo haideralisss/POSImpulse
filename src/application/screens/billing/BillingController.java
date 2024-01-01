@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
+import application.models.entities.BillProducts;
 import application.models.entities.Bills;
 import application.models.entities.Products;
 import application.models.entities.Stock;
@@ -56,6 +58,9 @@ public class BillingController implements Initializable
 	@SuppressWarnings("exports")
 	public JFXCheckBox isCredit, isReturn;
 	
+	@SuppressWarnings("exports")
+	public JFXButton saveBillButton, savenPrintBillButton;
+	
 	ProductsRepo productsRepo;
 	BillsRepo billsRepo;
 	BillProductsRepo billsProductsRepo;
@@ -67,6 +72,11 @@ public class BillingController implements Initializable
 	private double profit;
 	
 	ArrayList<BillCartItem> billProducts = new ArrayList<>();
+	
+	public void setBillingScreen(AnchorPane anchorPane)
+	{
+		
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1)
@@ -84,10 +94,44 @@ public class BillingController implements Initializable
 	}
 	
 	@SuppressWarnings("exports")
-	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes)
+	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes, String customerNameValue,
+			String discountValue, String salesTaxValue, double grossTotalValue, double netTotalValue, double amountPaidValue,
+			boolean isCreditValue, boolean isReturnValue, boolean isView, int billId)
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
+		if(isView)
+		{
+			customerName.setText(customerNameValue);
+		}
+		discount.setText(discountValue);
+		salesTax.setText(salesTaxValue);
+		grossTotalLabel.setText("Rs. " + grossTotalValue);
+		netTotalLabel.setText("Rs. " + netTotalValue);
+		amountPaid.setText(String.valueOf(amountPaidValue));
+		isCredit.setSelected(isCreditValue);
+		isReturn.setSelected(isReturnValue);
+		saveBillButton.setDisable(isView);
+		savenPrintBillButton.setDisable(isView);
+		productSearchField.setDisable(isView);
+		if(isView)
+		{
+			for(BillProducts billProduct : billsProductsRepo.fetchBillProducts(String.valueOf(billId)))
+			{
+				FlowPane cartRow = new FlowPane();
+				cartRow.getStyleClass().add("oddCartRow");
+				BillCartItem bci = new BillCartItem(billProduct);
+				cartRow.getStyleClass().add("cartRowWidth");
+				cartRow.getChildren().add(bci.getNameStockBox());
+				cartRow.getChildren().add(bci.getPrice());
+				cartRow.getChildren().add(bci.getQty());
+				cartRow.getChildren().add(bci.getDisc());
+				cartRow.getChildren().add(bci.getNetTotal());
+				cartRow.setAlignment(Pos.CENTER_LEFT);
+				cartRow.getChildren().add(bci.getDelButton());
+				CartVBox.getChildren().add(cartRow);
+			}
+		}
 	}
 	
 	public void CancelBill()
@@ -292,12 +336,12 @@ public class BillingController implements Initializable
 
 	public void saveBill()
 	{
-		if(amountPaid.getText().isEmpty())
+		if(amountPaid.getText().isEmpty() || amountPaid.getText().contains("0.0") || amountPaid.getText().contains("0"))
 		{
 			Alert alert = new Alert(AlertType.ERROR);
         	alert.setTitle("Error");
-        	alert.setHeaderText("Amount Paid is empty!");
-        	alert.setContentText("Please enter amount paid and then try again!");
+        	alert.setHeaderText("Error in amount paid field!");
+        	alert.setContentText("Amount paid is either not entered or it's value is zero!");
         	alert.show();
 		}
 		else if (billProducts.size() <= 0)

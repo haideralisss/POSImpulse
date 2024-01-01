@@ -287,7 +287,7 @@ public class DataGridController implements Initializable
 		    {
 		    	BillingController bController;
 				bController = loader.getController();
-				bController.SetRoute(anchorPane, attributes);
+				bController.SetRoute(anchorPane, attributes, null, null, null, 0, 0, 0, false, false, false, 0);
 		    }
 		    else if(title.getText() == "Purchases")
 		    {

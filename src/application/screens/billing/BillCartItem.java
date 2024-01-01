@@ -2,6 +2,8 @@ package application.screens.billing;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+
+import application.models.entities.BillProducts;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -81,6 +83,54 @@ public class BillCartItem
         this.purchasePrice = purchasePrice;
         this.retailPrice = retailPrice;
         this.packSize = packSize;
+
+        nameStockBox.getStyleClass().add("nameStockBox");
+        price.getStyleClass().add("cartRowInput");
+        qty.getStyleClass().add("cartRowInput");
+        qty.getStyleClass().add("qtyInput");
+        disc.getStyleClass().add("cartRowInput");
+        disc.getStyleClass().add("discInput");
+        netTotal.getStyleClass().add("netTotalLabel");
+        delButton.getStyleClass().add("delButtonIcon");
+    }
+    
+    @SuppressWarnings("exports")
+	public BillCartItem(BillProducts billProduct) 
+    {
+        nameStockBox = new VBox();
+        Label productNameLabel = new Label(billProduct.getProductId());
+        nameStockBox.getChildren().add(productNameLabel);
+//        Label stockHeading = new Label("Stock: ");
+//        stockHeading.setStyle("-fx-font-weight: bold");
+//        HBox stockHBox = new HBox();
+//        stockHBox.getChildren().add(stockHeading);
+//        stockHBox.getChildren().add(stockLabel);
+//        nameStockBox.getChildren().add(stockHBox);
+
+        price = new JFXTextField();
+        qty = new JFXTextField();
+        disc = new JFXTextField();
+        netTotal = new Label("Rs. 0");
+        
+        price.setText(String.valueOf(billProduct.getPrice()));
+        price.setDisable(true);
+        
+        qty.setText(String.valueOf(billProduct.getQuantity()));
+        qty.setDisable(true);
+
+        disc.setText(billProduct.getDiscount());
+        disc.setDisable(true);
+        
+        netTotal.setText("Rs. " + billProduct.getNetTotal());
+
+        delButton = new ImageView();
+        Image delIcon = new Image("file:///C:/Users/ALI/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
+        delButton.setImage(delIcon);
+        delButton.setFitWidth(15);
+        delButton.setFitHeight(15);
+
+        originalValueOfGrossTotal = 0;
+        originalValueOfNetTotal = 0;
 
         nameStockBox.getStyleClass().add("nameStockBox");
         price.getStyleClass().add("cartRowInput");

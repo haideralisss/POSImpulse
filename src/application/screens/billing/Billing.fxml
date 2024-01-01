@@ -125,12 +125,12 @@
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXButton layoutX="25.0" layoutY="626.0" onAction="#saveBill" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save">
+            <JFXButton fx:id="saveBillButton" layoutX="25.0" layoutY="626.0" onAction="#saveBill" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="147.0" layoutY="626.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save &amp; Print">
+            <JFXButton fx:id="savenPrintBillButton" layoutX="147.0" layoutY="626.0" prefHeight="37.0" prefWidth="110.0" styleClass="greenButton" stylesheets="@../purchases/purchases.css" text="Save &amp; Print">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

@@ -2,9 +2,11 @@ package application.models.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.models.entities.BillProducts;
 import application.screens.billing.BillCartItem;
 import application.utils.backendUtils.DatabaseConnection;
 
@@ -30,7 +32,6 @@ public class BillProductsRepo
 				statement.setString(5, item.getDiscount());
 				statement.setString(6, netTotal);
 				statement.executeUpdate();
-				System.out.println("haider     " + billId);
 			}
 		}
 		catch(SQLException e)
@@ -48,6 +49,53 @@ public class BillProductsRepo
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public ArrayList<BillProducts> fetchBillProducts(String billId)
+	{
+		Connection connection = DatabaseConnection.connect();
+		ArrayList<BillProducts> searchData = new ArrayList<>();
+		try
+		{
+			PreparedStatement statement = connection.prepareStatement(
+				    "SELECT billProducts.*, products.name " +
+				    "FROM billProducts " +
+				    "JOIN products ON billProducts.productId = products.id " +
+				    "JOIN stock ON billProducts.productId = stock.productId " +
+				    "WHERE billProducts.billId = ?");
+
+			statement.setString(1, billId);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next())
+			{
+				BillProducts billProduct = new BillProducts(
+						resultSet.getInt("billId"),
+						resultSet.getString("name"),
+						resultSet.getInt("quantity"),
+						resultSet.getDouble("price"),
+						resultSet.getString("discount"),
+						resultSet.getDouble("netTotal")
+						
+				);
+				searchData.add(billProduct);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				connection.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		return searchData;
 	}
 	
 }
