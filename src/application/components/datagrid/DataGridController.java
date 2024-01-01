@@ -293,7 +293,7 @@ public class DataGridController implements Initializable
 		    {
 		    	PurchasesController pController;
 				pController = loader.getController();
-				pController.SetRoute(anchorPane, attributes);
+				pController.SetRoute(anchorPane, attributes, 0, 0, null, null, null, null, null, null, null, null, false, false, false);
 		    }
 		} 
 		catch (IOException e) 

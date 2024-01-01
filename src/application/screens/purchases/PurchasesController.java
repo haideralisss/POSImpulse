@@ -7,16 +7,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import application.components.datagrid.Attribute;
 import application.components.datagrid.DataGridController;
 import application.models.repositories.ProductsRepo;
+import application.models.repositories.PurchasedProductsRepo;
 import application.models.repositories.PurchasesRepo;
 import application.models.repositories.StockRepo;
 import application.models.repositories.SuppliersRepo;
 import application.screens.billing.BillCartItem;
 import application.models.entities.Products;
+import application.models.entities.PurchasedProducts;
 import application.models.entities.Purchases;
 import application.models.entities.Stock;
 import application.models.entities.Suppliers;
@@ -58,6 +62,9 @@ public class PurchasesController implements Initializable
 	public JFXTextField supplierTextField, productSearchField, invoiceNum, discount, salesTax, otherCharges, amountPaid;
 	
 	@SuppressWarnings("exports")
+	public JFXButton saveBillButton, savenPrintBillButton;
+	
+	@SuppressWarnings("exports")
 	@FXML
 	public Label grossTotalLabel, netTotalLabel;
 	
@@ -74,8 +81,10 @@ public class PurchasesController implements Initializable
 	Products product;
 	SuppliersRepo supplierRepo;
 	ProductsRepo productsRepo;
+	PurchasedProductsRepo purchasedProductsRepo;
 	Purchases purchases;
 	Stock stock;
+	int i = 1;
 	
 	private int supplierId;
 	private int cNetTotal = 0;
@@ -89,6 +98,7 @@ public class PurchasesController implements Initializable
 		productsRepo = new ProductsRepo();
 		productsRepo = new ProductsRepo();
 		purchasesRepo = new PurchasesRepo();
+		purchasedProductsRepo = new PurchasedProductsRepo();
 		stockRepo = new StockRepo();
 		product = new Products();
 		purchases = new Purchases();
@@ -106,10 +116,55 @@ public class PurchasesController implements Initializable
 	}
 	
 	@SuppressWarnings("exports")
-	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes)
+	public void SetRoute(AnchorPane anchorPane, List<Attribute> attributes, int supplierId, int purchaseId,  String invoiceNumVal, String dateVal,
+			String discountVal, String salesTaxVal, String otherChargesVal, String grossTotalVal, String netTotalVal, String amountPaidVal, 
+			boolean isLooseVal, boolean isReturnVal, boolean isView)
 	{
 		this.anchorPane = anchorPane;
 		this.attributes = attributes;
+		invoiceNum.setText(invoiceNumVal);
+		purchaseDate.setValue(LocalDate.parse(dateVal));
+		discount.setText(discountVal);
+		salesTax.setText(salesTaxVal);
+		otherCharges.setText(otherChargesVal);
+		grossTotalLabel.setText("Rs. " + grossTotalVal);
+		netTotalLabel.setText("Rs. " + netTotalVal);
+		amountPaid.setText(amountPaidVal);
+		supplierTextField.setText(supplierRepo.getSupplier(supplierId).getName());
+		isLoose.setSelected(isLooseVal);
+		isReturn.setSelected(isReturnVal);
+		
+		saveBillButton.setDisable(isView);
+		savenPrintBillButton.setDisable(isView);
+		
+		if(isView)
+		{
+			cartHeader.setStyle("visibility: visible; -fx-background-color: #02182B;");
+		}
+		
+		for(PurchasedProducts product : purchasedProductsRepo.getPurchasedProductFromPurchaseId(purchaseId))
+		{
+			AnchorPane cartRow = new AnchorPane();
+			FlowPane cartRowFooter = new FlowPane();
+			cartRowFooter.getStyleClass().add("cartRowFooter");
+			if(i % 2 == 0)
+				cartRow.getStyleClass().add("evenCartRow");
+			else
+				cartRow.getStyleClass().add("oddCartRow");	
+			PurchaseCartItem pci = new PurchaseCartItem(product);
+			cartRow.getStyleClass().add("cartRowWidth");
+			cartRow.getChildren().add(pci.getNameStockBox());
+			cartRow.getChildren().add(pci.getPrice());
+			cartRow.getChildren().add(pci.getQty());
+			cartRow.getChildren().add(pci.getDisc());
+			cartRow.getChildren().add(pci.getSalesTax());
+			cartRow.getChildren().add(pci.getBonus());
+			cartRow.getChildren().add(pci.getBatchNum());
+			cartRow.getChildren().add(pci.getNetTotal());
+			cartRow.getChildren().add(pci.getDelButton());
+			CartVBox.getChildren().add(cartRow);
+			i++;
+		}
 	}
 	
 	public void CancelPurchase()
@@ -213,7 +268,7 @@ public class PurchasesController implements Initializable
 					}
 					else
 					{
-						PurchaseCartItem pci = new PurchaseCartItem(product.getName(), String.valueOf(stock != null ? stock.getTotalQuantity() : 0), 
+						PurchaseCartItem pci = new PurchaseCartItem(product.getName(), product.getId(), String.valueOf(stock != null ? stock.getTotalQuantity() : 0), 
 								grossTotalLabel, netTotalLabel, purchaseProducts, stock != null ? stock.getId() : 0, stock != null ? stock.getUnitCost() : 0, 
 								(stock != null ? stock.getTotalQuantity() : 0), product.getPackSize(), product.getPurchasePrice(), 
 								product.getRetailPrice(), isReturn, isLoose);
@@ -227,19 +282,7 @@ public class PurchasesController implements Initializable
 						cartRow.getChildren().add(pci.getBatchNum());
 						cartRow.getChildren().add(pci.getNetTotal());
 						cartRow.getChildren().add(pci.getDelButton());
-						cartRowFooter.setAlignment(Pos.CENTER_RIGHT);
-						Label purchasePriceLabel = new Label("Purchase Price");
-						Label retailPriceLabel = new Label("Retail Price");
-						purchasePriceLabel.getStyleClass().add("priceLabels");
-						purchasePriceLabel.getStyleClass().add("purchasePriceLabel");
-						retailPriceLabel.getStyleClass().add("priceLabels");
-						retailPriceLabel.getStyleClass().add("retailPriceLabel");
-						cartRowFooter.getChildren().add(purchasePriceLabel);
-						cartRowFooter.getChildren().add(pci.getPurchasePrice());
-						cartRowFooter.getChildren().add(retailPriceLabel);
-						cartRowFooter.getChildren().add(pci.getRetailPrice());
 						CartVBox.getChildren().add(cartRow);
-						CartVBox.getChildren().add(cartRowFooter);
 						purchaseProducts.add(pci);
 						
 						pci.getDelButton().setOnMouseClicked(event -> {
@@ -360,19 +403,20 @@ public class PurchasesController implements Initializable
 	    }
 	}
 	
-	public int getNumberOnly(String str) 
+	public double getNumberOnly(String str) 
 	{
 	    str = str.replace("Rs.", "");
 	    String numericString = str.replaceAll("[^0-9.]", "");
-	    return Integer.parseInt(numericString);
+	    return Double.parseDouble(numericString);
 	}
 
 	public void savePurchase()
 	{
-		//billsRepo.insertBill(customerName.getText(), LocalDate.now().toString(), getNumberOnly(grossTotalLabel.getText()), 
-		//		discount.getText(), salesTax.getText(), getNumberOnly(netTotalLabel.getText()), getNumberOnly(amountPaid.getText()),
-		//		"haider", isCredit.isSelected(), isReturn.isSelected(), profit);
-		//stockRepo.updateStocksAfterBill(billProducts);
+		int purchaseId = purchasesRepo.addPurchase(supplierId, LocalDate.now().toString(), invoiceNum.getText(), getNumberOnly(grossTotalLabel.getText()), 
+				salesTax.getText(), discount.getText(), Double.valueOf(otherCharges.getText() != "" ? otherCharges.getText() : "0"), 
+				getNumberOnly(netTotalLabel.getText()), isReturn.isSelected(), isLoose.isSelected(), "haider", Double.valueOf(amountPaid.getText()));
+		purchasedProductsRepo.addPurchasedProduct(purchaseProducts, String.valueOf(purchaseId));
+		stockRepo.updateStocksAfterPurchase(purchaseProducts);
 		CancelPurchase();
 	}
 }

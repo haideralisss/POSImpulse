@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import application.models.entities.Stock;
 import application.screens.billing.BillCartItem;
+import application.screens.purchases.PurchaseCartItem;
 import application.utils.backendUtils.DatabaseConnection;
 import application.utils.backendUtils.NumberFormatter;
 
@@ -68,6 +69,45 @@ public class StockRepo {
 				preparedStatement.setString(1, String.valueOf(item.getNewQuantity()));
 				preparedStatement.setString(2, String.valueOf(item.getStockId()));
 				preparedStatement.executeUpdate();
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				connection.close();
+			} 
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateStocksAfterPurchase(ArrayList<PurchaseCartItem> items)
+	{
+		Connection connection = DatabaseConnection.connect();
+		try
+		{
+			for(PurchaseCartItem item : items)
+			{
+				if(item.getStockId() != 0)
+				{
+					PreparedStatement preparedStatement = connection.prepareStatement(
+		                    "UPDATE stock set totalQuantity= ? WHERE id= ?");
+					preparedStatement.setString(1, String.valueOf(item.getNewQuantity()));
+					preparedStatement.setString(2, String.valueOf(item.getStockId()));
+					preparedStatement.executeUpdate();
+				}
+				else
+				{
+					Stock stock = new Stock(0, 0, item.getProductId(), "Nothing", (item.getPackSize() / item.getRetailPriceVal()), item.getNewQuantity());
+					addStock(stock);
+				}
 			}
 		}
 		catch(SQLException e)

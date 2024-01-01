@@ -9,6 +9,7 @@ public class PurchasedProducts {
 	public PurchasedProducts(int productId, String productName, int purchaseId, int quantity, int bonus, double unitCost, String discount, String salesTax, double netTotal, String batchNum)
 	{
 		this.productId = productId;
+		this.productName = productName;
 		this.purchaseId = purchaseId;
 		this.quantity = quantity;
 		this.bonus = bonus;

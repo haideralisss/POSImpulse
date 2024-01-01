@@ -1,19 +1,15 @@
 package application.models.entities;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import application.components.datagrid.Attribute;
-import application.models.repositories.PurchasesRepo;
-import javafx.collections.FXCollections;
+import application.screens.purchases.PurchasesController;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -27,10 +23,12 @@ public class Purchases {
 	private int number;
 	private HBox operations;
 	
+	@SuppressWarnings("unused")
 	private static TableView<Purchases> dataGridTable;
-	//private static String title;
-	//private static List<Attribute> attributes;
-	//private static AnchorPane anchorPane;
+	@SuppressWarnings("unused")
+	private static String title;
+	private static List<Attribute> attributes;
+	private static AnchorPane anchorPane;
 	
 	public Purchases()
 	{
@@ -58,49 +56,44 @@ public class Purchases {
 		this.shift = shift;
 		this.amountPaid = amountPaid;
 		
-		HBox delHBox = new HBox();
 		HBox editHBox = new HBox();
-		ImageView delButton = new ImageView();
-		Image delIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/deleteIcon.png");
-		delButton.setImage(delIcon);
-		delButton.setFitWidth(15);
-		delButton.setFitHeight(15);
-		ImageView editButton = new ImageView();
-		Image editIcon = new Image("file:///C:/Users/AbdulWali/eclipse-workspace/POSImpulse/src/assets/editIcon.png");
-		editButton.setImage(editIcon);
-		editButton.setFitWidth(15);
-		editButton.setFitHeight(15);
+		Button button = new Button();
+		button.setText("View");
+		button.setMinWidth(50);
+		button.setMaxWidth(50);
+		button.setMaxHeight(15);
+		button.setStyle("-fx-background-color: #385cfc; -fx-text-fill: #fff; -fx-font-size: 10px;  -fx-border-radius: 5;"
+				+ "    -fx-background-radius: 5;"
+				+ "    -fx-cursor: hand;");
 		operations = new HBox();
 		operations.getChildren().add(editHBox);
-		operations.getChildren().add(delHBox);
 		
 		editHBox.setMaxWidth(Double.MAX_VALUE);
 		editHBox.setAlignment(Pos.CENTER);
-		editHBox.getChildren().add(editButton);
+		editHBox.getChildren().add(button);
 		editHBox.setCursor(Cursor.HAND);
-		editHBox.setOnMouseClicked(event -> {
-			
-		});
 		
-		delHBox.getChildren().add(delButton);
-		delHBox.setMaxWidth(Double.MAX_VALUE);
-		delHBox.setAlignment(Pos.CENTER);
-		delHBox.setCursor(Cursor.HAND);
-		delHBox.setOnMouseClicked(event -> {
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		    alert.setTitle("Confirmation Dialog");
-		    alert.setHeaderText("Delete Purchase");
-		    alert.setContentText("Are you sure you want to delete this purchase?");
-
-		    ButtonType confirmButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-		    ButtonType cancelButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-		    alert.getButtonTypes().setAll(confirmButton, cancelButton);
-
-		    Optional<ButtonType> result = alert.showAndWait();
-		    if (result.isPresent() && result.get() == confirmButton) {
-		        PurchasesRepo purchasesRepo = new PurchasesRepo();;
-		        dataGridTable.setItems(FXCollections.observableArrayList(purchasesRepo.deletePurchase(this.id)));
-		    }
+		button.setOnAction(event -> {
+			try
+			{
+				anchorPane.getChildren().clear();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/screens/purchases/Purchases.fxml"));
+				AnchorPane nextAnchorPane;
+				nextAnchorPane = (AnchorPane) loader.load();
+				anchorPane.getChildren().add(nextAnchorPane);
+				AnchorPane.setLeftAnchor(nextAnchorPane, 0.0);
+			    nextAnchorPane.toFront();
+			    
+			    PurchasesController purchaseController;
+			    purchaseController = loader.getController();
+			    purchaseController.SetRoute(nextAnchorPane, attributes, supplierId, id, invoiceNum, purchaseDate, discount, salesTax,
+			    		String.valueOf(otherCharges), String.valueOf(grossTotal), String.valueOf(netTotal), String.valueOf(amountPaid),
+			    		isLoose, isReturn, true);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		});
 		
 		operations.setMaxWidth(Double.MAX_VALUE);
@@ -110,9 +103,9 @@ public class Purchases {
 	@SuppressWarnings("exports")
 	public static void setDataGridTable(TableView<Purchases> table, String Title, List<Attribute> Attributes, AnchorPane AnchorPANE) {
         dataGridTable = table;
-        //title = Title;
-        //attributes = Attributes;
-        //anchorPane = AnchorPANE;
+        title = Title;
+        attributes = Attributes;
+        anchorPane = AnchorPANE;
     }
 	
 	public int getSupplierId()

@@ -109,38 +109,55 @@ public class PurchasesRepo {
 		return purchase;
 	}
 	
-	public ArrayList<Purchases> addPurchase(Purchases purchase)
+	public int addPurchase(int supplierId, String purchaseDate, String invoiceNum, double grossTotal,
+            String salesTax, String discount, double otherCharges, double netTotal,
+            boolean isReturn, boolean isLoose, String shift, double amountPaid) 
 	{
 		Connection connection = DatabaseConnection.connect();
-		try
-		{
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO purchases (supplierId, purchaseDate, invoiceNum, grossTotal, salesTax, discount, otherCharges, netTotal, isReturn, isLoose, shift, amountPaid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-			statement.setInt(1, purchase.getSupplierId());
-			statement.setObject(2, purchase.getPurchaseDate());
-			statement.setString(3, purchase.getInvoiceNum());
-			statement.setDouble(4, purchase.getGrossTotal());
-			statement.setString(5, purchase.getSalesTax());
-			statement.setString(6, purchase.getDiscount());
-			statement.setDouble(7, purchase.getOtherCharges());
-			statement.setDouble(8, purchase.getNetTotal());
-			statement.setBoolean(9, (purchase.getIsReturn() == "Yes" ? true : false));
-			statement.setBoolean(10, purchase.getIsLoose());
-			statement.setString(11, purchase.getShift());
-			statement.setDouble(12, purchase.getAmountPaid());
-			statement.executeUpdate();
+		int generatedId = -1;
+		
+		try {
+		PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO purchases " +
+		     "(supplierId, purchaseDate, invoiceNum, grossTotal, salesTax, discount, otherCharges, netTotal, isReturn, isLoose, shift, amountPaid) " +
+		     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		
+		preparedStatement.setInt(1, supplierId);
+		preparedStatement.setString(2, purchaseDate);
+		preparedStatement.setString(3, invoiceNum);
+		preparedStatement.setDouble(4, grossTotal);
+		preparedStatement.setString(5, salesTax);
+		preparedStatement.setString(6, discount);
+		preparedStatement.setDouble(7, otherCharges);
+		preparedStatement.setDouble(8, netTotal);
+		preparedStatement.setBoolean(9, isReturn);
+		preparedStatement.setBoolean(10, isLoose);
+		preparedStatement.setString(11, shift);
+		preparedStatement.setDouble(12, amountPaid);
+		
+		int affectedRows = preparedStatement.executeUpdate();
+		
+		if (affectedRows > 0) {
+		 try (Statement statement = connection.createStatement();
+		      ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid()")) {
+		     if (resultSet.next()) {
+		         generatedId = resultSet.getInt(1);
+		     }
+		 }
 		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
 		} finally {
-			try {
-	            connection.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-		return getAllPurchases();
-	}
+		try {
+		 connection.close();
+		} catch (SQLException e) {
+		 e.printStackTrace();
+		}
+}
+
+return generatedId;
+}
+
 	
 	public ArrayList<Purchases> updatePurchase(int id, Purchases updatedPurchase) 
 	{

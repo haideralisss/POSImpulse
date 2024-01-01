@@ -141,12 +141,12 @@ public class BillCartItem
         double priceValue = price.getText().isEmpty() ? 0 : Double.parseDouble(price.getText());
         double qtyValue = qty.getText().isEmpty() ? 0 : Double.parseDouble(qty.getText());
 
-        if(qtyValue > totalQuantity)
+        if((qtyValue > totalQuantity) && (!this.isReturn.isSelected()))
         {
         	Alert alert = new Alert(AlertType.ERROR);
         	alert.setTitle("Error");
         	alert.setHeaderText("Error in while entering quantity!");
-        	alert.setContentText("Your entered quantity is greater than stock available. Plesae enter the correct quantity");
+        	alert.setContentText("Your entered quantity is greater than stock available. Please enter the correct quantity");
         	alert.show();
         	qty.setText("");
         }

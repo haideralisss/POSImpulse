@@ -47,11 +47,13 @@ public class BillsRepo
 
 	        int affectedRows = preparedStatement.executeUpdate();
 
-	        if (affectedRows > 0) {
-	            // Retrieve the last inserted ROWID
+	        if (affectedRows > 0) 
+	        {
 	            try (Statement statement = connection.createStatement();
-	                 ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid()")) {
-	                if (resultSet.next()) {
+	                 ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid()"))
+	            {
+	                if (resultSet.next())
+	                {
 	                    generatedId = resultSet.getInt(1);
 	                }
 	            }
